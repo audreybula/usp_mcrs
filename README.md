@@ -9,8 +9,8 @@ IS314 Project
    * [MVC](https://blog.pusher.com/laravel-mvc-use/)
 
 ## Team
-* [Olivia Brown](https://github.com/audreybula)
-* [Nabinesh Chand](https://github.com/nabinesh18) `Project Manager`
+* [Olivia Bula](https://github.com/audreybula) `Project Manager`
+* [Nabinesh Chand](https://github.com/nabinesh18) 
 * [Navneel Kumar](https://github.com/Nav2030)
 * [Filimoni Naisua](https://github.com/BillKG)
 * [Sera Laliqovoka](https://github.com/Sansaee)
