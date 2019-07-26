@@ -7,6 +7,9 @@ IS314 Project
 `Moodle Course Request System`
 ## Architecture
    * [MVC](https://blog.pusher.com/laravel-mvc-use/)
+   
+## Branches
+   * [Feature Branch Workflow](https://github.com/audreybula/MoodleCourseReq/wiki/Feature-Branch-Workflow)
 
 ## Team
 * [Olivia Bula](https://github.com/audreybula) `Project Manager`
