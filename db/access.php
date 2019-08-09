@@ -34,15 +34,15 @@ $capabilities = [
             'editingteacher' => CAP_ALLOW,
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW
-            
+
         ),
- 
+
         'clonepermissionsfrom' => 'moodle/my:manageblocks'
     ),
- 
+
     'block/usp_mcrs:addinstance' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
- 
+
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
         'archetypes' => array(
@@ -50,7 +50,7 @@ $capabilities = [
             'coursecreator' => CAP_ALLOW,
             'manager' => CAP_ALLOW
         ),
- 
+
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
 

@@ -28,7 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Custom uninstallation procedure.
  */
-function xmldb_block_usp_mcrs_uninstall() {
+function xmldb_block_usp_mcrs_uninstall()
+{
 
     return true;
 }

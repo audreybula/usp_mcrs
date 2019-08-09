@@ -28,7 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Custom code to be run on installing the plugin.
  */
-function xmldb_block_usp_mcrs_install() {
+function xmldb_block_usp_mcrs_install()
+{
 
     return true;
 }

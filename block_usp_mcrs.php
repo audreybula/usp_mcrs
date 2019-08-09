@@ -29,12 +29,14 @@
  * @copyright  2019 IS314 Group 4 <you@example.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class block_usp_mcrs extends block_list {
+class block_usp_mcrs extends block_list
+{
 
     /**
      * Initializes class member variables.
      */
-    public function init() {
+    public function init()
+    {
         // Needed by Moodle to differentiate between blocks.
         $this->title = get_string('pluginname', 'block_usp_mcrs');
     }
@@ -44,7 +46,8 @@ class block_usp_mcrs extends block_list {
      *
      * @return stdClass The block contents.
      */
-    public function get_content() {
+    public function get_content()
+    {
         global $OUTPUT;
 
         if ($this->content !== null) {
@@ -65,8 +68,7 @@ class block_usp_mcrs extends block_list {
         $this->content->items[] = $todotext;
 
         // Checking permissions - Admin
-        if(has_capability('moodle/site:config', context_system::instance()))
-        {
+        if (has_capability('moodle/site:config', context_system::instance())) {
             $icon = $OUTPUT->pix_icon('i/settings', '');
             $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/admin.php', null), $icon . get_string('adminhome', 'block_usp_mcrs'));
         }
@@ -74,6 +76,10 @@ class block_usp_mcrs extends block_list {
         $cparam = array();
         $icon = $OUTPUT->pix_icon('i/edit', '');
         $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/requestcourse.php', $cparam), $icon . get_string('requestcourse', 'block_usp_mcrs'));
+
+        $cparam = array();
+        $icon = $OUTPUT->pix_icon('i/create', '');
+        $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/createcourse.php', $cparam), $icon . get_string('requestcourse', 'block_usp_mcrs'));
 
 
         return $this->content;
@@ -84,7 +90,8 @@ class block_usp_mcrs extends block_list {
      *
      * The function is called immediatly after init().
      */
-    public function specialization() {
+    public function specialization()
+    {
 
         // Load user defined title and make sure it's never empty.
         if (empty($this->config->title)) {
@@ -99,7 +106,8 @@ class block_usp_mcrs extends block_list {
      *
      * @return bool True if the global configuration is enabled.
      */
-    function has_config() {
+    function has_config()
+    {
         return true;
     }
 
@@ -108,7 +116,8 @@ class block_usp_mcrs extends block_list {
      *
      * @return string[] Array of pages and permissions.
      */
-    public function applicable_formats() {
+    public function applicable_formats()
+    {
         return array(
             'all' => true,
         );
