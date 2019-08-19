@@ -1,8 +1,6 @@
 # Moodle Course Request #
 
-TODO Describe the plugin shortly here.
-
-TODO Provide more detailed description here.
+Admin View Page.
 
 ## License ##
 
