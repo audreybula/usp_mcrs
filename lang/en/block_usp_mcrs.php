@@ -29,5 +29,4 @@ $string['pluginname'] = 'Moodle Course Request';
 $string['requestcourse'] = 'Make course request';
 $string['requestdone'] = 'Course request done.';
 $string['usp_mcrs:view'] = 'View Course request';
-$string['todo'] = 'TODO: Add your links here...';
 $string['adminhome'] = 'Admin Home';

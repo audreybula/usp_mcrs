@@ -64,23 +64,29 @@ class block_usp_mcrs extends block_list
         $this->content->icons = array();
         $this->content->footer = '';
 
-        $todotext = get_string('todo', 'block_usp_mcrs');
-        $this->content->items[] = $todotext;
-
         // Checking permissions - Admin
         if (has_capability('moodle/site:config', context_system::instance())) {
             $icon = $OUTPUT->pix_icon('i/settings', '');
-            $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/admin.php', null), $icon . get_string('adminhome', 'block_usp_mcrs'));
+            $this->content->items[] = html_writer::link(
+                new moodle_url(
+                    '/blocks/usp_mcrs/admin.php',
+                    null
+                ),
+                $icon . get_string(
+                    'adminhome',
+                    'block_usp_mcrs'
+                )
+            );
         }
 
         $cparam = array();
         $icon = $OUTPUT->pix_icon('i/edit', '');
-        $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/requestcourse.php', $cparam), $icon . get_string('requestcourse', 'block_usp_mcrs'));
-
-        $cparam = array();
-        $icon = $OUTPUT->pix_icon('i/create', '');
-        $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/createcourse.php', $cparam), $icon . get_string('requestcourse', 'block_usp_mcrs'));
-
+        $this->content->items[] = html_writer::link(new moodle_url(
+            '/blocks/usp_mcrs/requestcourse.php', $cparam
+        ), $icon . get_string(
+            'requestcourse', 'block_usp_mcrs'
+        )
+    );
 
         return $this->content;
     }
