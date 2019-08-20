@@ -69,33 +69,33 @@ class block_usp_mcrs extends block_list
 
         $cohortmembership = $DB->get_records_select('cohort_members', 'userid = ?', array($USER->id), 'id');
         
-        //if the currently logged in user is assigned to a cohort
+        // if the currently logged in user is assigned to a cohort
         if ($cohortmembership) {
 
-            //show a message for each cohort they belong to
+            // show a message for each cohort they belong to
             foreach ($cohortmembership as $showcohortmembership) {
 
-                //query for cohort information for the cohort(s) they belong to
+                // query for cohort information for the cohort(s) they belong to
                 $cohortresult = $DB->get_records_select('cohort', 'id = ?', array($showcohortmembership->cohortid), 'id');
 
-                //verify the cohort record(s) exist
+                // verify the cohort record(s) exist
                 if ($cohortresult) {
 
-                    //cycle through the cohort query results
+                    // cycle through the cohort query results
                     foreach ($cohortresult as $showcohortresult) {
 
-                        //case statements to show specific message for each of the cohorts
+                        // case statements to show specific message for each of the cohorts
                         switch ($showcohortresult->name) {
 
-                            //if they are assigned to the freshmen cohort
+                            // if they are assigned to the Moodle Admin cohort
                             case 'Moodle Admin':
-                                // Checking permissions - Admin
+                                // checking permissions - Admin
                                 if (has_capability('moodle/site:config', context_system::instance())) {
                                     $icon = $OUTPUT->pix_icon('i/settings', '');
                                     $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/admin.php', null), $icon . get_string('adminhome', 'block_usp_mcrs'));
                                 }
 
-                            //if they are assigned to the sophomore cohort
+                            // if they are assigned to the Academic Staff cohort
                             case 'Academic Staff':
                                 $cparam = array();
                                 $icon = $OUTPUT->pix_icon('i/edit', '');
@@ -107,7 +107,7 @@ class block_usp_mcrs extends block_list
 
                                 break;
 
-                            //if they are assigned to the junior cohort
+                            // if they are assigned to the Support Staff cohort
                             case 'Support Staff':
                                 $todotext = get_string('todo', 'block_usp_mcrs');
                                 $this->content->items[] = $todotext;
