@@ -101,10 +101,6 @@ class block_usp_mcrs extends block_list
                                 $icon = $OUTPUT->pix_icon('i/edit', '');
                                 $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/requestcourse.php', $cparam), $icon . get_string('requestcourse', 'block_usp_mcrs'));
 
-                                $cparam = array();
-                                $icon = $OUTPUT->pix_icon('i/create', '');
-                                $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/createcourse.php', $cparam), $icon . get_string('requestcourse', 'block_usp_mcrs'));
-
                                 break;
 
                             // if they are assigned to the Support Staff cohort
