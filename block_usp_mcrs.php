@@ -48,6 +48,7 @@ class block_usp_mcrs extends block_list
      */
     public function get_content()
     {
+        global $DB, $CFG, $USER;
         global $OUTPUT;
 
         if ($this->content !== null) {
@@ -64,29 +65,67 @@ class block_usp_mcrs extends block_list
         $this->content->icons = array();
         $this->content->footer = '';
 
-        // Checking permissions - Admin
-        if (has_capability('moodle/site:config', context_system::instance())) {
-            $icon = $OUTPUT->pix_icon('i/settings', '');
-            $this->content->items[] = html_writer::link(
-                new moodle_url(
-                    '/blocks/usp_mcrs/admin.php',
-                    null
-                ),
-                $icon . get_string(
-                    'adminhome',
-                    'block_usp_mcrs'
-                )
-            );
-        }
 
-        $cparam = array();
-        $icon = $OUTPUT->pix_icon('i/edit', '');
-        $this->content->items[] = html_writer::link(new moodle_url(
-            '/blocks/usp_mcrs/requestcourse.php', $cparam
-        ), $icon . get_string(
-            'requestcourse', 'block_usp_mcrs'
-        )
-    );
+
+        $cohortmembership = $DB->get_records_select('cohort_members', 'userid = ?', array($USER->id), 'id');
+        
+        //if the currently logged in user is assigned to a cohort
+        if ($cohortmembership) {
+
+            //show a message for each cohort they belong to
+            foreach ($cohortmembership as $showcohortmembership) {
+
+                //query for cohort information for the cohort(s) they belong to
+                $cohortresult = $DB->get_records_select('cohort', 'id = ?', array($showcohortmembership->cohortid), 'id');
+
+                //verify the cohort record(s) exist
+                if ($cohortresult) {
+
+                    //cycle through the cohort query results
+                    foreach ($cohortresult as $showcohortresult) {
+
+                        //case statements to show specific message for each of the cohorts
+                        switch ($showcohortresult->name) {
+
+                            //if they are assigned to the freshmen cohort
+                            case 'Moodle Admin':
+                                // Checking permissions - Admin
+                                if (has_capability('moodle/site:config', context_system::instance())) {
+                                    $icon = $OUTPUT->pix_icon('i/settings', '');
+                                    $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/admin.php', null), $icon . get_string('adminhome', 'block_usp_mcrs'));
+                                }
+
+                            //if they are assigned to the sophomore cohort
+                            case 'Academic Staff':
+                                $cparam = array();
+                                $icon = $OUTPUT->pix_icon('i/edit', '');
+                                $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/requestcourse.php', $cparam), $icon . get_string('requestcourse', 'block_usp_mcrs'));
+
+                                $cparam = array();
+                                $icon = $OUTPUT->pix_icon('i/create', '');
+                                $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/createcourse.php', $cparam), $icon . get_string('requestcourse', 'block_usp_mcrs'));
+
+                                break;
+
+                            //if they are assigned to the junior cohort
+                            case 'Support Staff':
+                                $todotext = get_string('todo', 'block_usp_mcrs');
+                                $this->content->items[] = $todotext;
+                                break;
+
+
+                        }
+
+                    }
+
+                }
+            }
+
+        } else {
+
+            //if they are not assigned to a cohort
+
+        }
 
         return $this->content;
     }
