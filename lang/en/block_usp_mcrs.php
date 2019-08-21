@@ -26,8 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Moodle Course Request';
-$string['requestcourse'] = 'Make course request';
+$string['requestcourse'] = 'Make Course Request';
 $string['requestdone'] = 'Course request done.';
-$string['usp_mcrs:view'] = 'View Course request';
+$string['usp_mcrs:view'] = 'View Course Request';
 $string['todo'] = 'TODO: Todo...';
 $string['adminhome'] = 'Admin Home';
