@@ -36,6 +36,7 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('adminhome', 'block_usp_mcrs'));
 $PAGE->set_title(get_string('adminhome', 'block_usp_mcrs'));
 echo $OUTPUT->header();
+echo $OUTPUT->footer();
 
 class admin extends moodleform
 {
@@ -62,7 +63,6 @@ class admin extends moodleform
         }
         $this->content = new stdClass();
         $this->content->text = '';
-        $this->content->footer = '';
 
         if (empty($this->instance)) {
             return $this->content;
@@ -75,3 +75,5 @@ class admin extends moodleform
         return $this->content;
     }
 }
+
+
