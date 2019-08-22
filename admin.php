@@ -38,42 +38,6 @@ $PAGE->set_title(get_string('adminhome', 'block_usp_mcrs'));
 echo $OUTPUT->header();
 echo $OUTPUT->footer();
 
-class admin extends moodleform
-{
-    /**
-     * Initializes class member variables.
-     */
-    public function init()
-    {
-        // Needed by Moodle to differentiate between blocks.
-        $this->title = get_string('adminhome', 'block_usp_mcrs');
-    }
 
-        /**
-     * Returns the block contents.
-     *
-     * @return stdClass The block contents.
-     */
-    public function get_content()
-    {
-       
-
-        if ($this->content !== null) {
-            return $this->content;
-        }
-        $this->content = new stdClass();
-        $this->content->text = '';
-
-        if (empty($this->instance)) {
-            return $this->content;
-        }
-
-       $text = '';
-       $text .= "Admin Home";
-       $this->content->text = $text;
-
-        return $this->content;
-    }
-}
 
 
