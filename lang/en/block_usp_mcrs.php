@@ -45,5 +45,7 @@ $string['f2f'] = 'Face To Face';
 $string['online'] = 'Online';
 $string['print'] = 'Print';
 $string['blended'] = 'Blended';
+$string['choosecourse'] = 'Choose Course';
+$string['coursetocopyfrom'] = 'Course Shell To Be Copied';
 $string['additionalinfo'] = 'Additional Information or Comments';
 $string['submitbutton'] = 'Submit';

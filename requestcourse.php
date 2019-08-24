@@ -53,9 +53,20 @@ class requestcourse extends moodleform
         $mform->addElement('header', 'mainheader','<span style="font-size:22px">'.get_string('courserequestform','block_usp_mcrs'). '</span>');
 
         // Course Code field
-        $mform->addElement('text', 'coursecode', get_string('coursecode', 'block_usp_mcrs'), 'onkeyup="showHint(this.value)"');
+        //$mform->addElement('text', 'coursecode', get_string('coursecode', 'block_usp_mcrs'));
+        //$mform->addRule('coursecode', get_string('required'), 'required', null, 'client');
+        //$mform->setType('coursecode', PARAM_TEXT);
+
+        // Course Code field. TODO: Does not allow new courses
+        $coursearray = array();
+        $coursearray[0] = get_string('choosecourse', 'block_usp_mcrs');
+        $allcourses = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, course_id');
+        foreach ($allcourses as $id => $courseobject) {
+            $coursearray[$id] = $courseobject->course_id;
+        }
+        $mform->addElement('select', 'coursecode', get_string('coursecode', 'block_usp_mcrs'), $coursearray);
         $mform->addRule('coursecode', get_string('required'), 'required', null, 'client');
-        $mform->setType('coursecode', PARAM_TEXT);
+        $mform->setType('coursecode', PARAM_RAW);
 
         // Course Name field
         $mform->addElement('text', 'coursename', get_string('coursename', 'block_usp_mcrs'), 'size="65px');
@@ -75,7 +86,7 @@ class requestcourse extends moodleform
         $mform->setDefault('courselecturer', $USER->username); 
         $mform->addRule('courselecturer', get_string('required'), 'required', null, 'client');
         // TODO: Fix help button 
-        $mform->addHelpButton('courselecturer', get_string('courselecturerhelp', 'block_usp_mcrs'));  
+        $mform->addHelpButton('courselecturer', 'courselecturerhelp', 'block_usp_mcrs');  
         $mform->setType('courselecturer', PARAM_TEXT);
 
         // Course Faculty field
@@ -97,6 +108,15 @@ class requestcourse extends moodleform
         $mform->addElement('checkbox', 'print', '', get_string('print', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'print\', this.checked)"');
         $mform->addElement('checkbox', 'blended', '', get_string('blended', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'blended\', this.checked)"');
 
+        // Copyfrom dropdown
+        $coursearray = array();
+        $coursearray[0] = get_string('choosecourse', 'block_usp_mcrs');
+        $allcourses = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
+        foreach ($allcourses as $id => $courseobject) {
+            $coursearray[$id] = $courseobject->shortname;
+        }
+        $mform->addElement('select', 'courseid', get_string('coursetocopyfrom', 'block_usp_mcrs'), $coursearray);
+        
         // Additional Information
         $mform->addElement('editor', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));
         $mform->setType('additionalinfo', PARAM_RAW);
