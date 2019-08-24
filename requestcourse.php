@@ -86,7 +86,7 @@ class requestcourse extends moodleform
         $mform->setDefault('courselecturer', $USER->username); 
         $mform->addRule('courselecturer', get_string('required'), 'required', null, 'client');
         // TODO: Fix help button 
-        $mform->addHelpButton('courselecturer', 'courselecturerhelp', 'block_usp_mcrs');  
+        $mform->addHelpButton('courselecturer', 'courselecturer', 'block_usp_mcrs');  
         $mform->setType('courselecturer', PARAM_TEXT);
 
         // Course Faculty field

@@ -38,6 +38,7 @@ $string['coursecode'] = 'Course Code';
 $string['coursename'] = 'Course Name';
 $string['courserequester'] = 'Course Requester';
 $string['courselecturer'] = 'Course Lecturer';
+$string['courselecturer_help'] = 'Please type the lecturer\'s username. Follow this format lastname_initial';
 $string['coursefaculty'] = 'Faculty';
 $string['courseschool'] = 'School';
 $string['courseshellnumber'] = 'Single or Multiple Course Shells';
