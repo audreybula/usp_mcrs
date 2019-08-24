@@ -31,4 +31,19 @@ $string['requestdone'] = 'Course request done.';
 $string['usp_mcrs:view'] = 'View Course request';
 $string['todo'] = 'TODO: Add your links here...';
 $string['adminhome'] = 'Admin Home';
+
+// Course Request Form Strings
 $string['courserequestform'] = 'Course Request Form';
+$string['coursecode'] = 'Course Code';
+$string['coursename'] = 'Course Name';
+$string['courserequester'] = 'Course Requester';
+$string['courselecturer'] = 'Course Lecturer';
+$string['coursefaculty'] = 'Faculty';
+$string['courseschool'] = 'School';
+$string['courseshellnumber'] = 'Single or Multiple Course Shells';
+$string['f2f'] = 'Face To Face';
+$string['online'] = 'Online';
+$string['print'] = 'Print';
+$string['blended'] = 'Blended';
+$string['additionalinfo'] = 'Additional Information or Comments';
+$string['submitbutton'] = 'Submit';
