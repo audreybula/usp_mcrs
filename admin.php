@@ -24,6 +24,8 @@
  */
 
 require_once('../../config.php');
+require_once("$CFG->libdir/formslib.php");
+require_login();
 global $CFG, $USER, $DB;
 
 
@@ -36,6 +38,14 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('adminhome', 'block_usp_mcrs'));
 $PAGE->set_title(get_string('adminhome', 'block_usp_mcrs'));
 echo $OUTPUT->header();
+
+
+
+
+
+
+
+
 echo $OUTPUT->footer();
 
 
