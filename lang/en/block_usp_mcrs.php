@@ -30,4 +30,10 @@ $string['requestcourse'] = 'Make Course Request';
 $string['requestdone'] = 'Course request done.';
 $string['usp_mcrs:view'] = 'View Course Request';
 $string['todo'] = 'TODO: Todo...';
-$string['adminhome'] = 'Admin Home';
+
+// Moodle Admin Strings
+$string['moodle_admin'] = 'Moodle Admin Home';
+
+
+// CFL Admin Strings
+$string['cfl_admin'] = 'CFL Admin Home';
