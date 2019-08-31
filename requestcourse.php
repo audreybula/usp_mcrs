@@ -27,18 +27,17 @@ require_once('../../config.php'); // Change depending on depth
 require_once("$CFG->libdir/formslib.php");
 require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
 require_login();
+$PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/javascript/jquery-3.2.1.min.js'));
+$PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/javascript/module.js'));
 global $CFG, $USER, $DB;
 
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('courserequestform', 'block_usp_mcrs'), new moodle_url('/blocks/usp_mcrs/requestcourse.php'));
-$PAGE->requires->js('/blocks/usp_mcrs/javascript/jquery-3.4.1.min.js');
-$PAGE->requires->js('/blocks/usp_mcrs/javascript/module.js');
 $PAGE->set_url('/blocks/usp_mcrs/requestcourse.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('requestcourse', 'block_usp_mcrs')); 
 $PAGE->set_title(get_string('requestcourse', 'block_usp_mcrs'));
-
 
 echo $OUTPUT->header();
 

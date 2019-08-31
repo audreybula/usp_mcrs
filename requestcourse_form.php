@@ -31,6 +31,13 @@ class requestcourse_form extends moodleform
 {
     function definition() 
     {   
+        /*
+                TODO: 
+                1. Disable other fields if Course Code not selected
+                2. Remove moodle from backup shells
+                3. Course modes will depend on Single/Multiple shell copies
+        */
+
         global $CFG, $currentsess, $DB, $USER, $currentrecord; 
     
         $mform =& $this->_form; // Don't forget the underscore! 
@@ -49,7 +56,7 @@ class requestcourse_form extends moodleform
         $mform->addRule('coursecode', get_string('required'), 'required', null, 'client');
         $mform->setType('coursecode', PARAM_RAW); 	 
 
-        // Course Name field. TODO: Course Name to pick automatically after entering Course Code
+        // Course Name field
         $coursenamearray = array();
         $coursenamearray[0] = get_string('choosecoursename', 'block_usp_mcrs');
         $allcoursenames = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, course_name');
@@ -75,20 +82,20 @@ class requestcourse_form extends moodleform
         $mform->addHelpButton('courselecturer', 'courselecturer', 'block_usp_mcrs');  
         $mform->setType('courselecturer', PARAM_TEXT);
 
-        // Course Faculty field. TODO: Course Faculty to pick automatically after entering Course Code
+        // Course Faculty field
         $coursefacultyarray = array();
         $coursefacultyarray[0] = get_string('choosecoursefaculty', 'block_usp_mcrs');
-        $allcoursefaculties = $DB->get_records_select('block_usp_mcrs_faculty', 'id > 0', array(), 'id', 'id, faculty_name');
+        $allcoursefaculties = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, faculty_name');
         foreach ($allcoursefaculties as $id => $coursefacultyobject) {
             $coursefacultyarray[$id] = $coursefacultyobject->faculty_name;
         }
         $mform->addElement('select', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'), $coursefacultyarray);
         $mform->setType('coursefaculty', PARAM_RAW);
 
-        // Course School field. TODO: Course School to pick automatically after entering Course Code
+        // Course School field
         $courseschoolarray = array();
         $courseschoolarray[0] = get_string('choosecourseschool', 'block_usp_mcrs');
-        $allcourseschools = $DB->get_records_select('block_usp_mcrs_schools', 'id > 0', array(), 'id', 'id, school_name');
+        $allcourseschools = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, school_name');
         foreach ($allcourseschools as $id => $courseschoolobject) {
             $courseschoolarray[$id] = $courseschoolobject->school_name;
         }
@@ -100,7 +107,7 @@ class requestcourse_form extends moodleform
         $select = $mform->addElement('select', 'courseshellnumber', get_string('courseshellnumber', 'block_usp_mcrs'), $options);
         $select->setSelected('0');
 
-        // Copyfrom dropdown. TODO: Remove moodle from dropdown list
+        // Copyfrom dropdown
         $coursshellearray = array();
         $courseshellarray[0] = get_string('choosecourseshell', 'block_usp_mcrs');
         $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
@@ -126,10 +133,4 @@ class requestcourse_form extends moodleform
         // Submit button with Cancel button
         $this->add_action_buttons(true, get_string('submitbutton', 'block_usp_mcrs'));
     } 
-
-    function definition_after_data() 
-    { 
-        
-       
-    }
 }
