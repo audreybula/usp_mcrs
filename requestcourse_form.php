@@ -23,24 +23,20 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
+
 require_once("$CFG->libdir/formslib.php");
 
 class requestcourse_form extends moodleform
 {
     function definition() 
     {   
-        global $CFG;
-        global $currentsess, $DB, $USER, $currentrecord; 
+        global $CFG, $currentsess, $DB, $USER, $currentrecord; 
     
         $mform =& $this->_form; // Don't forget the underscore! 
 
         // Form header
         $mform->addElement('header', 'mainheader','<span style="font-size:22px">'.get_string('courserequestform','block_usp_mcrs'). '</span>');
-
-        // Course Code field
-        //$mform->addElement('text', 'coursecode', get_string('coursecode', 'block_usp_mcrs'));
-        //$mform->addRule('coursecode', get_string('required'), 'required', null, 'client');
-        //$mform->setType('coursecode', PARAM_TEXT);
 
         // Course Code field. 
         $coursecodearray = array();
@@ -51,14 +47,7 @@ class requestcourse_form extends moodleform
         }
         $coursecode = $mform->addElement('select', 'coursecode', get_string('coursecode', 'block_usp_mcrs'), $coursecodearray);
         $mform->addRule('coursecode', get_string('required'), 'required', null, 'client');
-        $mform->setType('coursecode', PARAM_RAW);
-
-        
-
-        // Course Name field. TODO: Course Name to pick automatically after entering Course Code
-        //$mform->addElement('text', 'coursename', get_string('coursename', 'block_usp_mcrs'), 'size="65px');
-        //$mform->addRule('coursename', get_string('required'), 'required', null, 'client');
-        //$mform->setType('coursename', PARAM_TEXT);
+        $mform->setType('coursecode', PARAM_RAW); 	 
 
         // Course Name field. TODO: Course Name to pick automatically after entering Course Code
         $coursenamearray = array();
@@ -86,38 +75,30 @@ class requestcourse_form extends moodleform
         $mform->addHelpButton('courselecturer', 'courselecturer', 'block_usp_mcrs');  
         $mform->setType('courselecturer', PARAM_TEXT);
 
-        // Course Faculty field
-        //$mform->addElement('text', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'));
-        //$mform->setType('coursefaculty', PARAM_TEXT);
-
         // Course Faculty field. TODO: Course Faculty to pick automatically after entering Course Code
         $coursefacultyarray = array();
         $coursefacultyarray[0] = get_string('choosecoursefaculty', 'block_usp_mcrs');
-        $allcoursefaculties = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, faculty_id');
+        $allcoursefaculties = $DB->get_records_select('block_usp_mcrs_faculty', 'id > 0', array(), 'id', 'id, faculty_name');
         foreach ($allcoursefaculties as $id => $coursefacultyobject) {
-            $coursefacultyarray[$id] = $coursefacultyobject->faculty_id;
+            $coursefacultyarray[$id] = $coursefacultyobject->faculty_name;
         }
         $mform->addElement('select', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'), $coursefacultyarray);
         $mform->setType('coursefaculty', PARAM_RAW);
 
-        // Course School field
-        //$mform->addElement('text', 'courseschool', get_string('courseschool', 'block_usp_mcrs'));
-        //$mform->setType('courseschool', PARAM_TEXT);
-
         // Course School field. TODO: Course School to pick automatically after entering Course Code
         $courseschoolarray = array();
         $courseschoolarray[0] = get_string('choosecourseschool', 'block_usp_mcrs');
-        $allcourseschools = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, school_id');
+        $allcourseschools = $DB->get_records_select('block_usp_mcrs_schools', 'id > 0', array(), 'id', 'id, school_name');
         foreach ($allcourseschools as $id => $courseschoolobject) {
-            $courseschoolarray[$id] = $courseschoolobject->school_id;
+            $courseschoolarray[$id] = $courseschoolobject->school_name;
         }
         $mform->addElement('select', 'courseschool', get_string('courseschool', 'block_usp_mcrs'), $courseschoolarray);
         $mform->setType('courseschool', PARAM_RAW);
         
         // Number of shells dropdown 
-        $options = array('1' => 'Single', '2' => 'Multiple');
+        $options = array('0' => 'Select number of shells...', '1' => 'Single', '2' => 'Multiple');
         $select = $mform->addElement('select', 'courseshellnumber', get_string('courseshellnumber', 'block_usp_mcrs'), $options);
-        $select->setSelected('1');
+        $select->setSelected('0');
 
         // Copyfrom dropdown. TODO: Remove moodle from dropdown list
         $coursshellearray = array();
@@ -130,9 +111,13 @@ class requestcourse_form extends moodleform
 
         // Course Mode checkboxes 
         $mform->addElement('checkbox', 'f2f', 'Course Mode', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
+        $mform->disabledIf('f2f','courseshellnumber','2');
         $mform->addElement('checkbox', 'online', '', get_string('online', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'online\', this.checked)"');
+        $mform->disabledIf('online','courseshellnumber','notselected');
         $mform->addElement('checkbox', 'print', '', get_string('print', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'print\', this.checked)"');
-        $mform->addElement('checkbox', 'blended', '', get_string('blended', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'blended\', this.checked)"');    
+        $mform->disabledIf('print','courseshellnumber','notselected');
+        $mform->addElement('checkbox', 'blended', '', get_string('blended', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'blended\', this.checked)"'); 
+        $mform->disabledIf('blended','courseshellnumber','notselected');   
         
         // Additional Information
         $mform->addElement('editor', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));

@@ -29,11 +29,11 @@ require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
 require_login();
 global $CFG, $USER, $DB;
 
-
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
 $PAGE->navbar->add(get_string('courserequestform', 'block_usp_mcrs'), new moodle_url('/blocks/usp_mcrs/requestcourse.php'));
-
+$PAGE->requires->js('/blocks/usp_mcrs/javascript/jquery-3.4.1.min.js');
+$PAGE->requires->js('/blocks/usp_mcrs/javascript/module.js');
 $PAGE->set_url('/blocks/usp_mcrs/requestcourse.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('requestcourse', 'block_usp_mcrs')); 
@@ -49,7 +49,7 @@ $mform = new requestcourse_form();
 if ($mform->is_cancelled()) 
 {
     //Handle form cancel operation, if cancel button is present on form
-    echo '<script>window.location="/moodle/my/index.php";</script>';
+    echo '<script>window.location="/moodle37/my/index.php";</script>';
     die;
 } 
 else if ($fromform = $mform->get_data()) 
@@ -62,7 +62,7 @@ else
     // or on the first display of the form.
 
     //Set default data (if any)
-    $mform->set_data($toform);
+    $mform->set_data($fromform);
     //displays the form
     $mform->display();
 }
