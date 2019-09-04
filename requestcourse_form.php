@@ -31,13 +31,6 @@ class requestcourse_form extends moodleform
 {
     function definition() 
     {   
-        /*
-                TODO: 
-                1. Disable other fields if Course Code not selected
-                2. Remove moodle from backup shells
-                3. Course modes will depend on Single/Multiple shell copies
-        */
-
         global $CFG, $currentsess, $DB, $USER, $currentrecord; 
     
         $mform =& $this->_form; // Don't forget the underscore! 
@@ -67,6 +60,26 @@ class requestcourse_form extends moodleform
         $mform->addRule('coursename', get_string('required'), 'required', null, 'client');
         $mform->setType('coursename', PARAM_RAW);
 
+        // Course Faculty field
+        $coursefacultyarray = array();
+        $coursefacultyarray[0] = get_string('choosecoursefaculty', 'block_usp_mcrs');
+        $allcoursefaculties = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, faculty_name');
+        foreach ($allcoursefaculties as $id => $coursefacultyobject) {
+            $coursefacultyarray[$id] = $coursefacultyobject->faculty_name;
+        }
+        $mform->addElement('select', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'), $coursefacultyarray);
+        $mform->setType('coursefaculty', PARAM_RAW);
+
+        // Course School field
+        $courseschoolarray = array();
+        $courseschoolarray[0] = get_string('choosecourseschool', 'block_usp_mcrs');
+        $allcourseschools = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, school_name');
+        foreach ($allcourseschools as $id => $courseschoolobject) {
+            $courseschoolarray[$id] = $courseschoolobject->school_name;
+        }
+        $mform->addElement('select', 'courseschool', get_string('courseschool', 'block_usp_mcrs'), $courseschoolarray);
+        $mform->setType('courseschool', PARAM_RAW);
+
         // Course Requester field
         $mform->addElement('text', 'courserequester', get_string('courserequester', 'block_usp_mcrs'));
         // Set default requester to username of currently logged in user
@@ -81,30 +94,6 @@ class requestcourse_form extends moodleform
         $mform->addRule('courselecturer', get_string('required'), 'required', null, 'client');
         $mform->addHelpButton('courselecturer', 'courselecturer', 'block_usp_mcrs');  
         $mform->setType('courselecturer', PARAM_TEXT);
-
-        // Course Faculty field
-        $coursefacultyarray = array();
-        $coursefacultyarray[0] = get_string('choosecoursefaculty', 'block_usp_mcrs');
-        $allcoursefaculties = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, faculty_name');
-        foreach ($allcoursefaculties as $id => $coursefacultyobject) {
-            $coursefacultyarray[$id] = $coursefacultyobject->faculty_name;
-        }
-        $mform->addElement('select', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'), $coursefacultyarray);
-        $mform->setType('coursefaculty', PARAM_RAW);
-        $mform->disabledIf('coursefaculty', 'coursecode', 'selected');
-        $mform->disabledIf('coursefaculty', 'coursename', 'selected');
-
-        // Course School field
-        $courseschoolarray = array();
-        $courseschoolarray[0] = get_string('choosecourseschool', 'block_usp_mcrs');
-        $allcourseschools = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, school_name');
-        foreach ($allcourseschools as $id => $courseschoolobject) {
-            $courseschoolarray[$id] = $courseschoolobject->school_name;
-        }
-        $mform->addElement('select', 'courseschool', get_string('courseschool', 'block_usp_mcrs'), $courseschoolarray);
-        $mform->setType('courseschool', PARAM_RAW);
-        $mform->disabledIf('courseschool', 'coursecode', 'selected');
-        $mform->disabledIf('coursefaculty', 'coursename', 'selected');
         
         // Number of shells dropdown 
         $options = array('1' => 'Single', '2' => 'Multiple');

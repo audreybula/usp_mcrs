@@ -24,5 +24,9 @@ require(['jquery'], function($)
 			cfacultyfield.value = cnamefield.value;
 			cschoolfield.value = cnamefield.value;
 		});
+
+		//Disable Course School and Course Faculty
+		$("select[name='courseschool']").prop("disabled", true);
+		$("select[name='coursefaculty']").prop("disabled", true);
 	});
 });
