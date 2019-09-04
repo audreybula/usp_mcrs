@@ -91,6 +91,8 @@ class requestcourse_form extends moodleform
         }
         $mform->addElement('select', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'), $coursefacultyarray);
         $mform->setType('coursefaculty', PARAM_RAW);
+        $mform->disabledIf('coursefaculty', 'coursecode', 'selected');
+        $mform->disabledIf('coursefaculty', 'coursename', 'selected');
 
         // Course School field
         $courseschoolarray = array();
@@ -101,11 +103,13 @@ class requestcourse_form extends moodleform
         }
         $mform->addElement('select', 'courseschool', get_string('courseschool', 'block_usp_mcrs'), $courseschoolarray);
         $mform->setType('courseschool', PARAM_RAW);
+        $mform->disabledIf('courseschool', 'coursecode', 'selected');
+        $mform->disabledIf('coursefaculty', 'coursename', 'selected');
         
         // Number of shells dropdown 
-        $options = array('0' => 'Select number of shells...', '1' => 'Single', '2' => 'Multiple');
+        $options = array('1' => 'Single', '2' => 'Multiple');
         $select = $mform->addElement('select', 'courseshellnumber', get_string('courseshellnumber', 'block_usp_mcrs'), $options);
-        $select->setSelected('0');
+        $select->setSelected('1');
 
         // Copyfrom dropdown
         $coursshellearray = array();
@@ -115,16 +119,63 @@ class requestcourse_form extends moodleform
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
         $mform->addElement('select', 'courseid', get_string('coursetocopyfrom', 'block_usp_mcrs'), $courseshellarray);
+        $mform->hideIf('courseid','courseshellnumber','eq', '2'); 
 
-        // Course Mode checkboxes 
-        $mform->addElement('checkbox', 'f2f', 'Course Mode', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
-        $mform->disabledIf('f2f','courseshellnumber','2');
-        $mform->addElement('checkbox', 'online', '', get_string('online', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'online\', this.checked)"');
-        $mform->disabledIf('online','courseshellnumber','notselected');
-        $mform->addElement('checkbox', 'print', '', get_string('print', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'print\', this.checked)"');
-        $mform->disabledIf('print','courseshellnumber','notselected');
-        $mform->addElement('checkbox', 'blended', '', get_string('blended', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'blended\', this.checked)"'); 
-        $mform->disabledIf('blended','courseshellnumber','notselected');   
+        // Course Mode F2F checkbox
+        $mform->addElement('checkbox', 'f2f', 'Course Mode 1', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
+        $mform->hideIf('f2f','courseshellnumber','eq', '1');
+
+        // Copyfrom dropdown F2F
+        $coursshellearray = array();
+        $courseshellarray[0] = get_string('choosecourseshell', 'block_usp_mcrs');
+        $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
+        foreach ($allcourseshells as $id => $courseshellobject) {
+            $courseshellarray[$id] = $courseshellobject->shortname;
+        }
+        $mform->addElement('select', 'courseidf2f', get_string('coursetocopyfrom1', 'block_usp_mcrs'), $courseshellarray);
+        $mform->hideIf('courseidf2f','courseshellnumber','eq', '1'); 
+
+        // Course Mode Online checkbox
+        $mform->addElement('checkbox', 'online', 'Course Mode 2', get_string('online', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'online\', this.checked)"');
+        $mform->hideIf('online','courseshellnumber','eq', '1');
+
+        // Copyfrom dropdown Online
+        $coursshellearray = array();
+        $courseshellarray[0] = get_string('choosecourseshell', 'block_usp_mcrs');
+        $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
+        foreach ($allcourseshells as $id => $courseshellobject) {
+            $courseshellarray[$id] = $courseshellobject->shortname;
+        }
+        $mform->addElement('select', 'courseidonline', get_string('coursetocopyfrom2', 'block_usp_mcrs'), $courseshellarray);
+        $mform->hideIf('courseidonline','courseshellnumber','eq', '1'); 
+
+        // Course Mode Print checkbox
+        $mform->addElement('checkbox', 'print', 'Course Mode 3', get_string('print', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'print\', this.checked)"');
+        $mform->hideIf('print','courseshellnumber','eq', '1');
+
+        // Copyfrom dropdown Print
+        $coursshellearray = array();
+        $courseshellarray[0] = get_string('choosecourseshell', 'block_usp_mcrs');
+        $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
+        foreach ($allcourseshells as $id => $courseshellobject) {
+            $courseshellarray[$id] = $courseshellobject->shortname;
+        }
+        $mform->addElement('select', 'courseidprint', get_string('coursetocopyfrom3', 'block_usp_mcrs'), $courseshellarray);
+        $mform->hideIf('courseidprint','courseshellnumber','eq', '1'); 
+
+        // Course Mode Blended checkbox
+        $mform->addElement('checkbox', 'blended', 'Course Mode 4', get_string('blended', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'blended\', this.checked)"'); 
+        $mform->hideIf('blended','courseshellnumber','eq', '1');  
+        
+        // Copyfrom dropdown Blended
+        $coursshellearray = array();
+        $courseshellarray[0] = get_string('choosecourseshell', 'block_usp_mcrs');
+        $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
+        foreach ($allcourseshells as $id => $courseshellobject) {
+            $courseshellarray[$id] = $courseshellobject->shortname;
+        }
+        $mform->addElement('select', 'courseidblended', get_string('coursetocopyfrom4', 'block_usp_mcrs'), $courseshellarray);
+        $mform->hideIf('courseidblended','courseshellnumber','eq', '1'); 
         
         // Additional Information
         $mform->addElement('editor', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));
