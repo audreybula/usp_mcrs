@@ -27,7 +27,8 @@ require_once('../../config.php'); // Change depending on depth
 require_once("$CFG->libdir/formslib.php");
 require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
 require_login();
-$PAGE->requires->jquery();
+$PAGE->requires->jquery('/blocks/usp_mcrs/javascript/jquery-3.4.1.js');
+$PAGE->requires->jquery('/blocks/usp_mcrs/javascript/jquery-ui.js');
 $PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/javascript/module.js'));
 global $CFG, $USER, $DB;
 

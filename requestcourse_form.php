@@ -38,55 +38,62 @@ class requestcourse_form extends moodleform
         // Form header
         $mform->addElement('header', 'mainheader','<span style="font-size:22px">'.get_string('courserequestform','block_usp_mcrs'). '</span>');
 
-        // Course Code field. 
-        $coursecodearray = array();
-        $coursecodearray[0] = get_string('choosecoursecode', 'block_usp_mcrs');
-        $allcoursecodes = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, course_code');
-        foreach ($allcoursecodes as $id => $coursecodeobject) {
-            $coursecodearray[$id] = $coursecodeobject->course_code;
-        }
-        $coursecode = $mform->addElement('select', 'coursecode', get_string('coursecode', 'block_usp_mcrs'), $coursecodearray);
-        $mform->addRule('coursecode', get_string('required'), 'required', null, 'client');
-        $mform->setType('coursecode', PARAM_RAW); 	 
+        // Course Code field
+        $allcoursecodes = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, course_code');                                                           
+        $coursecodearray = array(); 
+        $coursecodearray[0] = get_string('choosecoursecode', 'block_usp_mcrs');                                                                                                      
+        foreach ($allcoursecodes as $id => $coursecodeobject) {                                                                          
+            $coursecodearray[$id] = $coursecodeobject->course_code;                                                                  
+        }                                                                                                                        
+        $options = array(                                                                                                           
+            'multiple' => false,             
+            'noselectionstring' => get_string('allareas', 'search'), 
+            'tags' => true,                                                               
+        );    
+        $mform->addElement('autocomplete', 'coursecode', get_string('coursecode', 'block_usp_mcrs'), $coursecodearray, $options); 	
 
         // Course Name field
-        $coursenamearray = array();
-        $coursenamearray[0] = get_string('choosecoursename', 'block_usp_mcrs');
-        $allcoursenames = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, course_name');
-        foreach ($allcoursenames as $id => $coursenameobject) {
-            $coursenamearray[$id] = $coursenameobject->course_name;
-        }
-        $mform->addElement('select', 'coursename', get_string('coursename', 'block_usp_mcrs'), $coursenamearray);
-        $mform->addRule('coursename', get_string('required'), 'required', null, 'client');
-        $mform->setType('coursename', PARAM_RAW);
+        $allcoursenames = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, course_name');                                                           
+        $coursenamearray = array(); 
+        $coursenamearray[0] = get_string('choosecoursename', 'block_usp_mcrs');                                                                                                      
+        foreach ($allcoursenames as $id => $coursenameobject) {                                                                          
+            $coursenamearray[$id] = $coursenameobject->course_name;                                                                  
+        }                                                                                                                        
+        $options = array(                                                                                                           
+            'multiple' => false,                         
+            'noselectionstring' => get_string('allareas', 'search'),  
+            'tags' => true,                                                               
+        );    
+        $mform->addElement('autocomplete', 'coursename', get_string('coursename', 'block_usp_mcrs'), $coursenamearray, $options);  
 
         // Course Faculty field
-        $coursefacultyarray = array();
-        $coursefacultyarray[0] = get_string('choosecoursefaculty', 'block_usp_mcrs');
-        $allcoursefaculties = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, faculty_name');
-        foreach ($allcoursefaculties as $id => $coursefacultyobject) {
-            $coursefacultyarray[$id] = $coursefacultyobject->faculty_name;
-        }
-        $mform->addElement('select', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'), $coursefacultyarray);
-        $mform->setType('coursefaculty', PARAM_RAW);
+        $allcoursefaculty = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, faculty_name');                                                           
+        $coursefacultyarray = array(); 
+        $coursefacultyarray[0] = get_string('coursefaculty', 'block_usp_mcrs');                                                                                                      
+        foreach ($allcoursefaculty as $id => $coursefacultyobject) {                                                                          
+            $coursefacultyarray[$id] = $coursefacultyobject->faculty_name;                                                                  
+        }                                                                                                                        
+        $options = array(                                                                                                           
+            'multiple' => false,                         
+            'noselectionstring' => get_string('allareas', 'search'),  
+            'tags' => true,                                                               
+        );    
+        $mform->addElement('select', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'), $coursefacultyarray, $options);
 
         // Course School field
-        $courseschoolarray = array();
-        $courseschoolarray[0] = get_string('choosecourseschool', 'block_usp_mcrs');
-        $allcourseschools = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, school_name');
-        foreach ($allcourseschools as $id => $courseschoolobject) {
-            $courseschoolarray[$id] = $courseschoolobject->school_name;
-        }
-        $mform->addElement('select', 'courseschool', get_string('courseschool', 'block_usp_mcrs'), $courseschoolarray);
-        $mform->setType('courseschool', PARAM_RAW);
-
-        // Course Requester field
-        $mform->addElement('text', 'courserequester', get_string('courserequester', 'block_usp_mcrs'));
-        // Set default requester to username of currently logged in user
-        $mform->setDefault('courserequester', $USER->username); 
-        $mform->addRule('courserequester', get_string('required'), 'required', null, 'client');
-        $mform->setType('courserequester', PARAM_TEXT);
-
+        $allcourseschool = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'id', 'id, school_name');                                                           
+        $courseschoolarray = array(); 
+        $courseschoolarray[0] = get_string('courseschool', 'block_usp_mcrs');                                                                                                      
+        foreach ($allcourseschool as $id => $courseschoolobject) {                                                                          
+            $courseschoolarray[$id] = $courseschoolobject->school_name;                                                                  
+        }                                                                                                                        
+        $options = array(                                                                                                           
+            'multiple' => false,                         
+            'noselectionstring' => get_string('allareas', 'search'),  
+            'tags' => true,                                                               
+        );    
+        $mform->addElement('select', 'courseschool', get_string('courseschool', 'block_usp_mcrs'), $courseschoolarray, $options);
+        
         // Course Lecturer field
         $mform->addElement('text', 'courselecturer', get_string('courselecturer', 'block_usp_mcrs'));
         // Set default lecturer to username of currently logged in user
@@ -95,76 +102,95 @@ class requestcourse_form extends moodleform
         $mform->addHelpButton('courselecturer', 'courselecturer', 'block_usp_mcrs');  
         $mform->setType('courselecturer', PARAM_TEXT);
         
-        // Number of shells dropdown 
-        $options = array('1' => 'Single', '2' => 'Multiple');
-        $select = $mform->addElement('select', 'courseshellnumber', get_string('courseshellnumber', 'block_usp_mcrs'), $options);
-        $select->setSelected('1');
+        // New or Backed up shell
+        $radioarray=array();
+        $radioarray[] = $mform->createElement('radio', 'newbackedup', '', get_string('courseshellnew', 'block_usp_mcrs'), 1);
+        $radioarray[] = $mform->createElement('radio', 'newbackedup', '', get_string('courseshellexisting', 'block_usp_mcrs'), 0);
+        $mform->addGroup($radioarray, 'radioar', 'New or Existing Shell', array(' '), false);
 
-        // Copyfrom dropdown
-        $coursshellearray = array();
-        $courseshellarray[0] = get_string('choosecourseshell', 'block_usp_mcrs');
+        // Single or Multiple shells
+        /* $radioarray=array();
+        $radioarray[] = $mform->createElement('radio', 'singlemultiple', '', get_string('courseshellsingle', 'block_usp_mcrs'), 0);
+        $radioarray[] = $mform->createElement('radio', 'singlemultiple', '', get_string('courseshellmultiple', 'block_usp_mcrs'), 1);
+        $mform->addGroup($radioarray, 'radioar', 'Single or Multiple Shells', array(' '), false); */
+
+        // Copyfrom dropdown General
+        /* $coursshellearray = array();
+        $courseshellarray[0] = get_string('choosecourseshellgeneral', 'block_usp_mcrs');
         $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $mform->addElement('select', 'courseid', get_string('coursetocopyfrom', 'block_usp_mcrs'), $courseshellarray);
-        $mform->hideIf('courseid','courseshellnumber','eq', '2'); 
+        $f2farray[] = $mform->addElement('select', 'courseidgeneral', 'Course Shell To Be Copied', $courseshellarray);
+        $mform->hideIf('courseidgeneral','newbackedup','eq', '1');
+        $mform->hideIf('courseidgeneral','singlemultiple','eq', '1'); */
 
         // Course Mode F2F checkbox
-        $mform->addElement('checkbox', 'f2f', 'Course Mode 1', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
-        $mform->hideIf('f2f','courseshellnumber','eq', '1');
+        $f2farray = array();
+        $f2farray[] = $mform->addElement('checkbox', 'f2f', 'Course Mode', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
+        $mform->hideIf('f2f','newbackedup','eq', '1');
+        $mform->hideIf('f2f','singlemultiple','eq', '0');
 
         // Copyfrom dropdown F2F
-        $coursshellearray = array();
-        $courseshellarray[0] = get_string('choosecourseshell', 'block_usp_mcrs');
         $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
+        $coursshellarray = array();
+        $courseshellarray[0] = get_string('choosecourseshell1', 'block_usp_mcrs');
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $mform->addElement('select', 'courseidf2f', get_string('coursetocopyfrom1', 'block_usp_mcrs'), $courseshellarray);
-        $mform->hideIf('courseidf2f','courseshellnumber','eq', '1'); 
+        $options = array(                                                                                                           
+            'multiple' => false,                         
+            'noselectionstring' => get_string('allareas', 'search'),  
+            'tags' => true,                                                               
+        );
+        $mform->addElement('autocomplete', 'courseidf2f', '', $coursshellarray, $options);
+        //$mform->addElement('select', 'courseidf2f', '', $courseshellarray);
+        $mform->hideIf('courseidf2f','f2f','notchecked');
 
         // Course Mode Online checkbox
-        $mform->addElement('checkbox', 'online', 'Course Mode 2', get_string('online', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'online\', this.checked)"');
-        $mform->hideIf('online','courseshellnumber','eq', '1');
+        $mform->addElement('checkbox', 'online', '', get_string('online', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'online\', this.checked)"');
+        $mform->hideIf('online','newbackedup','eq', '1');
+        $mform->hideIf('online','singlemultiple','eq', '0');
 
         // Copyfrom dropdown Online
         $coursshellearray = array();
-        $courseshellarray[0] = get_string('choosecourseshell', 'block_usp_mcrs');
+        $courseshellarray[0] = get_string('choosecourseshell2', 'block_usp_mcrs');
         $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $mform->addElement('select', 'courseidonline', get_string('coursetocopyfrom2', 'block_usp_mcrs'), $courseshellarray);
-        $mform->hideIf('courseidonline','courseshellnumber','eq', '1'); 
+        $mform->addElement('select', 'courseidonline', '', $courseshellarray);
+        $mform->hideIf('courseidonline','online','notchecked');
 
         // Course Mode Print checkbox
-        $mform->addElement('checkbox', 'print', 'Course Mode 3', get_string('print', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'print\', this.checked)"');
-        $mform->hideIf('print','courseshellnumber','eq', '1');
+        $mform->addElement('checkbox', 'print', '', get_string('print', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'print\', this.checked)"');
+        $mform->hideIf('print','newbackedup','eq', '1');
+        $mform->hideIf('print','singlemultiple','eq', '0');
 
         // Copyfrom dropdown Print
         $coursshellearray = array();
-        $courseshellarray[0] = get_string('choosecourseshell', 'block_usp_mcrs');
+        $courseshellarray[0] = get_string('choosecourseshell3', 'block_usp_mcrs');
         $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $mform->addElement('select', 'courseidprint', get_string('coursetocopyfrom3', 'block_usp_mcrs'), $courseshellarray);
-        $mform->hideIf('courseidprint','courseshellnumber','eq', '1'); 
+        $mform->addElement('select', 'courseidprint', '', $courseshellarray);
+        $mform->hideIf('courseidprint','print','notchecked');
 
         // Course Mode Blended checkbox
-        $mform->addElement('checkbox', 'blended', 'Course Mode 4', get_string('blended', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'blended\', this.checked)"'); 
-        $mform->hideIf('blended','courseshellnumber','eq', '1');  
+        $mform->addElement('checkbox', 'blended', '', get_string('blended', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'blended\', this.checked)"'); 
+        $mform->hideIf('blended','newbackedup','eq', '1');
+        $mform->hideIf('blended','singlemultiple','eq', '0');  
         
         // Copyfrom dropdown Blended
         $coursshellearray = array();
-        $courseshellarray[0] = get_string('choosecourseshell', 'block_usp_mcrs');
+        $courseshellarray[0] = get_string('choosecourseshell4', 'block_usp_mcrs');
         $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $mform->addElement('select', 'courseidblended', get_string('coursetocopyfrom4', 'block_usp_mcrs'), $courseshellarray);
-        $mform->hideIf('courseidblended','courseshellnumber','eq', '1'); 
+        $mform->addElement('select', 'courseidblended', '', $courseshellarray);
+        $mform->hideIf('courseidblended','blended','notchecked'); 
         
         // Additional Information
         $mform->addElement('editor', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));

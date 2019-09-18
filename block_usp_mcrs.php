@@ -78,7 +78,7 @@ class block_usp_mcrs extends block_list
         $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/requestcourse.php', $cparam), $icon . get_string('requestcourse', 'block_usp_mcrs'));
 
         return $this->content;
-    }
+    } 
 
     /**
      * Defines configuration data.
