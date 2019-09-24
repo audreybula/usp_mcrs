@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Moodle Course Request';
 $string['requestcourse'] = 'Make course request';
+$string['configemail'] = 'Modify Email Template';
 $string['requestdone'] = 'Course request done.';
 $string['usp_mcrs:view'] = 'View Course request';
 $string['todo'] = 'TODO: Add your links here...';
