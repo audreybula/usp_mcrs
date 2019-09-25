@@ -101,56 +101,67 @@ class requestcourse_form extends moodleform
         $mform->addRule('courselecturer', get_string('required'), 'required', null, 'client');
         $mform->addHelpButton('courselecturer', 'courselecturer', 'block_usp_mcrs');  
         $mform->setType('courselecturer', PARAM_TEXT);
-        
-        // New or Backed up shell
-        $radioarray=array();
-        $radioarray[] = $mform->createElement('radio', 'newbackedup', '', get_string('courseshellnew', 'block_usp_mcrs'), 1);
-        $radioarray[] = $mform->createElement('radio', 'newbackedup', '', get_string('courseshellexisting', 'block_usp_mcrs'), 0);
-        $mform->addGroup($radioarray, 'radioar', 'New or Existing Shell', array(' '), false);
 
         // Single or Multiple shells
-        /* $radioarray=array();
-        $radioarray[] = $mform->createElement('radio', 'singlemultiple', '', get_string('courseshellsingle', 'block_usp_mcrs'), 0);
-        $radioarray[] = $mform->createElement('radio', 'singlemultiple', '', get_string('courseshellmultiple', 'block_usp_mcrs'), 1);
-        $mform->addGroup($radioarray, 'radioar', 'Single or Multiple Shells', array(' '), false); */
+        $radioarray1 = array();
+        $radioarray1[] = $mform->createElement('radio', 'singlemultiple', '', get_string('courseshellsingle', 'block_usp_mcrs'), 0);
+        $radioarray1[] = $mform->createElement('radio', 'singlemultiple', '', get_string('courseshellmultiple', 'block_usp_mcrs'), 1);
+        $mform->addGroup($radioarray1, 'radioar1', 'Single or Multiple Shells', array(' '), false); 
+
+        // New or Backed up shell
+        $radioarray2 = array();
+        $radioarray2[] = $mform->createElement('radio', 'newbackedup', '', get_string('courseshellnew', 'block_usp_mcrs'), 1);
+        $radioarray2[] = $mform->createElement('radio', 'newbackedup', '', get_string('courseshellexisting', 'block_usp_mcrs'), 0);
+        $mform->addGroup($radioarray2, 'radioar2', 'New or Existing Shell', array(' '), false);
+        $mform->hideIf('radioar2','singlemultiple','eq', '1');
 
         // Copyfrom dropdown General
-        /* $coursshellearray = array();
+        $coursshellearray = array();
         $courseshellarray[0] = get_string('choosecourseshellgeneral', 'block_usp_mcrs');
         $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $f2farray[] = $mform->addElement('select', 'courseidgeneral', 'Course Shell To Be Copied', $courseshellarray);
+        $mform->addElement('select', 'courseidgeneral', 'Course Shell To Be Copied', $courseshellarray);
         $mform->hideIf('courseidgeneral','newbackedup','eq', '1');
-        $mform->hideIf('courseidgeneral','singlemultiple','eq', '1'); */
+        $mform->hideIf('courseidgeneral','singlemultiple','eq', '1');
+        $mform->hideIf('courseidgeneral','radioar2','eq', '1');
 
         // Course Mode F2F checkbox
-        $f2farray = array();
-        $f2farray[] = $mform->addElement('checkbox', 'f2f', 'Course Mode', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
-        $mform->hideIf('f2f','newbackedup','eq', '1');
+        $mform->addElement('checkbox', 'f2f', 'Course Mode', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
         $mform->hideIf('f2f','singlemultiple','eq', '0');
 
-        // Copyfrom dropdown F2F
-        $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
-        $coursshellarray = array();
+        // New or Backed up F2F shell
+        $radioarray3 = array();
+        $radioarray3[] = $mform->createElement('radio', 'newbackedup1', '', get_string('courseshellnew', 'block_usp_mcrs'), 1);
+        $radioarray3[] = $mform->createElement('radio', 'newbackedup1', '', get_string('courseshellexisting', 'block_usp_mcrs'), 0);
+        $mform->addGroup($radioarray3, 'radioar3', '', array(' '), false);
+        $mform->hideIf('radioar3','f2f','notchecked'); 
+        $mform->hideIf('radioar3','singlemultiple','eq', '0');
+
+        // Copyfrom dropdown F2F        
+        $coursshellearray = array();
         $courseshellarray[0] = get_string('choosecourseshell1', 'block_usp_mcrs');
+        $allcourseshells = $DB->get_records_select('course', 'id > 0', array(), 'id', 'id, shortname');
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $options = array(                                                                                                           
-            'multiple' => false,                         
-            'noselectionstring' => get_string('allareas', 'search'),  
-            'tags' => true,                                                               
-        );
-        $mform->addElement('autocomplete', 'courseidf2f', '', $coursshellarray, $options);
-        //$mform->addElement('select', 'courseidf2f', '', $courseshellarray);
-        $mform->hideIf('courseidf2f','f2f','notchecked');
+        $mform->addElement('select', 'courseidf2f', '', $courseshellarray);
+        $mform->hideIf('courseidf2f','f2f','notchecked');   
+        $mform->hideIf('courseidf2f','newbackedup1','eq', '1');  
+        $mform->hideIf('courseidf2f','singlemultiple','eq', '0');  
 
         // Course Mode Online checkbox
         $mform->addElement('checkbox', 'online', '', get_string('online', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'online\', this.checked)"');
-        $mform->hideIf('online','newbackedup','eq', '1');
         $mform->hideIf('online','singlemultiple','eq', '0');
+
+        // New or Backed up Online shell
+        $radioarray4 = array();
+        $radioarray4[] = $mform->createElement('radio', 'newbackedup2', '', get_string('courseshellnew', 'block_usp_mcrs'), 1);
+        $radioarray4[] = $mform->createElement('radio', 'newbackedup2', '', get_string('courseshellexisting', 'block_usp_mcrs'), 0);
+        $mform->addGroup($radioarray4, 'radioar4', '', array(' '), false);
+        $mform->hideIf('radioar4','online','notchecked'); 
+        $mform->hideIf('radioar4','singlemultiple','eq', '0');
 
         // Copyfrom dropdown Online
         $coursshellearray = array();
@@ -161,6 +172,8 @@ class requestcourse_form extends moodleform
         }
         $mform->addElement('select', 'courseidonline', '', $courseshellarray);
         $mform->hideIf('courseidonline','online','notchecked');
+        $mform->hideIf('courseidonline','newbackedup2','eq', '1');  
+        $mform->hideIf('courseidonline','singlemultiple','eq', '0');
 
         // Course Mode Print checkbox
         $mform->addElement('checkbox', 'print', '', get_string('print', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'print\', this.checked)"');
@@ -175,6 +188,7 @@ class requestcourse_form extends moodleform
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
         $mform->addElement('select', 'courseidprint', '', $courseshellarray);
+        $mform->hideIf('courseidprint','newbackedup','eq', '1');
         $mform->hideIf('courseidprint','print','notchecked');
 
         // Course Mode Blended checkbox
@@ -190,6 +204,7 @@ class requestcourse_form extends moodleform
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
         $mform->addElement('select', 'courseidblended', '', $courseshellarray);
+        $mform->hideIf('courseidblended','newbackedup','eq', '1');
         $mform->hideIf('courseidblended','blended','notchecked'); 
         
         // Additional Information
