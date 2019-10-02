@@ -83,7 +83,7 @@ class block_usp_mcrs extends block_list
         }
 
         return $this->content;
-    }
+    } 
 
     /**
      * Defines configuration data.
