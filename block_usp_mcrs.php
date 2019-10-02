@@ -64,9 +64,6 @@ class block_usp_mcrs extends block_list
         $this->content->icons = array();
         $this->content->footer = '';
 
-        $todotext = get_string('todo', 'block_usp_mcrs');
-        $this->content->items[] = $todotext;
-
         // Checking permissions - Admin
         if (has_capability('moodle/site:config', context_system::instance())) {
             $icon = $OUTPUT->pix_icon('i/settings', '');
