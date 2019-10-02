@@ -24,8 +24,13 @@
  */
 
 abstract class usp_mcrs {
+    // todo: list request entries 
+    static function list_entries(){
+        global $CFG, $DB, $OUTPUT;
 
+        $table = new html_table();
 
+    }
 
 
 
