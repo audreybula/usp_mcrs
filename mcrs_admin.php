@@ -25,7 +25,11 @@
 
 require_once('../../config.php');
 require_once("$CFG->libdir/formslib.php");
+require_once('emaillib.php');
+
+
 require_login();
+
 global $CFG, $USER, $DB;
 
 
@@ -38,48 +42,9 @@ $PAGE->set_url('/blocks/usp_mcrs/mcrs_admin.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_heading(get_string('moodle_admin', 'block_usp_mcrs'));
 $PAGE->set_title(get_string('moodle_admin', 'block_usp_mcrs'));
+$PAGE->set_pagelayout('mypublic');
+
 echo $OUTPUT->header();
-
-
-class mcrs_admin extends moodleform{
-    public function definition(){
-        global $CFG;
-        global $currentsess, $DB, $USER;
-
-        $mform =& $this->_form; 
-
-         // Form header
-         $mform->addElement('header', 'mainheader','<span style="font-size:22px">'.get_string('moodle_admin','block_usp_mcrs'). '</span>');
-        
-    }
-
-}
-
-//Instantiate the Form
-$mform = new mcrs_admin();
-
-//Form processing and displaying is done here
-if ($mform->is_cancelled()) 
-{
-    //Handle form cancel operation, if cancel button is present on form
-    echo '<script>window.location="/moodle/my/index.php";</script>';
-    die;
-} 
-else if ($fromform = $mform->get_data()) 
-{
-    //In this case you process validated data. $mform->get_data() returns data posted in form.
-    
-} 
-else 
-{
-    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-    // or on the first display of the form.
-
-    //Set default data (if any)
-    $mform->set_data($toform);
-    //displays the form
-    $mform->display();
-}
 
 echo $OUTPUT->footer();
 
