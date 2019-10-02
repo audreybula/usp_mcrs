@@ -127,6 +127,20 @@ class requestcourse_form extends moodleform
         $mform->hideIf('courseidgeneral','singlemultiple','eq', '1');
         $mform->hideIf('courseidgeneral','radioar2','eq', '1');
 
+        // Course Year General
+        $mform->addElement('text', 'courseyeargeneral', get_string('courseyeargeneral', 'block_usp_mcrs'));
+        $mform->setType('courseyeargeneral', PARAM_TEXT);
+        $mform->hideIf('courseyeargeneral','newbackedup','eq', '0');
+        $mform->hideIf('courseyeargeneral','singlemultiple','eq', '1');
+        $mform->hideIf('courseyeargeneral','radioar2','eq', '0');
+
+        // Course Semester General
+        $mform->addElement('text', 'coursesemestergeneral', get_string('coursesemestergeneral', 'block_usp_mcrs')); 
+        $mform->setType('coursesemestergeneral', PARAM_TEXT);
+        $mform->hideIf('coursesemestergeneral','newbackedup','eq', '0');
+        $mform->hideIf('coursesemestergeneral','singlemultiple','eq', '1');
+        $mform->hideIf('coursesemestergeneral','radioar2','eq', '0');
+
         // Course Mode F2F checkbox
         $mform->addElement('checkbox', 'f2f', 'Course Mode', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
         $mform->hideIf('f2f','singlemultiple','eq', '0');
@@ -150,6 +164,22 @@ class requestcourse_form extends moodleform
         $mform->hideIf('courseidf2f','f2f','notchecked');   
         $mform->hideIf('courseidf2f','newbackedup1','eq', '1');  
         $mform->hideIf('courseidf2f','singlemultiple','eq', '0');  
+
+        // Course Year F2F
+        $mform->addElement('text', 'courseyearf2f', get_string('courseyearf2f', 'block_usp_mcrs'));
+        $mform->setType('courseyearf2f', PARAM_TEXT);
+        $mform->hideIf('courseyearf2f','f2f','notchecked');  
+        $mform->hideIf('courseyearf2f','newbackedup1','eq', '0');
+        $mform->hideIf('courseyearf2f','singlemultiple','eq', '0');
+        $mform->hideIf('courseyearf2f','radioar3','eq', '0');
+
+        // Course Semester F2F
+        $mform->addElement('text', 'coursesemesterf2f', get_string('coursesemesterf2f', 'block_usp_mcrs')); 
+        $mform->setType('coursesemesterf2f', PARAM_TEXT);
+        $mform->hideIf('coursesemesterf2f','f2f','notchecked');
+        $mform->hideIf('coursesemesterf2f','newbackedup1','eq', '0');
+        $mform->hideIf('coursesemesterf2f','singlemultiple','eq', '0');
+        $mform->hideIf('coursesemesterf2f','radioar3','eq', '0');
 
         // Course Mode Online checkbox
         $mform->addElement('checkbox', 'online', '', get_string('online', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'online\', this.checked)"');
@@ -175,10 +205,34 @@ class requestcourse_form extends moodleform
         $mform->hideIf('courseidonline','newbackedup2','eq', '1');  
         $mform->hideIf('courseidonline','singlemultiple','eq', '0');
 
+        // Course Year Online
+        $mform->addElement('text', 'courseyearonline', get_string('courseyearonline', 'block_usp_mcrs'));
+        $mform->setType('courseyearonline', PARAM_TEXT);
+        $mform->hideIf('courseyearonline','online','notchecked');  
+        $mform->hideIf('courseyearonline','newbackedup2','eq', '0');
+        $mform->hideIf('courseyearonline','singlemultiple','eq', '0');
+        $mform->hideIf('courseyearonline','radioar4','eq', '0');
+
+        // Course Semester Online
+        $mform->addElement('text', 'coursesemesteronline', get_string('coursesemesteronline', 'block_usp_mcrs')); 
+        $mform->setType('coursesemesteronline', PARAM_TEXT);
+        $mform->hideIf('coursesemesteronline','online','notchecked');
+        $mform->hideIf('coursesemesteronline','newbackedup2','eq', '0');
+        $mform->hideIf('coursesemesteronline','singlemultiple','eq', '0');
+        $mform->hideIf('coursesemesteronline','radioar4','eq', '0');
+
         // Course Mode Print checkbox
         $mform->addElement('checkbox', 'print', '', get_string('print', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'print\', this.checked)"');
         $mform->hideIf('print','newbackedup','eq', '1');
         $mform->hideIf('print','singlemultiple','eq', '0');
+
+        // New or Backed up Print shell
+        $radioarray5 = array();
+        $radioarray5[] = $mform->createElement('radio', 'newbackedup3', '', get_string('courseshellnew', 'block_usp_mcrs'), 1);
+        $radioarray5[] = $mform->createElement('radio', 'newbackedup3', '', get_string('courseshellexisting', 'block_usp_mcrs'), 0);
+        $mform->addGroup($radioarray5, 'radioar5', '', array(' '), false);
+        $mform->hideIf('radioar5','print','notchecked'); 
+        $mform->hideIf('radioar5','singlemultiple','eq', '0');
 
         // Copyfrom dropdown Print
         $coursshellearray = array();
@@ -188,13 +242,38 @@ class requestcourse_form extends moodleform
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
         $mform->addElement('select', 'courseidprint', '', $courseshellarray);
-        $mform->hideIf('courseidprint','newbackedup','eq', '1');
         $mform->hideIf('courseidprint','print','notchecked');
+        $mform->hideIf('courseidprint','newbackedup3','eq', '1'); 
+        $mform->hideIf('courseidprint','singlemultiple','eq', '0');
+
+        // Course Year Print
+        $mform->addElement('text', 'courseyearprint', get_string('courseyearprint', 'block_usp_mcrs'));
+        $mform->setType('courseyearprint', PARAM_TEXT);
+        $mform->hideIf('courseyearprint','print','notchecked');  
+        $mform->hideIf('courseyearprint','newbackedup3','eq', '0');
+        $mform->hideIf('courseyearprint','singlemultiple','eq', '0');
+        $mform->hideIf('courseyearprint','radioar4','eq', '0');
+
+        // Course Semester Print
+        $mform->addElement('text', 'coursesemesterprint', get_string('coursesemesterprint', 'block_usp_mcrs')); 
+        $mform->setType('coursesemesterprint', PARAM_TEXT);
+        $mform->hideIf('coursesemesterprint','print','notchecked');
+        $mform->hideIf('coursesemesterprint','newbackedup3','eq', '0');
+        $mform->hideIf('coursesemesterprint','singlemultiple','eq', '0');
+        $mform->hideIf('coursesemesterprint','radioar5','eq', '0');
 
         // Course Mode Blended checkbox
         $mform->addElement('checkbox', 'blended', '', get_string('blended', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'blended\', this.checked)"'); 
         $mform->hideIf('blended','newbackedup','eq', '1');
         $mform->hideIf('blended','singlemultiple','eq', '0');  
+
+        // New or Backed up Blended shell
+        $radioarray6 = array();
+        $radioarray6[] = $mform->createElement('radio', 'newbackedup4', '', get_string('courseshellnew', 'block_usp_mcrs'), 1);
+        $radioarray6[] = $mform->createElement('radio', 'newbackedup4', '', get_string('courseshellexisting', 'block_usp_mcrs'), 0);
+        $mform->addGroup($radioarray6, 'radioar6', '', array(' '), false);
+        $mform->hideIf('radioar6','blended','notchecked'); 
+        $mform->hideIf('radioar6','singlemultiple','eq', '0');
         
         // Copyfrom dropdown Blended
         $coursshellearray = array();
@@ -204,8 +283,25 @@ class requestcourse_form extends moodleform
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
         $mform->addElement('select', 'courseidblended', '', $courseshellarray);
-        $mform->hideIf('courseidblended','newbackedup','eq', '1');
-        $mform->hideIf('courseidblended','blended','notchecked'); 
+        $mform->hideIf('courseidblended','blended','notchecked');
+        $mform->hideIf('courseidblended','newbackedup4','eq', '1'); 
+        $mform->hideIf('courseidblended','singlemultiple','eq', '0'); 
+
+        // Course Year Blended
+        $mform->addElement('text', 'courseyearblended', get_string('courseyearblended', 'block_usp_mcrs'));
+        $mform->setType('courseyearblended', PARAM_TEXT);
+        $mform->hideIf('courseyearblended','blended','notchecked');  
+        $mform->hideIf('courseyearblended','newbackedup4','eq', '0');
+        $mform->hideIf('courseyearblended','singlemultiple','eq', '0');
+        $mform->hideIf('courseyearblended','radioar6','eq', '0');
+
+        // Course Semester Blended
+        $mform->addElement('text', 'coursesemesterblended', get_string('coursesemesterblended', 'block_usp_mcrs')); 
+        $mform->setType('coursesemesterblended', PARAM_TEXT);
+        $mform->hideIf('coursesemesterblended','blended','notchecked');
+        $mform->hideIf('coursesemesterblended','newbackedup4','eq', '0');
+        $mform->hideIf('coursesemesterblended','singlemultiple','eq', '0');
+        $mform->hideIf('coursesemesterblended','radioar6','eq', '0');
         
         // Additional Information
         $mform->addElement('editor', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));
