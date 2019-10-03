@@ -49,6 +49,7 @@ class block_usp_mcrs extends block_list
     public function get_content()
     {
         global $OUTPUT;
+        $context = context_system::instance();
 
         if ($this->content !== null) {
             return $this->content;
@@ -65,18 +66,22 @@ class block_usp_mcrs extends block_list
         $this->content->footer = '';
 
         // Checking permissions - Admin
-        if (has_capability('moodle/site:config', context_system::instance())) {
+        if (has_capability('moodle/site:config', $context)) {
+            if (has_capability('block/usp_mcrs:approverecord', $context)) {
             $icon = $OUTPUT->pix_icon('i/settings', '');
             $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/admin.php', null), $icon . get_string('adminhome', 'block_usp_mcrs'));
+            }
         }
 
         $cparam = array();
         $icon = $OUTPUT->pix_icon('i/edit', '');
         $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/requestcourse.php', $cparam), $icon . get_string('requestcourse', 'block_usp_mcrs'));
 
-        if (has_capability('moodle/site:config', context_system::instance())) {
+        if (has_capability('moodle/site:config', $context)) {
+            if (has_capability('block/usp_mcrs:approverecord', $context)) {
             $icon = $OUTPUT->pix_icon('i/email', '');
             $this->content->items[] = html_writer::link(new moodle_url('/blocks/usp_mcrs/configemail.php', null), $icon . get_string('configemail', 'block_usp_mcrs'));
+            }
         }
 
         return $this->content;

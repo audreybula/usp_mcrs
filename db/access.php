@@ -63,4 +63,18 @@ $capabilities = [
         ],
         'clonepermissionsfrom' => 'moodle/course:view',
     ],
+
+    'block/usp_mcrs:approverecord' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+        	'coursecreator' => CAP_ALLOW,
+            'teacher'        => CAP_PREVENT,
+            'editingteacher' => CAP_PREVENT,
+            'manager'          => CAP_ALLOW,
+            'student'        => CAP_PREVENT,
+            'guest' => CAP_PREVENT
+        ),
+	),
 ];
