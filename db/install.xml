@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="blocks/usp_mcrs/db" VERSION="20190827" COMMENT="XMLDB file for Moodle blocks/usp_mcrs"
+<XMLDB PATH="blocks/usp_mcrs/db" VERSION="20191015" COMMENT="XMLDB file for Moodle blocks/usp_mcrs"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -9,7 +9,6 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="course_code" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="course_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="course_mode" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="faculty_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="school_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
@@ -22,6 +21,13 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="request_date" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="course_code" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="course_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="course_school" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="course_requester" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="course_lecturer" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="course_faculty" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="course_copyfrom" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="course_new" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
