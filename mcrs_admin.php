@@ -24,7 +24,7 @@
  */
 
 require_once('../../config.php');
-require_once("$CFG->libdir/formslib.php");
+require_once($CFG->dirroot.'/blocks/usp_mcrs/lib.php');
 
 
 require_login();
@@ -43,37 +43,12 @@ $PAGE->set_title(get_string('moodle_admin', 'block_usp_mcrs'));
 
 
 $defineurl = $CFG->wwwroot . '/' . $CFG->admin . '/roles/define.php';
-// Initialise table.
-$rec = $DB->get_records_sql('SELECT * FROM  `mdl_block_usp_mcrs_requests`');
-$table = new html_table();
-$table->colclasses = array('leftalign', 'leftalign', 'leftalign', 'leftalign');
-$table->id = 'requests';
-$table->attributes['class'] = 'admintable generaltable';
-$table->head = array(
-    get_string('requestid', 'block_usp_mcrs'),
-    get_string('requestsubject', 'block_usp_mcrs'),
-    get_string('requestdate', 'block_usp_mcrs'),
-    get_string('requestername', 'block_usp_mcrs'),
-    get_string('requestlecturer', 'block_usp_mcrs'),
-    get_string('requeststatus', 'block_usp_mcrs')
-);
-foreach ($rec as $records) 
-{
-    $id = $records->id;
-    $coursecode = $records->course_code;
-    $coursename = $records->course_name;    
-    $schoolname = $records->course_school;
-    $subject = 'Create Course Shell for '.$coursecode.': '.$coursename;
-    $facultyname = $records->course_faculty;
-    $requestdate = $records->request_date;
-    $requestername = $records->course_requester;
-    $requestlecturer = $records->course_lecturer;
-    $status = 'Pending';
-    $table->data[] = array($id, $subject, $requestdate, $requestername, $requestlecturer, $status);    
-}
+
 echo $OUTPUT->header();
 
+$mtable= new usp_mcrs_lib(); 
 
+$mtable->list_request_entries();
 
 echo $OUTPUT->footer();
 
