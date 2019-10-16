@@ -33,7 +33,12 @@ $string['todo'] = 'TODO: Todo...';
 
 // Moodle Admin Strings
 $string['moodle_admin'] = 'Moodle Admin Home';
-
+$string['requestid']= 'Request ID';
+$string['requestsubject']= 'Request Subject';
+$string['requestdate']= 'Request Date';
+$string['requestername']= 'Request Name';
+$string['requestlecturer']= 'Request Lecturer';
+$string['requeststatus']= 'Request Status';
 
 // CFL Admin Strings
 $string['cfl_admin'] = 'CFL Admin Home';
