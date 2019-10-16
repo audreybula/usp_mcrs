@@ -23,17 +23,42 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-abstract class usp_mcrs {
-    // todo: list request entries 
-    static function list_entries(){
+defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
+
+class usp_mcrs_lib
+{
+    // list request entries 
+     function list_request_entries()
+    {
         global $CFG, $DB, $OUTPUT;
 
+        // Initialise table.
+        $rec = $DB->get_records_sql('SELECT * FROM  `mdl_block_usp_mcrs_requests`');
         $table = new html_table();
-
+        $table->colclasses = array('leftalign', 'leftalign', 'leftalign', 'leftalign');
+        $table->id = 'requests';
+        $table->attributes['class'] = 'admintable generaltable';
+        $table->head = array(
+            get_string('requestid', 'block_usp_mcrs'),
+            get_string('requestsubject', 'block_usp_mcrs'),
+            get_string('requestdate', 'block_usp_mcrs'),
+            get_string('requestername', 'block_usp_mcrs'),
+            get_string('requestlecturer', 'block_usp_mcrs'),
+            get_string('requeststatus', 'block_usp_mcrs')
+        );
+        foreach ($rec as $records) {
+            $id = $records->id;
+            $coursecode = $records->course_code;
+            $coursename = $records->course_name;
+            $schoolname = $records->course_school;
+            $subject = 'Create Course Shell for ' . $coursecode . ': ' . $coursename;
+            $facultyname = $records->course_faculty;
+            $requestdate = $records->request_date;
+            $requestername = $records->course_requester;
+            $requestlecturer = $records->course_lecturer;
+            $status = 'Pending';
+            $table->data[] = array($id, $subject, $requestdate, $requestername, $requestlecturer, $status);
+        }
+        echo html_writer::table($table);
     }
-
-
-
-
-
 }
