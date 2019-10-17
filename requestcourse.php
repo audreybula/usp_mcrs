@@ -210,8 +210,9 @@ else if ($fromform = $mform->get_data())
                 $requestblended->course_new = $moodleformatblended;
             }
             $lastinsertid4 = $DB->insert_record('block_usp_mcrs_requests', $requestblended);
-        }
-    }    
+        }        
+    } 
+    redirect('/moodle37/my/index.php', 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
 } 
 else 
 {
