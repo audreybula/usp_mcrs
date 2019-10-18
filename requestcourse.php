@@ -80,7 +80,7 @@ else if ($fromform = $mform->get_data())
         }
         else
         {
-            $moodleformat = $coursecode.'_'.$fromform->courseyeargeneral.''.$fromform->coursesemestergeneral;
+            $moodleformat = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester;
             $request->course_new = $moodleformat;
         }
         $lastinsertid = $DB->insert_record('block_usp_mcrs_requests', $request);
@@ -113,7 +113,7 @@ else if ($fromform = $mform->get_data())
             }
             else
             {
-                $moodleformatf2f = $coursecode.'_'.$fromform->courseyearf2f.''.$fromform->coursesemesterf2f.'_F';
+                $moodleformatf2f = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_F';
                 $requestf2f->course_new = $moodleformatf2f;
             }
             $lastinsertid1 = $DB->insert_record('block_usp_mcrs_requests', $requestf2f);
@@ -144,7 +144,7 @@ else if ($fromform = $mform->get_data())
             }
             else
             {
-                $moodleformatonline = $coursecode.'_'.$fromform->courseyearonline.''.$fromform->coursesemesteronline.'_O';
+                $moodleformatonline = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_O';
                 $requestonline->course_new = $moodleformatonline;
             }
             $lastinsertid2 = $DB->insert_record('block_usp_mcrs_requests', $requestonline);
@@ -175,7 +175,7 @@ else if ($fromform = $mform->get_data())
             }
             else
             {
-                $moodleformatprint = $coursecode.'_'.$fromform->courseyearprint.''.$fromform->coursesemesterprint.'_P';
+                $moodleformatprint = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_P';
                 $requestprint->course_new = $moodleformatprint;
             }
             $lastinsertid3 = $DB->insert_record('block_usp_mcrs_requests', $requestprint);
@@ -206,12 +206,24 @@ else if ($fromform = $mform->get_data())
             }
             else
             {
-                $moodleformatblended = $coursecode.'_'.$fromform->courseyearblended.''.$fromform->coursesemesterblended.'_B';
+                $moodleformatblended = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_B';
                 $requestblended->course_new = $moodleformatblended;
             }
             $lastinsertid4 = $DB->insert_record('block_usp_mcrs_requests', $requestblended);
         }        
     } 
+    // Testing for new course shell
+    $data = new stdClass();
+    $data->category = 1;
+    $data->idnumber = $moodleformat;
+    $data->fullname = $coursecode.': '.$coursename;
+    $data->shortname = $moodleformat;
+    $data->summary = '';
+    $data->summaryformat = 0;
+    $data->format = 'topics';
+    $data->showgrades = 1;
+    $data->visible = 1;
+    $h = create_course($data);
     redirect('/moodle37/my/index.php', 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
 } 
 else 
