@@ -20,21 +20,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
-
 // The settings page.
 if ($ADMIN->fulltree) {
     require_once($CFG->dirroot. '/blocks/usp_mcrs/settingslib.php');
-
     $suffixchoices = array(
         'username' => 'username',
         'idnumber' => 'idnumber',
         'fullname' => 'fullname'
     );
-
     $schedurl = new moodle_url('/admin/settings.php?section=automated');
     $schedulelink = html_writer::link($schedurl,
         get_string('sched_config', 'block_usp_mcrs'));
-
     $settings->add(new usp_mcrs_path_setting('block_usp_mcrs/path',
         get_string('config_path', 'block_usp_mcrs'),
         get_string('config_path_desc', 'block_usp_mcrs', $CFG->dataroot), ''));
