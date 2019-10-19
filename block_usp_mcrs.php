@@ -13,14 +13,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
- * Definition of block_usp_mcrs tasks.
+ * Course Request Form
  *
- * @package    block_usp_mcrs
- * @category   block
- * @copyright  2016 Louisiana State University - David Elliott, Robert Russo, Chad Mazilly
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     block_usp_mcrs
+ * @category    string
+ * @copyright   2019 IS314 Group 4 <you@example.com>
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 defined('MOODLE_INTERNAL') || die();
 // Get the requisite dependencies.
 require_once($CFG->dirroot . '/blocks/usp_mcrs/lib.php');
