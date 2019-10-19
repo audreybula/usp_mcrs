@@ -15,52 +15,27 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Plugin capabilities are defined here.
+ * Definition of the grade_forecast_report class is defined
  *
- * @package     block_usp_mcrs
- * @category    access
- * @copyright   2019 IS314 Group 4 <you@example.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_backadel
+ * @copyright  2016 Louisiana State University, Chad Mazilly, Robert Russo, Dave Elliott
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = [
-
-    'block/usp_mcrs:myaddinstance' => array(
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-
-        ),
-
-        'clonepermissionsfrom' => 'moodle/my:manageblocks'
-    ),
-
-    'block/usp_mcrs:addinstance' => array(
-        'riskbitmask' => RISK_SPAM | RISK_XSS,
+$capabilities = array(
+    'block/backadel:addinstance' => array(
+                'riskbitmask' => RISK_DATALOSS,
 
         'captype' => 'write',
-        'contextlevel' => CONTEXT_BLOCK,
+        'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(
-            'editingteacher' => CAP_ALLOW,
-            'coursecreator' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
+            'editingteacher' => CAP_PREVENT,
+            'teacher' => CAP_PREVENT,
+            'admin' => CAP_ALLOW
         ),
 
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
-    ),
-
-    'block/usp_mcrs:view' => [
-        'captype' => 'view',
-        'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => [
-            'teacher' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-        ],
-        'clonepermissionsfrom' => 'moodle/course:view',
-    ],
-];
+        ),
+    );

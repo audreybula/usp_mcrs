@@ -13,48 +13,35 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
- * Plugin strings are defined here.
- *
- * @package     block_usp_mcrs
- * @category    string
- * @copyright   2019 IS314 Group 4 <you@example.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_usp_mcrs
+ * @copyright  2008 onwards Louisiana State University
+ * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
-
-$string['pluginname'] = 'Moodle Course Request';
-$string['blockname'] = 'Moodle Course Request';
-$string['need_permission'] = 'You do not have permission to view this page';
-$string['toggle_all'] = 'Select All/None';
-$string['block_requestcourse'] = 'Make A Course Request';
-$string['requestcourse'] = 'Make A Course Request';
-$string['block_configemail'] = 'Modify Email Template';
-$string['requestdone'] = 'Course request done.';
-$string['usp_mcrs:view'] = 'View Course request';
-$string['todo'] = 'TODO: Add your links here...';
-$string['adminhome'] = 'Admin Home';
 
 // Strings for block.
 $string['backup_and_delete'] = 'Backup And Delete';
-$string['block_index'] = 'Backup A Course Shell';
-$string['block_delete'] = 'Delete The Backup Source';
+$string['block_index'] = 'Backup';
+$string['block_delete'] = 'Delete';
 $string['block_pending'] = 'Pending';
 $string['block_config'] = 'Config';
-$string['block_failed'] = 'Failed Backups';
+$string['block_requestcourse'] = 'Make A Course Request';
+$string['block_configemail'] = 'Modify Email Template';
+$string['block_failed'] = 'Failures';
 $string['block_large_backups'] = 'Large Backups';
 $string['backing_up'] = 'Backing Up';
-$string['backadel_settings'] = 'Backup and Delete Settings';
+$string['usp_mcrs_settings'] = 'Backup and Delete Settings';
 $string['status_running'] = 'Running for {$a} minute(s)';
 $string['cron_backup_error'] = 'Error backing up {$a}';
 $string['status_not_running'] = 'Not Running';
-$string['cron_already_running'] = 'Skipping backadel, it has already been ' .
+$string['cron_already_running'] = 'Skipping usp_mcrs, it has already been ' .
     'running for {$a} minute(s)';
 $string['backuptask'] = 'Backup job';
 
 // Course Request Form Strings
+$string['requestcourse'] = 'Make A Course Request';
 $string['courserequestform'] = 'Course Request Form';
 $string['coursecode'] = 'Course Code';
 $string['coursename'] = 'Course Name';
@@ -91,14 +78,10 @@ $string['choosecourseshell4'] = 'Choose Blended Course Shell To Be Copied';
 $string['additionalinfo'] = 'Additional Information or Comments';
 $string['submitbutton'] = 'Submit';
 
-// Admin Home Strings
-$string['requestid'] = 'Request ID';
-$string['requestsubject'] = 'Subject';
-$string['requestdate'] = 'Date Requested';
-$string['requestername'] = 'Course Requester';
-$string['requestlecturer'] = 'Course Lecturer';
-$string['requeststatus'] = 'Status';
-
+// Stings shared by pages.
+$string['pluginname'] = 'Moodle Course Request';
+$string['blockname'] = 'Backup And Delete';
+$string['need_permission'] = 'You do not have permission to view this page';
 $string['toggle_all'] = 'Select All/None';
 
 // Strings for index.php.

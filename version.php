@@ -13,19 +13,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
- * Plugin version and other meta-data are defined here.
- *
- * @package     block_usp_mcrs
- * @copyright   2019 IS314 Group 4 <you@example.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_usp_mcrs
+ * @copyright  2008 onwards Louisiana State University
+ * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
+$plugin->version = 2019080700;
+$plugin->requires = 2018120300;         // Requires this Moodle version.
+$plugin->cron = 60 * 60;
 $plugin->component = 'block_usp_mcrs';
 $plugin->release = '0.1.0';
-$plugin->version = 2019080700;
-$plugin->requires = 2018120300;
 $plugin->maturity = MATURITY_ALPHA;

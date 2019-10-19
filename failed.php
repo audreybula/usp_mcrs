@@ -43,8 +43,8 @@ $PAGE->set_title($blockname);
 $PAGE->set_heading($SITE->shortname . ': ' . $blockname);
 $PAGE->set_url('/blocks/usp_mcrs/failed.php');
 
-$PAGE->requires->js('/blocks/usp_mcrs/javascript/jquery.js');
-$PAGE->requires->js('/blocks/usp_mcrs/javascript/toggle.js');
+$PAGE->requires->js('/blocks/usp_mcrs/js/jquery.js');
+$PAGE->requires->js('/blocks/usp_mcrs/js/toggle.js');
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading($header);

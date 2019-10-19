@@ -40,8 +40,8 @@ $PAGE->navbar->add($header);
 $PAGE->set_title($blockname);
 $PAGE->set_heading($SITE->shortname . ': ' . $blockname);
 $PAGE->set_url('/blocks/usp_mcrs/delete.php');
-$PAGE->requires->js('/blocks/usp_mcrs/javascript/jquery.js');
-$PAGE->requires->js('/blocks/usp_mcrs/javascript/toggle.js');
+$PAGE->requires->js('/blocks/usp_mcrs/js/jquery.js');
+$PAGE->requires->js('/blocks/usp_mcrs/js/toggle.js');
 
 // Output the page.
 echo $OUTPUT->header();

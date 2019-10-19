@@ -13,27 +13,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
- * Plugin administration pages are defined here.
- *
- * @package     block_usp_mcrs
- * @category    admin
- * @copyright   2019 IS314 Group 4 <you@example.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_usp_mcrs
+ * @copyright  2008 onwards Louisiana State University
+ * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
+// The settings page.
 if ($ADMIN->fulltree) {
-   // TODO: Define the plugin settings page.
-   // https://docs.moodle.org/dev/Admin_settings
-
-   /* $settings->add(new admin_setting_heading(
-    'headerconfig',
-    get_string('todo', 'block_usp_mcrs'),
-    get_string('todo', 'block_usp_mcrs')
-    ));  */
     require_once($CFG->dirroot. '/blocks/usp_mcrs/settingslib.php');
 
     $suffixchoices = array(

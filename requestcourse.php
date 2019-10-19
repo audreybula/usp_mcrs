@@ -27,7 +27,7 @@ require_once('../../config.php'); // Change depending on depth
 require_once("$CFG->libdir/formslib.php");
 require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
 require_login();
-$PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/javascript/module.js'));
+$PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/js/module.js'));
 
 global $CFG, $USER, $DB;
 
@@ -223,8 +223,11 @@ else if ($fromform = $mform->get_data())
     $data->format = 'topics';
     $data->showgrades = 1;
     $data->visible = 1;
-    $h = create_course($data);
-    redirect('/moodle37/my/index.php', 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
+    $h = create_course($data); 
+    $courseid = array();
+    $courseid[0] = 2;
+    $_SESSION['courseid'] = $courseid;
+    redirect('backup.php', 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
 } 
 else 
 {
