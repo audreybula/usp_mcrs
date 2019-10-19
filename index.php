@@ -18,7 +18,7 @@
  * usp_mcrs index page.
  *
  * @package    block_usp_mcrs
- * @copyright  2008 onwards - Louisiana State University, Chad Mazilly, Robert Russo, Dave Elliott
+ * @copyright   2019 IS314 Group 4 <you@example.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
