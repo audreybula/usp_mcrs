@@ -28,6 +28,7 @@ $string['block_delete'] = 'Delete';
 $string['block_pending'] = 'Pending';
 $string['block_config'] = 'Config';
 $string['block_requestcourse'] = 'Make A Course Request';
+$string['block_mcrs_admin'] = 'Moodle Admin Home';
 $string['block_configemail'] = 'Modify Email Template';
 $string['block_failed'] = 'Failures';
 $string['block_large_backups'] = 'Large Backups';
@@ -106,6 +107,15 @@ $string['does_not_contain'] = 'does not contain';
 $string['name_missing'] = 'Please select a name for this query';
 $string['term_missing'] = 'Please select at least one search term for this constraint';
 $string['search_missing'] = 'Please select a saved search';
+
+// Admin Home
+$string['moodle_admin'] = 'Moodle Admin Home';
+$string['requestid'] = 'ID';
+$string['requestsubject'] = 'Subject';
+$string['requestdate'] = 'Date';
+$string['requestername'] = 'Requester';
+$string['requestlecturer'] = 'Lecturer';
+$string['requeststatus'] = 'Status';
 
 // Strings for backup.php.
 $string['backup'] = 'Select Backup Courses';
