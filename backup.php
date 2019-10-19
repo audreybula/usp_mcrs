@@ -50,7 +50,6 @@ echo $OUTPUT->heading($header);
 // Set up the courses to back up.
 //$backupids = required_param_array('backup', PARAM_INT);
 $backupids = $_SESSION['courseid'];
-echo $backupids[0];
 
 // Check for duplicates.
 $currentids = $DB->get_fieldset_select('block_usp_mcrs_statuses', 'coursesid', '');

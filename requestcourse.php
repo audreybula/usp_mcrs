@@ -53,6 +53,9 @@ if ($mform->is_cancelled())
 } 
 else if ($fromform = $mform->get_data()) 
 {
+    // Array to store the shells to be backed up
+    $courseid = array();
+
     //In this case you process validated data. $mform->get_data() returns data posted in form. 
     if($fromform->singlemultiple == 0)
     {
@@ -77,11 +80,26 @@ else if ($fromform = $mform->get_data())
             $courseidgeneral = $fromform->courseidgeneral;
             $copyfromgeneral = $DB->get_field_select('course', 'shortname', 'id = '.$courseidgeneral, array(), $strictness=IGNORE_MISSING);
             $request->course_copyfrom = $copyfromgeneral;
+
+            $courseid[0] = $courseidgeneral;
         }
         else
         {
             $moodleformat = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester;
             $request->course_new = $moodleformat;
+
+            // Testing for new course shell
+            $data = new stdClass();
+            $data->category = 1;
+            $data->idnumber = $moodleformat;
+            $data->fullname = $coursecode.': '.$coursename;
+            $data->shortname = $moodleformat;
+            $data->summary = '';
+            $data->summaryformat = 0;
+            $data->format = 'topics';
+            $data->showgrades = 1;
+            $data->visible = 1;
+            $h = create_course($data); 
         }
         $lastinsertid = $DB->insert_record('block_usp_mcrs_requests', $request);
     }
@@ -110,11 +128,26 @@ else if ($fromform = $mform->get_data())
                 $courseidf2f = $fromform->courseidf2f;
                 $copyfromf2f = $DB->get_field_select('course', 'shortname', 'id = '.$courseidf2f, array(), $strictness=IGNORE_MISSING);
                 $requestf2f->course_copyfrom = $copyfromf2f;
+
+                $courseid[1] = $courseidf2f;
             }
             else
             {
                 $moodleformatf2f = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_F';
                 $requestf2f->course_new = $moodleformatf2f;
+
+                // Testing for new course shell
+                $data = new stdClass();
+                $data->category = 1;
+                $data->idnumber = $moodleformat;
+                $data->fullname = $coursecode.': '.$coursename;
+                $data->shortname = $moodleformat;
+                $data->summary = '';
+                $data->summaryformat = 0;
+                $data->format = 'topics';
+                $data->showgrades = 1;
+                $data->visible = 1;
+                $h = create_course($data); 
             }
             $lastinsertid1 = $DB->insert_record('block_usp_mcrs_requests', $requestf2f);
         }
@@ -141,11 +174,26 @@ else if ($fromform = $mform->get_data())
                 $courseidonline = $fromform->courseidonline;
                 $copyfromonline = $DB->get_field_select('course', 'shortname', 'id = '.$courseidonline, array(), $strictness=IGNORE_MISSING);
                 $requestonline->course_copyfrom = $copyfromonline;
+
+                $courseid[2] = $courseidonline;
             }
             else
             {
                 $moodleformatonline = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_O';
                 $requestonline->course_new = $moodleformatonline;
+
+                // Testing for new course shell
+                $data = new stdClass();
+                $data->category = 1;
+                $data->idnumber = $moodleformat;
+                $data->fullname = $coursecode.': '.$coursename;
+                $data->shortname = $moodleformat;
+                $data->summary = '';
+                $data->summaryformat = 0;
+                $data->format = 'topics';
+                $data->showgrades = 1;
+                $data->visible = 1;
+                $h = create_course($data); 
             }
             $lastinsertid2 = $DB->insert_record('block_usp_mcrs_requests', $requestonline);
         }
@@ -172,11 +220,26 @@ else if ($fromform = $mform->get_data())
                 $courseidprint = $fromform->courseidprint;
                 $copyfromprint = $DB->get_field_select('course', 'shortname', 'id = '.$courseidprint, array(), $strictness=IGNORE_MISSING);
                 $requestprint->course_copyfrom = $copyfromprint;
+
+                $courseid[3] = $courseidprint;
             }
             else
             {
                 $moodleformatprint = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_P';
                 $requestprint->course_new = $moodleformatprint;
+
+                // Testing for new course shell
+                $data = new stdClass();
+                $data->category = 1;
+                $data->idnumber = $moodleformat;
+                $data->fullname = $coursecode.': '.$coursename;
+                $data->shortname = $moodleformat;
+                $data->summary = '';
+                $data->summaryformat = 0;
+                $data->format = 'topics';
+                $data->showgrades = 1;
+                $data->visible = 1;
+                $h = create_course($data); 
             }
             $lastinsertid3 = $DB->insert_record('block_usp_mcrs_requests', $requestprint);
         }
@@ -203,29 +266,31 @@ else if ($fromform = $mform->get_data())
                 $courseidblended = $fromform->courseidblended;
                 $copyfromblended = $DB->get_field_select('course', 'shortname', 'id = '.$courseidblended, array(), $strictness=IGNORE_MISSING);
                 $requestblended->course_copyfrom = $copyfromblended;
+
+                $courseid[4] = $courseidblended;
             }
             else
             {
                 $moodleformatblended = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_B';
                 $requestblended->course_new = $moodleformatblended;
+
+                // Testing for new course shell
+                $data = new stdClass();
+                $data->category = 1;
+                $data->idnumber = $moodleformat;
+                $data->fullname = $coursecode.': '.$coursename;
+                $data->shortname = $moodleformat;
+                $data->summary = '';
+                $data->summaryformat = 0;
+                $data->format = 'topics';
+                $data->showgrades = 1;
+                $data->visible = 1;
+                $h = create_course($data); 
             }
             $lastinsertid4 = $DB->insert_record('block_usp_mcrs_requests', $requestblended);
         }        
-    } 
-    // Testing for new course shell
-    $data = new stdClass();
-    $data->category = 1;
-    $data->idnumber = $moodleformat;
-    $data->fullname = $coursecode.': '.$coursename;
-    $data->shortname = $moodleformat;
-    $data->summary = '';
-    $data->summaryformat = 0;
-    $data->format = 'topics';
-    $data->showgrades = 1;
-    $data->visible = 1;
-    $h = create_course($data); 
-    $courseid = array();
-    $courseid[0] = 2;
+    }     
+    
     $_SESSION['courseid'] = $courseid;
     redirect('backup.php', 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
 } 
