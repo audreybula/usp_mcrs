@@ -17,7 +17,7 @@
 /**
  * Definition of the grade_forecast_report class is defined
  *
- * @package    block_backadel
+ * @package    block_usp_mcrs
  * @copyright  2016 Louisiana State University, Chad Mazilly, Robert Russo, Dave Elliott
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-    'block/backadel:addinstance' => array(
+    'block/usp_mcrs:addinstance' => array(
                 'riskbitmask' => RISK_DATALOSS,
 
         'captype' => 'write',

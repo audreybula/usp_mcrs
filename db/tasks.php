@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Definition of block_backadel tasks.
+ * Definition of block_usp_mcrs tasks.
  *
- * @package    block_backadel
+ * @package    block_usp_mcrs
  * @category   task
  * @copyright  2016 Louisiana State University - David Elliott, Robert Russo, Chad Mazilly
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,10 +27,10 @@ defined('MOODLE_INTERNAL') || die();
 
 $tasks = array(
     array(
-        'classname' => 'block_backadel\task\backup_task',
+        'classname' => 'block_usp_mcrs\task\backup_task',
         'blocking' => 0,
-        'minute' => '0',
-        'hour' => '0',
+        'minute' => '*',
+        'hour' => '*',
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*',

@@ -80,7 +80,7 @@ $string['submitbutton'] = 'Submit';
 
 // Stings shared by pages.
 $string['pluginname'] = 'Moodle Course Request';
-$string['blockname'] = 'Backup And Delete';
+$string['blockname'] = 'Moodle Course Request';
 $string['need_permission'] = 'You do not have permission to view this page';
 $string['toggle_all'] = 'Select All/None';
 
