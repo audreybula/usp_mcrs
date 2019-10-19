@@ -1,8 +1,5 @@
 # Moodle Course Request #
 
-
-Admin View Page.
-=======
 USP Moodle Course Request plugin that will be part of the University’s moodle platform. This plugin will be open source and is licensed under the GNU general public license. The Moodle Course Request plugin is intended for the CFL Staff and USP Academic staff. Its purpose is to reduce the workload of course creation for the CFL staff and provide an interface through which the CFL Admin can monitor staff assignments.
 
 Although Moodle is accessible to many users in the University, the plugin will only be made available to users that have the roles Admin, Teacher, and Course Creator. The Academics (Teacher) will be able to request for course shells and the CFL staff (Admin) will handle the requests which cannot be processed by the system. The CFL staff will also be able to see all staff assignments.

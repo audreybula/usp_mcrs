@@ -15,21 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Code to be executed after the plugin's database scheme has been installed is defined here.
+ * Definition of block_usp_mcrs tasks.
  *
- * @package     block_usp_mcrs
- * @category    upgrade
- * @copyright   2019 IS314 Group 4 <you@example.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    block_usp_mcrs
+ * @category   task
+ * @copyright  2016 Louisiana State University - David Elliott, Robert Russo, Chad Mazilly
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-/**
- * Custom code to be run on installing the plugin.
- */
-function xmldb_block_usp_mcrs_install()
-{
-
-    return true;
-}
+$tasks = array(
+    array(
+        'classname' => 'block_usp_mcrs\task\backup_task',
+        'blocking' => 0,
+        'minute' => '*',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*',
+        'disabled' => 0
+    )
+);

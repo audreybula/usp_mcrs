@@ -3,14 +3,14 @@ require(['jquery'], function($)
 	$(document).ready(function()
 	{
 		// Variables to store values for form elements
-		/* var ccodefield = document.getElementsByName("coursecode")[0];
+		var ccodefield = document.getElementsByName("coursecode")[0];
 		var cnamefield = document.getElementsByName("coursename")[0];
 		var cfacultyfield = document.getElementsByName("coursefaculty")[0];
 		var cschoolfield = document.getElementsByName("courseschool")[0];
 
 		// If Course Code is changed, change other fields
-		$("select[name='coursefaculty']").prop("disabled", true);
-		$("select[name='courseschool']").prop("disabled", true);
+		//$("select[name='coursefaculty']").prop("disabled", true);
+		//$("select[name='courseschool']").prop("disabled", true);
 
 		$("select[name='coursecode']").change(function()
 		{
@@ -25,6 +25,6 @@ require(['jquery'], function($)
 			ccodefield.value = cnamefield.value;
 			cfacultyfield.value = cnamefield.value;
 			cschoolfield.value = cnamefield.value;
-		}); */
+		});
 	});
 });
