@@ -26,6 +26,23 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Moodle Course Request';
+$string['requestcourse'] = 'Make Course Request';
+$string['requestdone'] = 'Course request done.';
+$string['usp_mcrs:view'] = 'View Course Request';
+$string['todo'] = 'TODO: Todo...';
+
+// Moodle Admin Strings
+$string['moodle_admin'] = 'Moodle Admin Home';
+$string['requestid']= 'Request ID';
+$string['requestsubject']= 'Request Subject';
+$string['requestdate']= 'Request Date';
+$string['requestername']= 'Request Name';
+$string['requestlecturer']= 'Request Lecturer';
+$string['requeststatus']= 'Request Status';
+
+// CFL Admin Strings
+$string['cfl_admin'] = 'CFL Admin Home';
+=======
 $string['requestcourse'] = 'Make course request';
 $string['configemail'] = 'Modify Email Template';
 $string['requestdone'] = 'Course request done.';
