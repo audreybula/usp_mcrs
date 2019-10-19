@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Definition of block_usp_mcrs tasks.
  *
@@ -21,22 +22,27 @@
  * @copyright  2016 Louisiana State University - David Elliott, Robert Russo, Chad Mazilly
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 defined('MOODLE_INTERNAL') || die();
+
 // Get the requisite dependencies.
 require_once($CFG->dirroot . '/blocks/usp_mcrs/lib.php');
 require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
+
 /**
  * Main class for setting up the block.
  * @uses block_list
  * @package block_usp_mcrs
  */
 class block_usp_mcrs extends block_list {
+
     /**
      * Init.
      */
     public function init() {
         $this->title = get_string('pluginname', 'block_usp_mcrs');
     }
+
     /**
      * Locations where block can be displayed.
      *
@@ -45,6 +51,7 @@ class block_usp_mcrs extends block_list {
     public function applicable_formats() {
         return array('site' => true, 'my' => true, 'course' => false);
     }
+
     /** 
      * Block has configuration.
      *
@@ -53,6 +60,7 @@ class block_usp_mcrs extends block_list {
     public function has_config() {
         return true;
     }
+
     /**
      * Returns the contents.
      *
@@ -61,21 +69,27 @@ class block_usp_mcrs extends block_list {
     public function get_content() {
         // Set up the globals we need.
         global $DB, $CFG, $USER, $OUTPUT;
+
         // Check to make sure the Admin is using the block.
         if (!is_siteadmin($USER->id)) {
             return $this->content;
         }
+
         // Return the content if there is any.
         if ($this->content !== null) {
             return $this->content;
         }
+
         // Set up the table.
         $table = 'block_usp_mcrs_statuses';
+
         // Get the number of pending and failed backups.
         $numpending = $DB->count_records_select($table, "status='SUCCESS'");
         $numfailed = $DB->count_records_select($table, "status='FAIL'");
+
         // Set the $running varuable to the backup status.
         $running = get_config('block_usp_mcrs', 'running');
+
         // Give the admin the running / not status.
         if (!$running) {
             $statustext = get_string('status_not_running', 'block_usp_mcrs');
@@ -83,10 +97,12 @@ class block_usp_mcrs extends block_list {
             $minutesrun = round((time() - $running) / 60);
             $statustext = get_string('status_running', 'block_usp_mcrs', $minutesrun);
         }
+
         // Build the block itself.
         $icons = array();
         $items = array();
         $params = array('class' => 'icon');
+
         // Build the icon list.
         $icons[] = $OUTPUT->pix_icon('i/edit', '', 'moodle', $params);
         $icons[] = $OUTPUT->pix_icon('i/backup', '', 'moodle', $params);
@@ -94,6 +110,7 @@ class block_usp_mcrs extends block_list {
         $icons[] = $OUTPUT->pix_icon('i/risk_xss', '', 'moodle', $params);
         $icons[] = $OUTPUT->pix_icon('i/email', '', 'moodle', $params);
         $icons[] = $OUTPUT->pix_icon('i/calendareventtime', '', 'moodle', $params);
+
         // Build the list of items.
         $items[] = $this->build_link('requestcourse');
         $items[] = $this->build_link('index');
@@ -101,14 +118,17 @@ class block_usp_mcrs extends block_list {
         $items[] = $this->build_link('failed') . "($numfailed)";
         $items[] = $this->build_link('configemail');
         $items[] = $statustext;
+
         // Bring it all together.
         $this->content = new stdClass;
         $this->content->icons = $icons;
         $this->content->items = $items;
         $this->content->footer = '';
+
         // Return the block.
         return $this->content;
     }
+
     /**
      * Set up the page link
      *

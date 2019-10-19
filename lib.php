@@ -13,52 +13,165 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * @package    block_usp_mcrs
+ * @copyright  2008 onwards Louisiana State University
+ * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+defined('MOODLE_INTERNAL') || die();
 
 /**
- * Plugin strings are defined here.
+ * Build the SQL query from the search params
  *
- * @package     block_usp_mcrs
- * @category    string
- * @copyright   2019 IS314 Group 4 <you@example.com>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @return SQL
  */
+function build_sql_from_search($query, $constraints) {
+    $sql = "SELECT co.id, co.fullname, co.shortname, co.idnumber, cat.name
+        AS category FROM {course} co, {course_categories} cat WHERE
+        co.category = cat.id AND (";
 
-defined('MOODLE_INTERNAL') || die('Direct access to this script is forbidden.');
+    // Set up the SQL constraints.
+    $constraintsqls = array();
 
-class usp_mcrs_lib
-{
-    // list request entries 
-     function list_request_entries()
-    {
-        global $CFG, $DB, $OUTPUT;
+    // Loop through the provided constraints and build the SQL contraints.
+    foreach ($constraints as $c) {
+        if (in_array($c->operator, array('LIKE', 'NOT LIKE'))) {
+            $parts = array();
 
-        // Initialise table.
-        $rec = $DB->get_records_sql('SELECT * FROM  `mdl_block_usp_mcrs_requests`');
-        $table = new html_table();
-        $table->colclasses = array('leftalign', 'leftalign', 'leftalign', 'leftalign');
-        $table->id = 'requests';
-        $table->attributes['class'] = 'admintable generaltable';
-        $table->head = array(
-            get_string('requestid', 'block_usp_mcrs'),
-            get_string('requestsubject', 'block_usp_mcrs'),
-            get_string('requestdate', 'block_usp_mcrs'),
-            get_string('requestername', 'block_usp_mcrs'),
-            get_string('requestlecturer', 'block_usp_mcrs'),
-            get_string('requeststatus', 'block_usp_mcrs')
-        );
-        foreach ($rec as $records) {
-            $id = $records->id;
-            $coursecode = $records->course_code;
-            $coursename = $records->course_name;
-            $schoolname = $records->course_school;
-            $subject = 'Create Course Shell for ' . $coursecode . ': ' . $coursename;
-            $facultyname = $records->course_faculty;
-            $requestdate = $records->request_date;
-            $requestername = $records->course_requester;
-            $requestlecturer = $records->course_lecturer;
-            $status = 'Pending';
-            $table->data[] = array($id, $subject, $requestdate, $requestername, $requestlecturer, $status);
+            foreach (explode('|', $c->search_terms) as $s) {
+                $parts[] = "$c->criteria $c->operator '%{$s}%'";
+            }
+
+            $constraintsqls[] = '(' . implode(' OR ', $parts) . ')';
+        } else {
+            $instr = str_replace('|', "', '", $c->search_terms);
+
+            $constraintsqls[] = "($c->criteria $c->operator ('$instr'))";
         }
-        echo html_writer::table($table);
+    }
+
+    // Return the appropriate SQL.
+    return $sql . implode(" $query->type ", $constraintsqls) . ');';
+}
+
+/**
+ * Delete courses based on supplied courseids
+ *
+ * @return bool
+ */
+function usp_mcrs_delete_course($courseid) {
+    global $DB;
+    // Get the course object based on the supplied courseid.
+    $course = $DB->get_record('course', array('id' => $courseid));
+
+    // Delete the course.
+    if (delete_course($course, false)) {
+        fix_course_sortorder();
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Generates the last bit of the backup .zip's filename based on the
+ * pattern and roles that the admin chose in config.
+ *
+ * @return $suffix
+ */
+function generate_suffix($courseid) {
+    $suffix = '';
+
+    // Grab the allowed suffixes.
+    $field = get_config('block_usp_mcrs', 'suffix');
+
+    // Grab the administratively selected roles.
+    $roleids = explode(',', get_config('block_usp_mcrs', 'roles'));
+
+    // Grab the course context.
+    $context = context_course::instance($courseid);
+
+    // When NOT using fullname (which we might want to avoid anyway).
+    if ($field != 'fullname') {
+        // Loop through all the administratively selected roles.
+        foreach ($roleids as $r) {
+            // If the role has any users in the course, return them.
+            if ($users = get_role_users($r, $context, false)) {
+                // Loop through the users and grab the appropriate suffix.
+                foreach ($users as $k => $v) {
+                    $suffix .= '_' . $v->$field;
+                }
+            }
+        }
+    } else {
+        // Loop through all the administratively selected roles.
+        foreach ($roleids as $r) {
+            // If the role has any users in the course, return them.
+            if ($users = get_role_users($r, $context, false)) {
+                // Loop through the users and grab the appropriate suffix.
+                foreach ($users as $k => $v) {
+                    $suffix .= '_' . $v->firstname . $v->lastname;
+                }
+            }
+        }
+    }
+    return $suffix;
+}
+
+/**
+ * Instantiate the moodle backup subsystem
+ * and backup the course.
+ *
+ * @return true
+ */
+function usp_mcrs_backup_course($course) {
+    global $CFG;
+
+    // Required files for the backups.
+    require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
+    require_once($CFG->dirroot . '/backup/controller/backup_controller.class.php');
+
+    // Setup the backup controller.
+    $bc = new backup_controller(backup::TYPE_1COURSE, $course->id,
+        backup::FORMAT_MOODLE, backup::INTERACTIVE_NO, backup::MODE_AUTOMATED, 2);
+    $outcome = $bc->execute_plan();
+    $results = $bc->get_results();
+    $file = $results['backup_destination'];
+    $suffix = generate_suffix($course->id);
+    $matchers = array('/\s/', '/\//');
+
+    // Ensure the shortname is safe.
+    $safeshort = preg_replace($matchers, '-', $course->shortname);
+
+    // Name the file.
+    $usp_mcrsfile = "usp_mcrs-{$safeshort}{$suffix}.zip";
+
+    // Build the path.
+    $usp_mcrspath = get_config('block_usp_mcrs', 'path');
+
+    // Copy the file to the destination.
+    $file->copy_content_to($CFG->dataroot . $usp_mcrspath . $usp_mcrsfile);
+
+    // Kill the backup controller.
+    $bc->destroy();
+    unset($bc);
+
+    return true;
+}
+
+/**
+ * Email the admins
+ *
+ */
+function usp_mcrs_email_admins($errors) {
+    $dellink = new moodle_url('/blocks/usp_mcrs/delete.php');
+
+    $subject = get_string('email_subject', 'block_usp_mcrs');
+    $from = get_string('email_from', 'block_usp_mcrs');
+    $messagetext = $errors . "\n\n" . get_string('email_body', 'block_usp_mcrs') . $dellink;
+
+    foreach (get_admins() as $admin) {
+        email_to_user($admin, $from, $subject, $messagetext);
     }
 }

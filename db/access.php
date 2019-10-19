@@ -13,6 +13,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Definition of the grade_forecast_report class is defined
  *
@@ -20,10 +21,13 @@
  * @copyright  2016 Louisiana State University, Chad Mazilly, Robert Russo, Dave Elliott
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 defined('MOODLE_INTERNAL') || die();
+
 $capabilities = array(
     'block/usp_mcrs:addinstance' => array(
-        'riskbitmask' => RISK_DATALOSS,
+                'riskbitmask' => RISK_DATALOSS,
+
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(
@@ -31,6 +35,7 @@ $capabilities = array(
             'teacher' => CAP_PREVENT,
             'admin' => CAP_ALLOW
         ),
+
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
-    ),
-);
+        ),
+    );
