@@ -177,7 +177,7 @@ $string['config_path_surround'] = 'Surround the path with slashes.';
 
 // Strings for email.
 $string['email_subject'] = 'Backup Job Completed';
-$string['email_from'] = 'noreply@lsu.edu';
+$string['email_from'] = 'noreply@uspMoodleDev';
 $string['email_body']  = "The Backup And Delete tool has completed the jobs in it's queue.";
 
 // Capabilities.
