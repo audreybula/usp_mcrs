@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/blocks/usp_mcrs/block_usp_mcrs.php');
 
 /**
- * A scheduled task class for Backing up courses using the LSU usp_mcrs Block.
+ * A scheduled task class for Backing up courses using the USP usp_mcrs Block.
  */
 class backup_task extends \core\task\scheduled_task {
 
