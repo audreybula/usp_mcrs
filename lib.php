@@ -20,6 +20,73 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
+
+/**
+ * @param $from_form
+ * @param $DB
+ * @param $USER
+ * @param $request
+ * @param $strictness
+ * @param $course_code
+ * @param $course_name
+ */
+function set_form_details_for_course_mode($from_form, $DB, $USER, &$request, &$strictness, &$course_code, &$course_name)
+{
+    $request->request_date = date('Y-m-d H:i:s');
+    $codeId = $from_form->coursecode;
+    $course_code = $DB->get_field_select('block_usp_mcrs_courses', 'course_code', 'id = ' . $codeId, array(), $strictness = IGNORE_MISSING);
+    $request->course_code = $course_code;
+    $nameId = $from_form->coursename;
+    $course_name = $DB->get_field_select('block_usp_mcrs_courses', 'course_name', 'id = ' . $nameId, array(), $strictness = IGNORE_MISSING);
+    $request->course_name = $course_name;
+    $schoolId = $from_form->courseschool;
+    $courseSchool = $DB->get_field_select('block_usp_mcrs_courses', 'school_name', 'id = ' . $schoolId, array(), $strictness = IGNORE_MISSING);
+    $request->course_school = $courseSchool;
+    $facultyId = $from_form->coursefaculty;
+    $courseFaculty = $DB->get_field_select('block_usp_mcrs_courses', 'faculty_name', 'id = ' . $facultyId, array(), $strictness = IGNORE_MISSING);
+    $request->course_faculty = $courseFaculty;
+    $request->course_requester = $USER->email;
+    $request->course_lecturer = $from_form->courselecturer;
+}
+
+/**
+ * @param $moodle_format
+ * @param $course_code
+ * @param $course_name
+ * @param $data
+ */
+function create_new_shell($moodle_format, $course_code, $course_name, &$data)
+{
+    $data = new stdClass();
+    $data->category = 1;
+    $data->idnumber = $moodle_format;
+    $data->fullname = $course_code . ': ' . $course_name;
+    $data->shortname = $moodle_format;
+    $data->summary = '';
+    $data->summaryformat = 0;
+    $data->format = 'topics';
+    $data->showgrades = 1;
+    $data->visible = 1;
+
+    create_course($data);
+}
+
+/**
+ * @param $USER
+ */
+function email_request_details_to_requester($USER)
+{
+    $email_user = new stdClass();
+    $email_user->email = "moodletest679@gmail.com";
+    $email_user->id = -99;
+
+    // Send test email.
+
+    $success = email_to_user($email_user, $USER, "SUBJECT", "MESSAGE");
+
+    echo $success;
+}
+
 /**
  * Build the SQL query from the search params
  *
