@@ -26,6 +26,7 @@
 require_once('../../config.php'); // Change depending on depth
 require_once("$CFG->libdir/formslib.php");
 require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
+require_once($CFG->libdir.'/adminlib.php');
 require_login();
 $PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/js/module.js'));
 
@@ -290,7 +291,18 @@ else if ($fromform = $mform->get_data())
             $lastinsertid4 = $DB->insert_record('block_usp_mcrs_requests', $requestblended);
         }        
     }     
-    
+    $emailuser = new stdClass();
+    $emailuser->email = "moodletest679@gmail.com";
+    $emailuser->id = -99;
+
+    // Send test email.
+    ob_start();
+    $success = email_to_user($emailuser, $USER, "SUBJECT", "MESSAGE");
+    $smtplog = ob_get_contents();
+    ob_end_clean();
+
+    echo $success;
+    echo $smtplog;
     $_SESSION['courseid'] = $courseid;
     redirect('backup.php', 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
 } 
