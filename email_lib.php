@@ -21,17 +21,20 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
-* @param $USER
-*/
-function email_request_details_to_requester($USER)
+ * @param $USER
+ * @param $requested_course
+ * @return  $success
+ */
+function email_request_details_to_requester($USER, $requested_course)
 {
-$email_user = new stdClass();
-$email_user->email = "moodletest679@gmail.com";
-$email_user->id = -99;
+    $email_user = new stdClass();
+    $email_user->email = "moodletest679@gmail.com";
+    $email_user->id = -99;
 
-// Send test email.
+    $message = 'Course Full Name: '. $requested_course->fullname.
+               'Course Short Name: '. $requested_course->shortname;
 
-$success = email_to_user($email_user, $USER, "SUBJECT", "MESSAGE");
+    $success = email_to_user($email_user, $USER, get_string('message_header', 'block_usp_mcrs'), $message);
 
-echo $success;
+    return $success;
 }
