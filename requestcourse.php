@@ -23,11 +23,13 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\output\notification;
+
 require_once('../../config.php'); // Change depending on depth
 require_once("$CFG->libdir/formslib.php");
 require_once($CFG->dirroot.'/blocks/usp_mcrs/lib.php');
+require_once($CFG->dirroot.'/blocks/usp_mcrs/email_lib.php');
 require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
-// require_once($CFG->libdir.'/adminlib.php');
 require_login();
 $PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/js/module.js'));
 
@@ -58,7 +60,8 @@ else if ($from_form = $m_form->get_data())
     // Array to store the shells to be backed up
     $course_id = array();
 
-    //In this case you process validated data. $mform->get_data() returns data posted in form. 
+    //In this case you process validated data. $mform->get_data() returns data posted in form.
+    // single
     if($from_form->singlemultiple == 0)
     {
         $request = new stdClass();
@@ -76,10 +79,11 @@ else if ($from_form = $m_form->get_data())
             $moodle_format = $course_code.'_'.$from_form->courseyear.''.$from_form->coursesemester;
             $request->course_new = $moodle_format;
 
-            create_new_shell($moodle_format, $course_code, $course_name, $data);
+            create_new_shell($moodle_format, $course_code, $course_name);
         }
         $last_insert_id = $DB->insert_record('block_usp_mcrs_requests', $request);
     }
+    // multiple
     else
     {
         if(isset($from_form->f2f))
@@ -99,7 +103,7 @@ else if ($from_form = $m_form->get_data())
             {
                 $moodle_format_f2f = $course_code.'_'.$from_form->courseyear.''.$from_form->coursesemester.'_F';
                 $request_f2f->course_new = $moodle_format_f2f;
-                create_new_shell($moodle_format_f2f, $course_code, $course_name, $data);
+                create_new_shell($moodle_format_f2f, $course_code, $course_name);
 
             }
             $last_insert_id1 = $DB->insert_record('block_usp_mcrs_requests', $request_f2f);
@@ -121,7 +125,7 @@ else if ($from_form = $m_form->get_data())
                 $moodle_format_online = $course_code.'_'.$from_form->courseyear.''.$from_form->coursesemester.'_O';
                 $request_online->course_new = $moodle_format_online;
 
-                create_new_shell($moodle_format_online, $course_code, $course_name, $data);
+                create_new_shell($moodle_format_online, $course_code, $course_name);
             }
             $last_insert_id2 = $DB->insert_record('block_usp_mcrs_requests', $request_online);
         }
@@ -142,7 +146,7 @@ else if ($from_form = $m_form->get_data())
                 $moodle_format_print = $course_code.'_'.$from_form->courseyear.''.$from_form->coursesemester.'_P';
                 $request_print->course_new = $moodle_format_print;
 
-                create_new_shell($moodle_format_print, $course_code, $course_name, $data);
+                create_new_shell($moodle_format_print, $course_code, $course_name);
             }
             $last_insert_id3 = $DB->insert_record('block_usp_mcrs_requests', $request_print);
             
@@ -164,7 +168,7 @@ else if ($from_form = $m_form->get_data())
                 $moodle_format_blended = $course_code.'_'.$from_form->courseyear.''.$from_form->coursesemester.'_B';
                 $request_blended->course_new = $moodle_format_blended;
 
-                create_new_shell($moodle_format_blended, $course_code, $course_name, $data);
+                create_new_shell($moodle_format_blended, $course_code, $course_name);
             }
             $last_insert_id4 = $DB->insert_record('block_usp_mcrs_requests', $request_blended);
         }        
@@ -173,7 +177,7 @@ else if ($from_form = $m_form->get_data())
     email_request_details_to_requester($USER);
 
     $_SESSION['courseid'] = $course_id;
-    redirect('backup.php', 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect('backup.php', 'Request Submitted Successfully!', null, notification::NOTIFY_SUCCESS);
 } 
 else 
 {
