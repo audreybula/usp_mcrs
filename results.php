@@ -15,13 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * @package    block_usp_mcrs
- * @copyright  2008 onwards Louisiana State University
- * @copyright  2008 onwards Chad Mazilly, Robert Russo, Jason Peak, Dave Elliott, Adam Zapletal, Philip Cali
+ * @copyright   2019 IS314 Group 4 <you@example.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once('../../config.php');
-require_once('lib.php');
+require_once('backuplib.php');
 require_login();
 
 // Ensure only the site admin accesses this page.

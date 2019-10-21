@@ -19,7 +19,7 @@
  *
  * @package    block_usp_mcrs
  * @category   task
- * @copyright  2016 Louisiana State University - David Elliott, Robert Russo, Chad Mazilly
+ * @copyright   2019 IS314 Group 4 <you@example.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -34,6 +34,6 @@ $tasks = array(
         'day' => '*',
         'month' => '*',
         'dayofweek' => '*',
-        'disabled' => 0
-    )
+        'disabled' => 0,
+    ),
 );

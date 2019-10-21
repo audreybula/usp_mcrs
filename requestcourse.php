@@ -28,6 +28,8 @@ require_once("$CFG->libdir/formslib.php");
 require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
 require_login();
 $PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/js/module.js'));
+require_once($CFG->dirroot . '/backup/restorefile_form.php');
+require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
 
 global $CFG, $USER, $DB;
 
@@ -55,6 +57,7 @@ else if ($fromform = $mform->get_data())
 {
     // Array to store the shells to be backed up
     $courseid = array();
+    $restorecourseid = array();
 
     //In this case you process validated data. $mform->get_data() returns data posted in form. 
     if($fromform->singlemultiple == 0)

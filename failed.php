@@ -16,14 +16,14 @@
 
 /**
  * @package    block_usp_mcrs
- * @copyright  2016 Louisiana State University, Chad Mazilly, Robert Russo, Dave Elliott
+ * @copyright   2019 IS314 Group 4 <you@example.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once('../../config.php');
-require_once('lib.php');
+require_once('backuplib.php');
 
 require_login();
 
