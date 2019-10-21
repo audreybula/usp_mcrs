@@ -24,13 +24,12 @@
  */
 
 require_once('../../config.php');
-require_once($CFG->dirroot.'/blocks/usp_mcrs/adlib.php');
+require_once($CFG->dirroot.'/blocks/usp_mcrs/admin_lib.php');
 
 
 require_login();
 
 global $CFG, $USER, $DB;
-
 
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
@@ -42,13 +41,11 @@ $PAGE->set_heading(get_string('moodle_admin', 'block_usp_mcrs'));
 $PAGE->set_title(get_string('moodle_admin', 'block_usp_mcrs'));
 
 
-$defineurl = $CFG->wwwroot . '/' . $CFG->admin . '/roles/define.php';
+$define_url = $CFG->wwwroot . '/' . $CFG->admin . '/roles/define.php';
 
 echo $OUTPUT->header();
 
-$mtable= new usp_mcrs_lib(); 
-
-$mtable->list_request_entries();
+list_request_entries($CFG, $DB, $OUTPUT);
 
 echo $OUTPUT->footer();
 
