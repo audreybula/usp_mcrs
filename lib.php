@@ -53,38 +53,24 @@ function set_form_details_for_course_mode($from_form, $DB, $USER, &$request, &$s
  * @param $moodle_format
  * @param $course_code
  * @param $course_name
- * @param $data
+ * @return stdClass $course_data
  */
-function create_new_shell($moodle_format, $course_code, $course_name, &$data)
+function create_new_shell($moodle_format, $course_code, $course_name)
 {
-    $data = new stdClass();
-    $data->category = 1;
-    $data->idnumber = $moodle_format;
-    $data->fullname = $course_code . ': ' . $course_name;
-    $data->shortname = $moodle_format;
-    $data->summary = '';
-    $data->summaryformat = 0;
-    $data->format = 'topics';
-    $data->showgrades = 1;
-    $data->visible = 1;
+    $course_data = new stdClass();
+    $course_data->category = 1;
+    $course_data->idnumber = $moodle_format;
+    $course_data->fullname = $course_code . ': ' . $course_name;
+    $course_data->shortname = $moodle_format;
+    $course_data->summary = '';
+    $course_data->summaryformat = 0;
+    $course_data->format = 'topics';
+    $course_data->showgrades = 1;
+    $course_data->visible = 1;
 
-    create_course($data);
-}
+    create_course($course_data);
 
-/**
- * @param $USER
- */
-function email_request_details_to_requester($USER)
-{
-    $email_user = new stdClass();
-    $email_user->email = "moodletest679@gmail.com";
-    $email_user->id = -99;
-
-    // Send test email.
-
-    $success = email_to_user($email_user, $USER, "SUBJECT", "MESSAGE");
-
-    echo $success;
+    return $course_data;
 }
 
 /**
