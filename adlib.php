@@ -61,4 +61,29 @@ class usp_mcrs_lib
         }
         echo html_writer::table($table);
     }
+
+
+    function list_support_staff(){
+        global $CFG, $DB, $OUTPUT;
+
+        $rec = $DB->get_records_sql('SELECT support_staff_name,school_name,course_count FROM  `mdl_block_usp_mcrs_support_staff` ORDER BY course_count ASC ');
+        $table = new html_table();
+        $table->colclasses = array('leftalign', 'leftalign', 'leftalign');
+        $table->id = 'support_staffs';
+        $table->attributes['class'] = 'support_staff_table generaltable';
+        $table->head = array(
+            get_string('support_staff_name', 'block_usp_mcrs'),
+            get_string('school', 'block_usp_mcrs'),
+            get_string('course_count', 'block_usp_mcrs')
+        );
+        foreach ($rec as $records) {
+            $support_staff_name = $records->support_staff_name;
+            $school_name = $records->school_name;
+            $course_count = $records->course_count;
+
+            $table->data[] = array($support_staff_name, $school_name, $course_count);
+        }
+        echo html_writer::table($table);
+
+    }
 }

@@ -28,6 +28,7 @@ $string['block_pending'] = 'Pending';
 $string['block_config'] = 'Config';
 $string['block_requestcourse'] = 'Make A Course Request';
 $string['block_mcrs_admin'] = 'Moodle Admin Home';
+$string['block_mcrs_cfl_admin'] = 'CFL Admin Home';
 $string['block_configemail'] = 'Modify Email Template';
 $string['block_failed'] = 'Failures';
 $string['block_large_backups'] = 'Large Backups';

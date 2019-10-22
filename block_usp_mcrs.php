@@ -89,17 +89,24 @@ class block_usp_mcrs extends block_list {
         $icons = array();
         $items = array();
         $params = array('class' => 'icon');
+
+
         // Build the icon list.
         $icons[] = $OUTPUT->pix_icon('i/edit', '', 'moodle', $params);
+        $icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $params);
         $icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $params);
        /*  $icons[] = $OUTPUT->pix_icon('i/backup', '', 'moodle', $params); */
         $icons[] = $OUTPUT->pix_icon('i/delete', '', 'moodle', $params);
         /* $icons[] = $OUTPUT->pix_icon('i/risk_xss', '', 'moodle', $params); */
         $icons[] = $OUTPUT->pix_icon('i/email', '', 'moodle', $params);
         /* $icons[] = $OUTPUT->pix_icon('i/calendareventtime', '', 'moodle', $params); */
+
+
+
         // Build the list of items.
         $items[] = $this->build_link('requestcourse');
         $items[] = $this->build_link('mcrs_admin');
+        $items[] = $this->build_link('mcrs_cfl_admin');
         /* $items[] = $this->build_link('index'); */
         $items[] = $this->build_link('delete') . "($numpending)";
         /* $items[] = $this->build_link('failed') . "($numfailed)"; */
