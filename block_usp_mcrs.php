@@ -100,14 +100,14 @@ class block_usp_mcrs extends block_list {
         $items[] = $this->build_link('requestcourse');
 
 
-        if (has_capability('moodle/site:config', $context)) {
+
             if (has_capability('block/usp_mcrs:approverequest', $context)) {
                 $icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $params);
                 /*  $icons[] = $OUTPUT->pix_icon('i/backup', '', 'moodle', $params); */
                 // Build the list of items.
                 $items[] = $this->build_link('mcrs_admin');
             }
-        }
+        
 
 
         $icons[] = $OUTPUT->pix_icon('i/delete', '', 'moodle', $params);
@@ -117,13 +117,13 @@ class block_usp_mcrs extends block_list {
         /* $icons[] = $OUTPUT->pix_icon('i/risk_xss', '', 'moodle', $params); */
 
 
-        if (has_capability('moodle/site:config', $context)) {
+
             if (has_capability('block/usp_mcrs:approverequest', $context)) {
                 $icons[] = $OUTPUT->pix_icon('i/email', '', 'moodle', $params);
                 $items[] = $this->build_link('configemail');
                 /* $icons[] = $OUTPUT->pix_icon('i/calendareventtime', '', 'moodle', $params); */
             }
-        }
+
         /* $items[] = $this->build_link('failed') . "($numfailed)"; */
 
         /* $items[] = $statustext; */
