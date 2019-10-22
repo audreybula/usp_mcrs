@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 $capabilities = [
     'block/usp_mcrs:myaddinstance' => array(
         'captype' => 'write',
@@ -55,17 +53,17 @@ $capabilities = [
         ],
         'clonepermissionsfrom' => 'moodle/course:view',
     ],
-    'block/usp_mcrs:approverequest' => array(
+    'block/usp_mcrs:approverecord' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'legacy' => array(
-        	'coursecreator' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
             'teacher'        => CAP_PREVENT,
             'editingteacher' => CAP_PREVENT,
             'manager'          => CAP_ALLOW,
             'student'        => CAP_PREVENT,
             'guest' => CAP_PREVENT
         ),
-	),
+    ),
 ];
