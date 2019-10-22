@@ -79,6 +79,11 @@ $string['choosecourseshell4'] = 'Choose Blended Course Shell To Be Copied';
 $string['additionalinfo'] = 'Additional Information or Comments';
 $string['submitbutton'] = 'Submit';
 
+//Strings for support staff
+$string['support_staff_name'] = 'Support Staff';
+$string['course_count'] ='Course Count';
+$string['school'] = 'School';
+
 // Stings shared by pages.
 $string['pluginname'] = 'Moodle Course Request';
 $string['blockname'] = 'Moodle Course Request';
