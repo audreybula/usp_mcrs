@@ -55,7 +55,7 @@ $capabilities = [
         ],
         'clonepermissionsfrom' => 'moodle/course:view',
     ],
-    'block/usp_mcrs:approverecord' => array(
+    'block/usp_mcrs:approverequest' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,

@@ -48,7 +48,7 @@ class block_usp_mcrs extends block_list {
     public function applicable_formats() {
         return array('site' => true, 'my' => true, 'course' => false);
     }
-    /** 
+    /**
      * Block has configuration.
      *
      * @return true
@@ -64,6 +64,7 @@ class block_usp_mcrs extends block_list {
     public function get_content() {
         // Set up the globals we need.
         global $DB, $CFG, $USER, $OUTPUT;
+        $context = context_system::instance();
         // Check to make sure the Admin is using the block.
         if (!is_siteadmin($USER->id)) {
             return $this->content;
@@ -90,21 +91,41 @@ class block_usp_mcrs extends block_list {
         $icons = array();
         $items = array();
         $params = array('class' => 'icon');
+
+
+
         // Build the icon list.
         $icons[] = $OUTPUT->pix_icon('i/edit', '', 'moodle', $params);
-        $icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $params);
-       /*  $icons[] = $OUTPUT->pix_icon('i/backup', '', 'moodle', $params); */
-        $icons[] = $OUTPUT->pix_icon('i/delete', '', 'moodle', $params);
-        /* $icons[] = $OUTPUT->pix_icon('i/risk_xss', '', 'moodle', $params); */
-        $icons[] = $OUTPUT->pix_icon('i/email', '', 'moodle', $params);
-        /* $icons[] = $OUTPUT->pix_icon('i/calendareventtime', '', 'moodle', $params); */
         // Build the list of items.
         $items[] = $this->build_link('requestcourse');
-        $items[] = $this->build_link('mcrs_admin');
+
+
+        if (has_capability('moodle/site:config', $context)) {
+            if (has_capability('block/usp_mcrs:approverequest', $context)) {
+                $icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $params);
+                /*  $icons[] = $OUTPUT->pix_icon('i/backup', '', 'moodle', $params); */
+                // Build the list of items.
+                $items[] = $this->build_link('mcrs_admin');
+            }
+        }
+
+
+        $icons[] = $OUTPUT->pix_icon('i/delete', '', 'moodle', $params);
+        // Build the list of items.
         /* $items[] = $this->build_link('index'); */
         $items[] = $this->build_link('delete') . "($numpending)";
+        /* $icons[] = $OUTPUT->pix_icon('i/risk_xss', '', 'moodle', $params); */
+
+
+        if (has_capability('moodle/site:config', $context)) {
+            if (has_capability('block/usp_mcrs:approverequest', $context)) {
+                $icons[] = $OUTPUT->pix_icon('i/email', '', 'moodle', $params);
+                $items[] = $this->build_link('configemail');
+                /* $icons[] = $OUTPUT->pix_icon('i/calendareventtime', '', 'moodle', $params); */
+            }
+        }
         /* $items[] = $this->build_link('failed') . "($numfailed)"; */
-        $items[] = $this->build_link('configemail');
+
         /* $items[] = $statustext; */
         // Bring it all together.
 
