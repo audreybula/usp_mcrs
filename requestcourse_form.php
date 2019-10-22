@@ -192,7 +192,7 @@ class requestcourse_form extends moodleform
 
         // Course Mode Print checkbox
         $mform->addElement('checkbox', 'print', '', get_string('print', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'print\', this.checked)"');
-//        $mform->hideIf('print','newbackedup','eq', '1');
+        //$mform->hideIf('print','newbackedup','eq', '1');
         $mform->hideIf('print','singlemultiple','eq', '0');
 
         // New or Backed up Print shell
@@ -218,7 +218,7 @@ class requestcourse_form extends moodleform
 
         // Course Mode Blended checkbox
         $mform->addElement('checkbox', 'blended', '', get_string('blended', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'blended\', this.checked)"'); 
-//        $mform->hideIf('blended','newbackedup','eq', '1');
+        //$mform->hideIf('blended','newbackedup','eq', '1');
         $mform->hideIf('blended','singlemultiple','eq', '0');  
 
         // New or Backed up Blended shell
@@ -243,7 +243,7 @@ class requestcourse_form extends moodleform
         //$mform->addRule('courseidblended', get_string('required'), 'nonzero', null, 'client');
         
         // Additional Information
-        $mform->addElement('editor', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));
+        $mform->addElement('textarea', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));
         $mform->setType('additionalinfo', PARAM_RAW); 
         
         // Submit button with Cancel button

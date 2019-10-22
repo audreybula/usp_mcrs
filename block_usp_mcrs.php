@@ -27,6 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 // Get the requisite dependencies.
 require_once($CFG->dirroot . '/blocks/usp_mcrs/lib.php');
 require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
+require_once($CFG->dirroot . '/blocks/usp_mcrs/classes/courseupload_form.php');
 /**
  * Main class for setting up the block.
  * @uses block_list
@@ -47,7 +48,7 @@ class block_usp_mcrs extends block_list {
     public function applicable_formats() {
         return array('site' => true, 'my' => true, 'course' => false);
     }
-    /** 
+    /**
      * Block has configuration.
      *
      * @return true
@@ -63,6 +64,7 @@ class block_usp_mcrs extends block_list {
     public function get_content() {
         // Set up the globals we need.
         global $DB, $CFG, $USER, $OUTPUT;
+        $context = context_system::instance();
         // Check to make sure the Admin is using the block.
         if (!is_siteadmin($USER->id)) {
             return $this->content;
@@ -89,23 +91,34 @@ class block_usp_mcrs extends block_list {
         $icons = array();
         $items = array();
         $params = array('class' => 'icon');
+
+
+
         // Build the icon list.
         $icons[] = $OUTPUT->pix_icon('i/edit', '', 'moodle', $params);
         $icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $params);
-       /*  $icons[] = $OUTPUT->pix_icon('i/backup', '', 'moodle', $params); */
         $icons[] = $OUTPUT->pix_icon('i/delete', '', 'moodle', $params);
-        /* $icons[] = $OUTPUT->pix_icon('i/risk_xss', '', 'moodle', $params); */
         $icons[] = $OUTPUT->pix_icon('i/email', '', 'moodle', $params);
-        /* $icons[] = $OUTPUT->pix_icon('i/calendareventtime', '', 'moodle', $params); */
+
+
+
         // Build the list of items.
         $items[] = $this->build_link('requestcourse');
         $items[] = $this->build_link('mcrs_admin');
-        /* $items[] = $this->build_link('index'); */
         $items[] = $this->build_link('delete') . "($numpending)";
-        /* $items[] = $this->build_link('failed') . "($numfailed)"; */
         $items[] = $this->build_link('configemail');
-        /* $items[] = $statustext; */
-        // Bring it all together.
+
+
+        // Bring it all together
+
+        $this->page->requires->jquery();
+        $this->page->requires->js(new moodle_url('/blocks/usp_mcrs/script.js'));
+        $this->page->requires->strings_for_js(['coursefilechoose', 'draganddrop', 'pleasewait'], 'block_usp_mcrs');
+
+        $uploader = new courseupload_form(new moodle_url('/blocks/usp_mcrs/restore.php'));
+
+        $html = $uploader->render();
+
         $this->content = new stdClass;
         $this->content->icons = $icons;
         $this->content->items = $items;

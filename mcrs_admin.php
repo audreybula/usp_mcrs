@@ -46,6 +46,11 @@ $define_url = $CFG->wwwroot . '/' . $CFG->admin . '/roles/define.php';
 echo $OUTPUT->header();
 
 list_request_entries($CFG, $DB, $OUTPUT);
+$mtable= new usp_mcrs_lib(); 
+
+$mtable->list_request_entries();
+$mtable->list_support_staff();
+
 
 echo $OUTPUT->footer();
 

@@ -23,7 +23,7 @@
  */
 
 require_once('../../config.php');
-require_once('lib.php');
+require_once('backuplib.php');
 require_login();
 
 // Ensure the site admin is the page user.

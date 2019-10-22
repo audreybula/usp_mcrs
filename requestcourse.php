@@ -32,6 +32,8 @@ require_once($CFG->dirroot.'/blocks/usp_mcrs/email_lib.php');
 require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
 require_login();
 $PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/js/module.js'));
+require_once($CFG->dirroot . '/backup/restorefile_form.php');
+require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
 
 global $CFG, $USER, $DB;
 
@@ -59,7 +61,8 @@ if ($m_form->is_cancelled())
 else if ($from_form = $m_form->get_data())
 {
     // Array to store the shells to be backed up
-    $course_id = array();
+    $courseid = array();
+    $copytoid = array();
 
     //In this case you process validated data. $mform->get_data() returns data posted in form.
     // single
@@ -169,16 +172,25 @@ else if ($from_form = $m_form->get_data())
                 $moodle_format_blended = $course_code.'_'.$from_form->courseyear.''.$from_form->coursesemester.'_B';
                 $request_blended->course_new = $moodle_format_blended;
 
-                    $requested_course_data=create_new_shell($moodle_format_blended, $course_code, $course_name);
+                // Testing for new course shell
+                $data = new stdClass();
+                $data->category = 1;
+                $data->idnumber = $moodleformatblended;
+                $data->fullname = $coursecode.': '.$coursename;
+                $data->shortname = $moodleformatblended;
+                $data->summary = '';
+                $data->summaryformat = 0;
+                $data->format = 'topics';
+                $data->showgrades = 1;
+                $data->visible = 1;
+                $h = create_course($data); 
             }
             $last_insert_id4 = $DB->insert_record('block_usp_mcrs_requests', $request_blended);
         }        
-    }
-
-    email_request_details_to_requester($USER,$requested_course_data);
-
-    $_SESSION['courseid'] = $course_id;
-    redirect('backup.php', 'Request Submitted Successfully!', null, notification::NOTIFY_SUCCESS);
+    }     
+    
+    $_SESSION['courseid'] = $courseid;
+    redirect('backup.php', null, \core\output\notification::NOTIFY_SUCCESS);
 } 
 else 
 {
