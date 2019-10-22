@@ -22,40 +22,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Build the SQL query from the search params
- *
- * @return SQL
- */
-function build_sql_from_search($query, $constraints) {
-    $sql = "SELECT co.id, co.fullname, co.shortname, co.idnumber, cat.name
-        AS category FROM {course} co, {course_categories} cat WHERE
-        co.category = cat.id AND (";
-
-    // Set up the SQL constraints.
-    $constraintsqls = array();
-
-    // Loop through the provided constraints and build the SQL contraints.
-    foreach ($constraints as $c) {
-        if (in_array($c->operator, array('LIKE', 'NOT LIKE'))) {
-            $parts = array();
-
-            foreach (explode('|', $c->search_terms) as $s) {
-                $parts[] = "$c->criteria $c->operator '%{$s}%'";
-            }
-
-            $constraintsqls[] = '(' . implode(' OR ', $parts) . ')';
-        } else {
-            $instr = str_replace('|', "', '", $c->search_terms);
-
-            $constraintsqls[] = "($c->criteria $c->operator ('$instr'))";
-        }
-    }
-
-    // Return the appropriate SQL.
-    return $sql . implode(" $query->type ", $constraintsqls) . ');';
-}
-
-/**
  * Delete courses based on supplied courseids
  *
  * @return bool
@@ -156,6 +122,8 @@ function usp_mcrs_backup_course($course) {
     // Kill the backup controller.
     $bc->destroy();
     unset($bc);
+
+    
 
     return true;
 }

@@ -21,16 +21,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 // Strings for block.
-$string['backup_and_delete'] = 'Backup And Delete';
-$string['block_index'] = 'Backup';
-$string['block_delete'] = 'Delete';
-$string['block_pending'] = 'Pending';
-$string['block_config'] = 'Config';
-$string['block_requestcourse'] = 'Make A Course Request';
-$string['block_mcrs_admin'] = 'Moodle Admin Home';
-$string['block_configemail'] = 'Modify Email Template';
-$string['block_failed'] = 'Failures';
-$string['block_large_backups'] = 'Large Backups';
+$string['pluginname'] = 'Moodle Course Request';
+$string['requestcourse'] = 'Make course request';
+$string['configemail'] = 'Modify Email Template';
+$string['requestdone'] = 'Course request done.';
+$string['usp_mcrs:view'] = 'View Course request';
+$string['adminhome'] = 'Admin Home';
 $string['backing_up'] = 'Backing Up';
 $string['usp_mcrs_settings'] = 'Backup and Delete Settings';
 $string['status_running'] = 'Running for {$a} minute(s)';

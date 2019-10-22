@@ -56,7 +56,9 @@ class backup_task extends \core\task\scheduled_task {
  */
 function begin_backup_task() {
     global $DB, $CFG;
-    mtrace('begin backup cron for usp_mcrs!!!!!!!!!!!!!!!!!!!1');
+    mtrace('***********************************');
+    mtrace('*****BEGIN BACKUP FOR USP_MCRS*****');
+    mtrace('***********************************');
     // Grab the running status.
     $running = get_config('block_usp_mcrs', 'running');
     // If the task is running, let the user know how long it's been running.
@@ -88,6 +90,9 @@ function begin_backup_task() {
         $b->status = $error ? 'FAIL' : 'SUCCESS';
         // Update the DB with the appropriate status.
         $DB->update_record('block_usp_mcrs_statuses', $b);
+        mtrace('***********************************');
+        mtrace('*****BEGIN  RESTORE FOR USP_MCRS*****');
+        mtrace('***********************************');
     }
     // Clear the running flag.
     set_config('running', '', 'block_usp_mcrs');
