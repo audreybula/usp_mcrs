@@ -48,7 +48,7 @@ echo $OUTPUT->header();
 
 $mtable= new usp_mcrs_lib(); 
 
-$mtable->list_request_entries();
+
 
 echo $OUTPUT->footer();
 
