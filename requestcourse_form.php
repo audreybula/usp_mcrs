@@ -46,7 +46,7 @@ class requestcourse_form extends moodleform
         $options = array(                                                                                                           
             'multiple' => false,             
             //'noselectionstring' => 'No Course Selected', 
-            'tags' => true,                                                               
+            'tags' => false,                                                               
         );    
         $mform->addElement('autocomplete', 'coursecode', get_string('coursecode', 'block_usp_mcrs'), $coursecodearray, $options);
         $mform->addRule('coursecode', get_string('required'), 'nonzero', null, 'client');
@@ -61,7 +61,7 @@ class requestcourse_form extends moodleform
         $options = array(                                                                                                           
             'multiple' => false,                         
             //'noselectionstring' => get_string('allareas', 'search'),  
-            'tags' => true,                                                               
+            'tags' => false,                                                               
         );    
         $mform->addElement('autocomplete', 'coursename', get_string('coursename', 'block_usp_mcrs'), $coursenamearray, $options);  
         $mform->addRule('coursename', get_string('required'), 'nonzero', null, 'client');
@@ -86,7 +86,7 @@ class requestcourse_form extends moodleform
         $options = array(                                                                                                           
             'multiple' => false,                         
             'noselectionstring' => get_string('allareas', 'search'),  
-            'tags' => true,                                                               
+            'tags' => false,                                                               
         );    
         $mform->addElement('autocomplete', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'), $coursefacultyarray, $options);
         $mform->addRule('coursefaculty', get_string('required'), 'nonzero', null, 'client');
@@ -101,7 +101,7 @@ class requestcourse_form extends moodleform
         $options = array(                                                                                                           
             'multiple' => false,                         
             'noselectionstring' => get_string('allareas', 'search'),  
-            'tags' => true,                                                               
+            'tags' => false,                                                               
         );    
         $mform->addElement('autocomplete', 'courseschool', get_string('courseschool', 'block_usp_mcrs'), $courseschoolarray, $options);
         $mform->addRule('courseschool', get_string('required'), 'nonzero', null, 'client');
