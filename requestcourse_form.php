@@ -74,7 +74,7 @@ class requestcourse_form extends moodleform
         // Course Semester
         $coursesemarray = array('Semester', '01'=>'Semester I', '03'=>'Semester II', '02'=>'Flexi-School Winter', '04'=>'Flexi-School Summer', '30-Week', '31'=>'Trimester 1', '32'=>'Trimester 2', '33'=>'Trimester 3', '21'=>'PDLP-Term 1', '22'=>'PDLP-Term 2');
         $mform->addElement('select', 'coursesemester', 'Semester Course Is To Be Offered', $coursesemarray);
-        $mform->addRule('coursesemester', get_string('required'), 'nonzero', null, 'client');
+        //$mform->addRule('coursesemester', get_string('required'), 'nonzero', null, 'client');
 
         // Course Faculty field
         $allcoursefaculty = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'faculty_name', 'id, faculty_name');                                                           
