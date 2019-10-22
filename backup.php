@@ -24,7 +24,8 @@
  */
 
 require_once('../../config.php');
-require_once('backuplib.php');
+require_once($CFG->dirroot . '/blocks/usp_mcrs/backuplib.php');
+require_once($CFG->dirroot . '/blocks/moodleblock.class.php');	require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
 
 require_login();
 

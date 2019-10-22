@@ -123,8 +123,6 @@ function usp_mcrs_backup_course($course) {
     $bc->destroy();
     unset($bc);
 
-    
-
     return true;
 }
 
