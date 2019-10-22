@@ -101,28 +101,34 @@ class block_usp_mcrs extends block_list {
 
 
 
-            if (has_capability('block/usp_mcrs:approverequest', $context)) {
+
+            if (has_capability('block/usp_mcrs:approverecord', $context)) {
                 $icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $params);
                 /*  $icons[] = $OUTPUT->pix_icon('i/backup', '', 'moodle', $params); */
                 // Build the list of items.
                 $items[] = $this->build_link('mcrs_admin');
             }
-        
-
-
-        $icons[] = $OUTPUT->pix_icon('i/delete', '', 'moodle', $params);
-        // Build the list of items.
-        /* $items[] = $this->build_link('index'); */
-        $items[] = $this->build_link('delete') . "($numpending)";
-        /* $icons[] = $OUTPUT->pix_icon('i/risk_xss', '', 'moodle', $params); */
 
 
 
-            if (has_capability('block/usp_mcrs:approverequest', $context)) {
+
+            if (has_capability('block/usp_mcrs:approverecord', $context)) {
+                $icons[] = $OUTPUT->pix_icon('i/delete', '', 'moodle', $params);
+                // Build the list of items.
+                /* $items[] = $this->build_link('index'); */
+                $items[] = $this->build_link('delete') . "($numpending)";
+                /* $icons[] = $OUTPUT->pix_icon('i/risk_xss', '', 'moodle', $params); */
+            }
+
+
+
+
+            if (has_capability('block/usp_mcrs:approverecord', $context)) {
                 $icons[] = $OUTPUT->pix_icon('i/email', '', 'moodle', $params);
                 $items[] = $this->build_link('configemail');
                 /* $icons[] = $OUTPUT->pix_icon('i/calendareventtime', '', 'moodle', $params); */
             }
+
 
         /* $items[] = $this->build_link('failed') . "($numfailed)"; */
 
