@@ -88,7 +88,7 @@ class requestcourse_form extends moodleform
             'noselectionstring' => get_string('allareas', 'search'),  
             'tags' => true,                                                               
         );    
-        $mform->addElement('select', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'), $coursefacultyarray, $options);
+        $mform->addElement('autocomplete', 'coursefaculty', get_string('coursefaculty', 'block_usp_mcrs'), $coursefacultyarray, $options);
         $mform->addRule('coursefaculty', get_string('required'), 'nonzero', null, 'client');
 
         // Course School field
@@ -103,7 +103,7 @@ class requestcourse_form extends moodleform
             'noselectionstring' => get_string('allareas', 'search'),  
             'tags' => true,                                                               
         );    
-        $mform->addElement('select', 'courseschool', get_string('courseschool', 'block_usp_mcrs'), $courseschoolarray, $options);
+        $mform->addElement('autocomplete', 'courseschool', get_string('courseschool', 'block_usp_mcrs'), $courseschoolarray, $options);
         $mform->addRule('courseschool', get_string('required'), 'nonzero', null, 'client');
 
         // Course Lecturer field
@@ -134,7 +134,7 @@ class requestcourse_form extends moodleform
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $mform->addElement('select', 'courseidgeneral', 'Course Shell To Be Copied', $courseshellarray);
+        $mform->addElement('autocomplete', 'courseidgeneral', 'Course Shell To Be Copied', $courseshellarray);
         $mform->hideIf('courseidgeneral','singlemultiple','eq', '1');
         $mform->hideIf('courseidgeneral','newbackedup','eq', '1');        
         $mform->hideIf('courseidgeneral','radioar2','eq', '1');
@@ -159,7 +159,7 @@ class requestcourse_form extends moodleform
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $mform->addElement('select', 'courseidf2f', '', $courseshellarray);
+        $mform->addElement('autocomplete', 'courseidf2f', '', $courseshellarray);
         $mform->hideIf('courseidf2f','f2f','notchecked');   
         $mform->hideIf('courseidf2f','newbackedup1','eq', '1');  
         $mform->hideIf('courseidf2f','singlemultiple','eq', '0');  
@@ -184,7 +184,7 @@ class requestcourse_form extends moodleform
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $mform->addElement('select', 'courseidonline', '', $courseshellarray);
+        $mform->addElement('autocomplete', 'courseidonline', '', $courseshellarray);
         $mform->hideIf('courseidonline','online','notchecked');
         $mform->hideIf('courseidonline','newbackedup2','eq', '1');  
         $mform->hideIf('courseidonline','singlemultiple','eq', '0');
@@ -210,7 +210,7 @@ class requestcourse_form extends moodleform
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $mform->addElement('select', 'courseidprint', '', $courseshellarray);
+        $mform->addElement('autocomplete', 'courseidprint', '', $courseshellarray);
         $mform->hideIf('courseidprint','print','notchecked');
         $mform->hideIf('courseidprint','newbackedup3','eq', '1'); 
         $mform->hideIf('courseidprint','singlemultiple','eq', '0');
@@ -236,14 +236,14 @@ class requestcourse_form extends moodleform
         foreach ($allcourseshells as $id => $courseshellobject) {
             $courseshellarray[$id] = $courseshellobject->shortname;
         }
-        $mform->addElement('select', 'courseidblended', '', $courseshellarray);
+        $mform->addElement('autocomplete', 'courseidblended', '', $courseshellarray);
         $mform->hideIf('courseidblended','blended','notchecked');
         $mform->hideIf('courseidblended','newbackedup4','eq', '1'); 
         $mform->hideIf('courseidblended','singlemultiple','eq', '0'); 
         //$mform->addRule('courseidblended', get_string('required'), 'nonzero', null, 'client');
         
         // Additional Information
-        $mform->addElement('editor', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));
+        $mform->addElement('textarea', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));
         $mform->setType('additionalinfo', PARAM_RAW); 
         
         // Submit button with Cancel button
