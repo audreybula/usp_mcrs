@@ -24,7 +24,7 @@
  */
 
 require_once('../../config.php');
-require_once($CFG->dirroot.'/blocks/usp_mcrs/adlib.php');
+require_once($CFG->dirroot.'/blocks/usp_mcrs/admin_lib.php');
 
 
 require_login();
