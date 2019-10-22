@@ -24,18 +24,48 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-    'block/usp_mcrs:addinstance' => array(
-                'riskbitmask' => RISK_DATALOSS,
-
+$capabilities = [
+    'block/usp_mcrs:myaddinstance' => array(
         'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
+        'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array(
-            'editingteacher' => CAP_PREVENT,
-            'teacher' => CAP_PREVENT,
-            'admin' => CAP_ALLOW
+            'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
         ),
-
+        'clonepermissionsfrom' => 'moodle/my:manageblocks'
+    ),
+    'block/usp_mcrs:addinstance' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
+    ),
+    'block/usp_mcrs:view' => [
+        'captype' => 'view',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => [
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+        ],
+        'clonepermissionsfrom' => 'moodle/course:view',
+    ],
+    'block/usp_mcrs:approverecord' => array(
+        'riskbitmask' => RISK_SPAM | RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'legacy' => array(
+        	'coursecreator' => CAP_ALLOW,
+            'teacher'        => CAP_PREVENT,
+            'editingteacher' => CAP_PREVENT,
+            'manager'          => CAP_ALLOW,
+            'student'        => CAP_PREVENT,
+            'guest' => CAP_PREVENT
         ),
-    );
+	),
+];

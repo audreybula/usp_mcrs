@@ -24,7 +24,7 @@
  */
 
 require_once('../../config.php');
-require_once('lib.php');
+require_once('backuplib.php');
 
 require_login();
 
@@ -88,5 +88,23 @@ if ($dupes) {
     }
     echo '</div>';
 }
+
+/* require_once($CFG->libdir.'/moodlelib.php');
+    require_once($CFG->libdir.'/filestorage/zip_packer.php');
+    require_once($CFG->dirroot.'/backup/util/includes/restore_includes.php');
+
+   // setup tempdir for the restore process
+   $extractname = restore_controller::get_tempdir_name($this->course->id, $USER->id);
+   echo $extractname;
+   $extractpath = $CFG->tempdir . '/backup/' . $extractname;
+   echo $extractpath;
+   $filepath    = $CFG->tempdir.'/backup/'.$this->filename;
+   echo $filepath;
+   
+   // .zip needs to be unzipped.
+   if (!file_exists($filepath. "/moodle_backup.xml")) {
+       $fb = get_file_packer('application/vnd.moodle.backup');
+       $fb->extract_to_pathname("$CFG->tempdir/backup/".$this->filename, $extractpath);
+   } */
 
 echo $OUTPUT->footer();
