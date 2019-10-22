@@ -23,7 +23,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once('../../config.php');
-require_once('backuplib.php');
+require_once('lib.php');
 
 require_login();
 

@@ -20,7 +20,7 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2019080701;
+$plugin->version = 2019080700;
 $plugin->requires = 2018120300;         // Requires this Moodle version.
 $plugin->cron = 60 * 60;
 $plugin->component = 'block_usp_mcrs';

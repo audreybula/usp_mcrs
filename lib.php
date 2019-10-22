@@ -13,281 +13,164 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * @package    block_usp_mcrs
+* @copyright   2019 IS314 Group 4 <you@example.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+defined('MOODLE_INTERNAL') || die();
 
 /**
-
- * Functions libraries
+ * Build the SQL query from the search params
  *
- * @package block_usp_mcrs
- * @copyright   2019 IS314 Group 4 <you@example.com>
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @return SQL
  */
+function build_sql_from_search($query, $constraints) {
+    $sql = "SELECT co.id, co.fullname, co.shortname, co.idnumber, cat.name
+        AS category FROM {course} co, {course_categories} cat WHERE
+        co.category = cat.id AND (";
 
-// Step of extracting file information
-const BLOCK_USP_MCRS_STEP_PREPARE = 0;
+    // Set up the SQL constraints.
+    $constraintsqls = array();
 
-// Step of when there is no site version difference, or the difference has been accepted
-const BLOCK_USP_MCRS_STEP_VERSIONCONFIRMED = 1;
+    // Loop through the provided constraints and build the SQL contraints.
+    foreach ($constraints as $c) {
+        if (in_array($c->operator, array('LIKE', 'NOT LIKE'))) {
+            $parts = array();
 
-// Step of when there is no plugin version difference, or the difference has been accepted
-const BLOCK_USP_MCRS_STEP_PLUGINCONFIRMED = 2;
+            foreach (explode('|', $c->search_terms) as $s) {
+                $parts[] = "$c->criteria $c->operator '%{$s}%'";
+            }
 
-/**
- * Check if block_hubcourseinfo is enabled in this site
- * @return bool
- */
-function block_usp_mcrs_infoblockenabled() {
-    global $BLOCK_USP_MCRS_INFOENABLED;
+            $constraintsqls[] = '(' . implode(' OR ', $parts) . ')';
+        } else {
+            $instr = str_replace('|', "', '", $c->search_terms);
 
-    if (!isset($BLOCK_USP_MCRS_INFOENABLED)) {
-        $blocks = core_plugin_manager::instance()->get_enabled_plugins('block');
-        $BLOCK_USP_MCRS_INFOENABLED = in_array('hubcourseinfo', $blocks);
-    }
-
-    return $BLOCK_USP_MCRS_INFOENABLED;
-}
-
-/**
- * Get maximum file size
- * @return float|int
- * @throws dml_exception
- */
-function block_usp_mcrs_getmaxfilesize() {
-    $generalmaximum = get_max_upload_file_size();
-
-    if (block_usp_mcrs_infoblockenabled()) {
-        $infosettings = get_config('block_usp_mcrs', 'maxfilesize') * 1024 * 1024;
-
-        if ($infosettings > 0) {
-            return $generalmaximum < $infosettings ? $generalmaximum : $infosettings;
+            $constraintsqls[] = "($c->criteria $c->operator ('$instr'))";
         }
     }
 
-    return $generalmaximum;
+    // Return the appropriate SQL.
+    return $sql . implode(" $query->type ", $constraintsqls) . ');';
 }
 
 /**
- * Get role ID
- * @return int|null
- * @throws coding_exception
- * @throws dml_exception
+ * Delete courses based on supplied courseids
+ *
+ * @return bool
  */
-function block_usp_mcrs_getroleid() {
+function usp_mcrs_delete_course($courseid) {
     global $DB;
+    // Get the course object based on the supplied courseid.
+    $course = $DB->get_record('course', array('id' => $courseid));
 
-    if (!get_config('block_usp_mcrs', 'allowcapabilitychange')) {
-        return null;
+    // Delete the course.
+    if (delete_course($course, false)) {
+        fix_course_sortorder();
+        return true;
+    } else {
+        return false;
     }
-
-    $role = $DB->get_record('role', ['shortname' => 'usp_mcrs_user']);
-    if (!$role) {
-        return create_role('Course Uploader', 'usp_mcrs_user', 'User for hub course upload');
-    }
-
-    return $role->id;
 }
 
 /**
- * Get sub-directories of given path
- * @param string $path
- * @return string[]
+ * Generates the last bit of the backup .zip's filename based on the
+ * pattern and roles that the admin chose in config.
+ *
+ * @return $suffix
  */
-function block_usp_mcrs_getsubdirectories($path) {
-    if (!is_dir($path)) {
-        return [];
-    }
+function generate_suffix($courseid) {
+    $suffix = '';
 
-    if (!$dir = opendir($path)) {
-        return [];
-    }
+    // Grab the allowed suffixes.
+    $field = get_config('block_usp_mcrs', 'suffix');
 
-    $dirs = [];
+    // Grab the administratively selected roles.
+    $roleids = explode(',', get_config('block_usp_mcrs', 'roles'));
 
-    while ($file = readdir($dir)) {
-        if ($file == '.' || $file == '..') {
-            continue;
+    // Grab the course context.
+    $context = context_course::instance($courseid);
+
+    // When NOT using fullname (which we might want to avoid anyway).
+    if ($field != 'fullname') {
+        // Loop through all the administratively selected roles.
+        foreach ($roleids as $r) {
+            // If the role has any users in the course, return them.
+            if ($users = get_role_users($r, $context, false)) {
+                // Loop through the users and grab the appropriate suffix.
+                foreach ($users as $k => $v) {
+                    $suffix .= '_' . $v->$field;
+                }
+            }
         }
-
-        if (is_dir($path . '/' . $file)) {
-            $dirs[] = $path . '/' . $file;
+    } else {
+        // Loop through all the administratively selected roles.
+        foreach ($roleids as $r) {
+            // If the role has any users in the course, return them.
+            if ($users = get_role_users($r, $context, false)) {
+                // Loop through the users and grab the appropriate suffix.
+                foreach ($users as $k => $v) {
+                    $suffix .= '_' . $v->firstname . $v->lastname;
+                }
+            }
         }
     }
-
-    return $dirs;
+    return $suffix;
 }
 
 /**
- * Get plugins information from extracted path
- * @param string $extractedpath
- * @return array
+ * Instantiate the moodle backup subsystem
+ * and backup the course.
+ *
+ * @return true
  */
-function block_usp_mcrs_getplugins($extractedpath) {
-    $result = [
-        'mod' => [],
-        'blocks' => []
-    ];
+function usp_mcrs_backup_course($course) {
+    global $CFG;
 
-    $moddirs = block_usp_mcrs_getsubdirectories($extractedpath . '/activities');
-    foreach ($moddirs as $moddir) {
-        $modpath = $moddir . '/module.xml';
-        $xml = simplexml_load_file($modpath);
-        if (!$xml || !isset($xml->modulename)) {
-            continue;
-        }
-        $modname = (string)$xml->modulename;
-        $version = isset($xml['version']) ? (double)$xml['version'] : 0;
+    // Required files for the backups.
+    require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
+    require_once($CFG->dirroot . '/backup/controller/backup_controller.class.php');
 
-        if (!isset($result['mod'][$modname])) {
-            $result['mod'][$modname] = $version;
-        }
-    }
+    // Setup the backup controller.
+    $bc = new backup_controller(backup::TYPE_1COURSE, $course->id,
+        backup::FORMAT_MOODLE, backup::INTERACTIVE_NO, backup::MODE_AUTOMATED, 2);
+    $outcome = $bc->execute_plan();
+    $results = $bc->get_results();
+    $file = $results['backup_destination'];
+    $suffix = generate_suffix($course->id);
+    $matchers = array('/\s/', '/\//');
 
-    $blockdirs = block_usp_mcrs_getsubdirectories($extractedpath . '/course/blocks');
-    foreach ($blockdirs as $blockdir) {
-        $blockpath = $blockdir . '/block.xml';
-        $xml = simplexml_load_file($blockpath);
-        if (!$xml || !isset($xml->blockname)) {
-            continue;
-        }
-        $blockname = (string)$xml->blockname;
-        $version = isset($xml['version']) ? (double)$xml['version'] : 0;
+    // Ensure the shortname is safe.
+    $safeshort = preg_replace($matchers, '-', $course->shortname);
 
-        if (!isset($result['blocks'][$blockname])) {
-            $result['blocks'][$blockname] = $version;
-        }
-    }
+    // Name the file.
+    $usp_mcrsfile = "usp_mcrs-{$safeshort}{$suffix}.zip";
 
-    return $result;
-}
+    // Build the path.
+    $usp_mcrspath = get_config('block_usp_mcrs', 'path');
 
-/**
- * Check if all plugin dependencies indicated in mbz file is valid in this site
- * @param array $plugins
- * @return bool
- */
-function block_usp_mcrs_valid($plugins) {
-    $installedmods = core_plugin_manager::instance()->get_plugins_of_type('mod');
-    foreach ($plugins['mod'] as $modname => $version) {
-        if (!isset($installedmods[$modname]) || $installedmods[$modname]->versiondb != $version) {
-            return false;
-        }
-    }
+    // Copy the file to the destination.
+    $file->copy_content_to($CFG->dataroot . $usp_mcrspath . $usp_mcrsfile);
 
-    $installedblocks = core_plugin_manager::instance()->get_plugins_of_type('block');
-    foreach ($plugins['blocks'] as $blockname => $version) {
-        if (!isset($installedblocks[$blockname]) || $installedblocks[$blockname]->versiondb != $version) {
-            return false;
-        }
-    }
+    // Kill the backup controller.
+    $bc->destroy();
+    unset($bc);
 
     return true;
 }
 
 /**
- * Create table array informing plugin difference data
- * @param array $plugins
- * @return array
+ * Email the admins
+ *
  */
-function block_usp_mcrs_plugininfotable($plugins) {
-    //table[pluginname] = [courseversion=>?, siteversion=?]
-    $table = [];
+function usp_mcrs_email_admins($errors) {
+    $dellink = new moodle_url('/blocks/usp_mcrs/delete.php');
 
-    $installedmods = core_plugin_manager::instance()->get_plugins_of_type('mod');
-    $installedblocks = core_plugin_manager::instance()->get_plugins_of_type('block');
+    $subject = get_string('email_subject', 'block_usp_mcrs');
+    $from = get_string('email_from', 'block_usp_mcrs');
+    $messagetext = $errors . "\n\n" . get_string('email_body', 'block_usp_mcrs') . $dellink;
 
-    foreach ($plugins['mod'] as $modname => $version) {
-        $table['mod_' . $modname] = [
-            'courseversion' => $version,
-            'siteversion' => isset($installedmods[$modname]) ? $installedmods[$modname]->versiondb : 0
-        ];
+    foreach (get_admins() as $admin) {
+        email_to_user($admin, $from, $subject, $messagetext);
     }
-
-    foreach ($plugins['blocks'] as $blockname => $version) {
-        $table['block_' . $blockname] = [
-            'courseversion' => $version,
-            'siteversion' => isset($installedblocks[$blockname]) ? $installedblocks[$blockname]->versiondb : 0
-        ];
-    }
-
-    return $table;
-}
-
-/**
- * Get HTML table from table array for page rendering
- * @param array $table
- * @return html_table
- * @throws coding_exception
- */
-function block_usp_mcrs_plugininfotable_html($table) {
-    $htmltable = new html_table();
-    $htmltable->head = [
-        get_string('requiredplugin_name', 'block_usp_mcrs'),
-        get_string('requiredplugin_courseversion', 'block_usp_mcrs'),
-        get_string('requiredplugin_siteversion', 'block_usp_mcrs'),
-        get_string('requiredplugin_status', 'block_usp_mcrs')
-    ];
-    $htmltable->data = [];
-    foreach ($table as $pluginname => $versiondata) {
-        $text = '';
-        $style = 'default';
-        if (!$versiondata['siteversion']) {
-            $text = get_string('requiredplugin_notinstalled', 'block_usp_mcrs');
-            $style = 'danger';
-        } else if ($versiondata['siteversion'] == $versiondata['courseversion']) {
-            $text = get_string('requiredplugin_identical', 'block_usp_mcrs');
-            $style = 'success';
-        } else if ($versiondata['siteversion'] < $versiondata['courseversion']) {
-            $text = get_string('requiredplugin_siteolder', 'block_usp_mcrs');
-            $style = 'warning';
-        } else if ($versiondata['siteversion'] > $versiondata['courseversion']) {
-            $text = get_string('requiredplugin_sitenewer', 'block_usp_mcrs');
-            $style = 'success';
-        }
-
-        $htmltable->data[] = [
-            $pluginname,
-            $versiondata['courseversion'],
-            $versiondata['siteversion'] ? $versiondata['siteversion'] : '',
-            html_writer::span($text, 'text-' . $style)
-        ];
-    }
-
-    return $htmltable;
-}
-
-/**
- * Reduce info object by removing unnecessary
- * @param stdClass $info
- * @return stdClass
- */
-function block_usp_mcrs_reduceinfo($info) {
-    $newinfo = new stdClass();
-    $newinfo->type = $info->type;
-    $newinfo->moodle_version = $info->moodle_version;
-    $newinfo->moodle_release = $info->moodle_release;
-    $newinfo->original_wwwroot = $info->original_wwwroot;
-    $newinfo->original_course_id = $info->original_course_id;
-
-    return $newinfo;
-}
-
-function block_usp_mcrs_getbackupdir() {
-    global $CFG;
-    $backupdir = $CFG->tempdir . '/backup';
-
-    if (!check_dir_exists($backupdir) && !mkdir($backupdir)) {
-        return null;
-    }
-    return $backupdir;
-}
-
-/**
- * Get backup path
- * @param string $filename
- * @return string
- */
-function block_usp_mcrs_getbackuppath($filename) {
-    global $CFG;
-    $backupdir = block_usp_mcrs_getbackupdir();
-    return $backupdir ? "{$backupdir}/{$filename}" : "{$CFG->tempdir}/backup_{$filename}";
 }

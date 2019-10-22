@@ -24,7 +24,6 @@
 namespace block_usp_mcrs\task;
 
 defined('MOODLE_INTERNAL') || die();
-
 require_once($CFG->dirroot . '/blocks/usp_mcrs/block_usp_mcrs.php');
 
 /**
@@ -56,47 +55,55 @@ class backup_task extends \core\task\scheduled_task {
  */
 function begin_backup_task() {
     global $DB, $CFG;
-    mtrace('***********************************');
-    mtrace('*****BEGIN BACKUP FOR USP_MCRS*****');
-    mtrace('***********************************');
+
+    mtrace('begin cron for usp_mcrs!!!!!!!!!!!!!!!!!!!1');
+
     // Grab the running status.
     $running = get_config('block_usp_mcrs', 'running');
+
     // If the task is running, let the user know how long it's been running.
     if ($running) {
         $minutesrun = round((time() - $running) / 60);
         echo "\n" . get_string('cron_already_running', 'block_usp_mcrs', $minutesrun) . "\n";
         return;
     }
+
     // Set up the params.
     $params = array('status' => 'BACKUP');
+
     // Return true for courses where status = BACKUP.
     if (!$backups = $DB->get_records('block_usp_mcrs_statuses', $params)) {
         return true;
     }
+
     $error = false;
     $errorlog = '';
+
     // Set the running status to now.
     set_config('running', time(), 'block_usp_mcrs');
+
     // Loop through the courses to get backed up.
     foreach ($backups as $b) {
         $course = $DB->get_record('course', array('id' => $b->coursesid));
         echo "\n" . get_string('backing_up', 'block_usp_mcrs') . ' ' . $course->shortname . "\n";
+
         // Log any failures.
         if (!usp_mcrs_backup_course($course)) {
             $error = true;
             $errorlog .= get_string('cron_backup_error', 'block_usp_mcrs', $course->shortname) . "\n";
         }
+
         // Convert the status to the acceptable FAIL / SUCCESS keyword.
         $b->status = $error ? 'FAIL' : 'SUCCESS';
         // Update the DB with the appropriate status.
         $DB->update_record('block_usp_mcrs_statuses', $b);
-        mtrace('***********************************');
-        mtrace('*****BEGIN  RESTORE FOR USP_MCRS*****');
-        mtrace('***********************************');
     }
+
     // Clear the running flag.
     set_config('running', '', 'block_usp_mcrs');
+
     // Email the admins about the backup status.
     usp_mcrs_email_admins($errorlog);
+
     return true;
 }

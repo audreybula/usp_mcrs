@@ -20,7 +20,7 @@
  */
 
 require_once('../../config.php');
-require_once('backuplib.php');
+require_once('lib.php');
 require_login();
 
 // Ensure only the site admin accesses this page.
