@@ -147,6 +147,10 @@ else if ($fromform = $mform->get_data())
                 $copyfromf2f = $DB->get_field_select('course', 'shortname', 'id = '.$courseidf2f, array(), $strictness=IGNORE_MISSING);
                 $requestf2f->course_copyfrom = $copyfromf2f;
 
+
+                $moodleformatf2f = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_F';
+                $requestf2f->course_new = $moodleformatf2f;
+
                 $data = new stdClass();
                 $data->category = 1;
                 $data->idnumber = $moodleformatf2f;
