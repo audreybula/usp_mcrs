@@ -57,6 +57,7 @@
         <FIELD NAME="support_staff_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="support_staff_email" SEQUENCE="false" TYPE="text" NOTNULL="true"  />
         <FIELD NAME="faculty_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="school_name" SEQUENCE="false" TYPE="text" NOTNULL="true"/>
         <FIELD NAME="course_count" LENGTH="10" TYPE="int" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
