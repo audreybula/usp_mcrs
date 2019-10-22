@@ -22,6 +22,9 @@ defined('MOODLE_INTERNAL') || die();
 
 // Strings for block.
 $string['pluginname'] = 'Moodle Course Request';
+$string['block_requestcourse'] = 'Make course request';
+$string['block_configemail'] = 'Modify Email Template';
+$string['block_delete'] = 'Delete';
 $string['requestcourse'] = 'Make course request';
 $string['configemail'] = 'Modify Email Template';
 $string['requestdone'] = 'Course request done.';

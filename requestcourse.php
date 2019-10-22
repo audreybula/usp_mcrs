@@ -84,6 +84,9 @@ else if ($fromform = $mform->get_data())
             $copyfromgeneral = $DB->get_field_select('course', 'shortname', 'id = '.$courseidgeneral, array(), $strictness=IGNORE_MISSING);
             $request->course_copyfrom = $copyfromgeneral;
 
+            $moodleformat = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester;
+            $request->course_new = $moodleformat;
+
             $data = new stdClass();
             $data->category = 1;
             $data->idnumber = $moodleformat;
@@ -202,11 +205,14 @@ else if ($fromform = $mform->get_data())
                 $copyfromonline = $DB->get_field_select('course', 'shortname', 'id = '.$courseidonline, array(), $strictness=IGNORE_MISSING);
                 $requestonline->course_copyfrom = $copyfromonline;
 
+                $moodleformatonline = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_O';
+                $requestonline->course_new = $moodleformatonline;
+
                 $data = new stdClass();
                 $data->category = 1;
-                $data->idnumber = $moodleformatf2f;
+                $data->idnumber = $moodleformatonline;
                 $data->fullname = $coursecode.': '.$coursename;
-                $data->shortname = $moodleformatf2f;
+                $data->shortname = $moodleformatonline;
                 $data->summary = '';
                 $data->summaryformat = 0;
                 $data->format = 'topics';
@@ -259,6 +265,9 @@ else if ($fromform = $mform->get_data())
                 $courseidprint = $fromform->courseidprint;
                 $copyfromprint = $DB->get_field_select('course', 'shortname', 'id = '.$courseidprint, array(), $strictness=IGNORE_MISSING);
                 $requestprint->course_copyfrom = $copyfromprint;
+
+                $moodleformatprint = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_P';
+                $requestprint->course_new = $moodleformatprint;
 
                 $data = new stdClass();
                 $data->category = 1;
@@ -318,11 +327,14 @@ else if ($fromform = $mform->get_data())
                 $copyfromblended = $DB->get_field_select('course', 'shortname', 'id = '.$courseidblended, array(), $strictness=IGNORE_MISSING);
                 $requestblended->course_copyfrom = $copyfromblended;
 
+                $moodleformatblended = $coursecode.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_B';
+                $requestblended->course_new = $moodleformatblended;
+
                 $data = new stdClass();
                 $data->category = 1;
-                $data->idnumber = $moodleformatprint;
+                $data->idnumber = $moodleformatblended;
                 $data->fullname = $coursecode.': '.$coursename;
-                $data->shortname = $moodleformatprint;
+                $data->shortname = $moodleformatblended;
                 $data->summary = '';
                 $data->summaryformat = 0;
                 $data->format = 'topics';
