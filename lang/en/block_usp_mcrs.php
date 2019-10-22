@@ -41,6 +41,11 @@ $string['cron_already_running'] = 'Skipping usp_mcrs, it has already been ' .
     'running for {$a} minute(s)';
 $string['backuptask'] = 'Backup job';
 
+//Strings for support staff
+$string['support_staff_name'] = 'Support Staff';
+$string['course_count'] ='Course Count';
+$string['school'] = 'School';
+
 // Course Request Form Strings
 $string['requestcourse'] = 'Make A Course Request';
 $string['courserequestform'] = 'Course Request Form';
