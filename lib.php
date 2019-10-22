@@ -32,6 +32,59 @@ const BLOCK_USP_MCRS_STEP_VERSIONCONFIRMED = 1;
 // Step of when there is no plugin version difference, or the difference has been accepted
 const BLOCK_USP_MCRS_STEP_PLUGINCONFIRMED = 2;
 
+
+/**
+ * @param $from_form
+ * @param $DB
+ * @param $USER
+ * @param $request
+ * @param $strictness
+ * @param $course_code
+ * @param $course_name
+ */
+function set_form_details_for_course_mode($from_form, $DB, $USER, &$request, &$strictness, &$course_code, &$course_name)
+{
+    $request->request_date = date('Y-m-d H:i:s');
+    $codeId = $from_form->coursecode;
+    $course_code = $DB->get_field_select('block_usp_mcrs_courses', 'course_code', 'id = ' . $codeId, array(), $strictness = IGNORE_MISSING);
+    $request->course_code = $course_code;
+    $nameId = $from_form->coursename;
+    $course_name = $DB->get_field_select('block_usp_mcrs_courses', 'course_name', 'id = ' . $nameId, array(), $strictness = IGNORE_MISSING);
+    $request->course_name = $course_name;
+    $schoolId = $from_form->courseschool;
+    $courseSchool = $DB->get_field_select('block_usp_mcrs_courses', 'school_name', 'id = ' . $schoolId, array(), $strictness = IGNORE_MISSING);
+    $request->course_school = $courseSchool;
+    $facultyId = $from_form->coursefaculty;
+    $courseFaculty = $DB->get_field_select('block_usp_mcrs_courses', 'faculty_name', 'id = ' . $facultyId, array(), $strictness = IGNORE_MISSING);
+    $request->course_faculty = $courseFaculty;
+    $request->course_requester = $USER->email;
+    $request->course_lecturer = $from_form->courselecturer;
+}
+
+/**
+ * @param $moodle_format
+ * @param $course_code
+ * @param $course_name
+ * @return stdClass $course_data
+ */
+function create_new_shell($moodle_format, $course_code, $course_name)
+{
+    $course_data = new stdClass();
+    $course_data->category = 1;
+    $course_data->idnumber = $moodle_format;
+    $course_data->fullname = $course_code . ': ' . $course_name;
+    $course_data->shortname = $moodle_format;
+    $course_data->summary = '';
+    $course_data->summaryformat = 0;
+    $course_data->format = 'topics';
+    $course_data->showgrades = 1;
+    $course_data->visible = 1;
+
+    create_course($course_data);
+
+    return $course_data;
+}
+
 /**
  * Check if block_hubcourseinfo is enabled in this site
  * @return bool
