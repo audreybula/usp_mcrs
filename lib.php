@@ -15,6 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+
  * Functions libraries
  *
  * @package block_usp_mcrs
