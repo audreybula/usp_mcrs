@@ -96,38 +96,20 @@ class block_usp_mcrs extends block_list {
 
         // Build the icon list.
         $icons[] = $OUTPUT->pix_icon('i/edit', '', 'moodle', $params);
+        $icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $params);
+        $icons[] = $OUTPUT->pix_icon('i/delete', '', 'moodle', $params);
+        $icons[] = $OUTPUT->pix_icon('i/email', '', 'moodle', $params);
+
+
+
         // Build the list of items.
         $items[] = $this->build_link('requestcourse');
-
-
-        if (has_capability('moodle/site:config', $context)) {
-            if (has_capability('block/usp_mcrs:approverequest', $context)) {
-                $icons[] = $OUTPUT->pix_icon('i/settings', '', 'moodle', $params);
-                /*  $icons[] = $OUTPUT->pix_icon('i/backup', '', 'moodle', $params); */
-                // Build the list of items.
-                $items[] = $this->build_link('mcrs_admin');
-            }
-        }
-
-
-        $icons[] = $OUTPUT->pix_icon('i/delete', '', 'moodle', $params);
-        // Build the list of items.
-        /* $items[] = $this->build_link('index'); */
+        $items[] = $this->build_link('mcrs_admin');
         $items[] = $this->build_link('delete') . "($numpending)";
-        /* $icons[] = $OUTPUT->pix_icon('i/risk_xss', '', 'moodle', $params); */
+        $items[] = $this->build_link('configemail');
 
 
-        if (has_capability('moodle/site:config', $context)) {
-            if (has_capability('block/usp_mcrs:approverequest', $context)) {
-                $icons[] = $OUTPUT->pix_icon('i/email', '', 'moodle', $params);
-                $items[] = $this->build_link('configemail');
-                /* $icons[] = $OUTPUT->pix_icon('i/calendareventtime', '', 'moodle', $params); */
-            }
-        }
-        /* $items[] = $this->build_link('failed') . "($numfailed)"; */
-
-        /* $items[] = $statustext; */
-        // Bring it all together.
+        // Bring it all together
 
         $this->page->requires->jquery();
         $this->page->requires->js(new moodle_url('/blocks/usp_mcrs/script.js'));
