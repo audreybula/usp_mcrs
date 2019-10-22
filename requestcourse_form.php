@@ -243,7 +243,7 @@ class requestcourse_form extends moodleform
         //$mform->addRule('courseidblended', get_string('required'), 'nonzero', null, 'client');
         
         // Additional Information
-        $mform->addElement('editor', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));
+        $mform->addElement('textarea', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));
         $mform->setType('additionalinfo', PARAM_RAW); 
         
         // Submit button with Cancel button
