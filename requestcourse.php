@@ -113,7 +113,7 @@ else if ($fromform = $mform->get_data())
                 $requestf2f->course_faculty = $coursefaculty;
                 $requestf2f->course_requester = $USER->email;
                 $requestf2f->course_lecturer = $fromform->courselecturer;
-                $request->additional_info = $fromform->additionalinfo;
+                $requestf2f->additional_info = $fromform->additionalinfo;
                 if($fromform->newbackedup1 == 0)
                 {
                     $courseidf2f = $fromform->courseidf2f;
@@ -147,7 +147,7 @@ else if ($fromform = $mform->get_data())
                 $requestonline->course_faculty = $coursefaculty;
                 $requestonline->course_requester = $USER->email;
                 $requestonline->course_lecturer = $fromform->courselecturer;
-                $request->additional_info = $fromform->additionalinfo;
+                $requestonline->additional_info = $fromform->additionalinfo;
                 if($fromform->newbackedup2 == 0)
                 {
                     $courseidonline = $fromform->courseidonline;
@@ -181,7 +181,7 @@ else if ($fromform = $mform->get_data())
                 $requestprint->course_faculty = $coursefaculty;
                 $requestprint->course_requester = $USER->email;
                 $requestprint->course_lecturer = $fromform->courselecturer;
-                $request->additional_info = $fromform->additionalinfo;
+                $requestprint->additional_info = $fromform->additionalinfo;
                 if($fromform->newbackedup3 == 0)
                 {
                     $courseidprint = $fromform->courseidprint;
@@ -215,7 +215,7 @@ else if ($fromform = $mform->get_data())
                 $requestblended->course_faculty = $coursefaculty;
                 $requestblended->course_requester = $USER->email;
                 $requestblended->course_lecturer = $fromform->courselecturer;
-                $request->additional_info = $fromform->additionalinfo;
+                $requestblended->additional_info = $fromform->additionalinfo;
                 if($fromform->newbackedup4 == 0)
                 {
                     $courseidblended = $fromform->courseidblended;
