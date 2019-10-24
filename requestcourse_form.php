@@ -249,17 +249,4 @@ class requestcourse_form extends moodleform
         // Submit button with Cancel button
         $this->add_action_buttons(true, get_string('submitbutton', 'block_usp_mcrs'));
     } 
-
-    function validation($data, $files) {
-        $errors = array();
-        if($data['newbackedup4'] == 0)
-        {
-            echo 'Existing Blended';
-        }
-        /* foreach(array('subject', 'message_editor') as $field) {
-            if(empty($data[$field]))
-                $errors[$field] = get_string('email_error_field', 'block_quickmail', $field);
-        } 
-        return $errors; */
-    }
 }
