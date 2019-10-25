@@ -58,9 +58,6 @@ foreach ($newbackupids as $id) {
     $DB->insert_record('block_usp_mcrs_statuses', $status);
 }
 
-// Let the admin know that the job has been sent and will be run.
-echo '<br />' . get_string('job_sent_body', 'block_usp_mcrs');
-
 // If the user is trying to backup duplicate courses....
 if ($dupes) {
     echo '<div style = "text-align:center" class = "error">';
