@@ -26,6 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 // Get the requisite dependencies.
 require_once($CFG->dirroot . '/blocks/usp_mcrs/backuplib.php');
+require_once($CFG->dirroot . '/blocks/usp_mcrs/restorelib.php');
 require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
 /**
  * Main class for setting up the block.

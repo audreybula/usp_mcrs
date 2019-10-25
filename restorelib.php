@@ -18,7 +18,7 @@
  * Functions libraries
  *
  * @package block_hubcourseupload
- * @copyright   2019 IS314 Group 4 <you@example.com>
+ * @copyright 2018 Moodle Association of Japan
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -276,7 +276,6 @@ function block_hubcourseupload_getbackupdir() {
 
     if (!check_dir_exists($backupdir) && !mkdir($backupdir)) {
         return null;
-        echo 'EROOR';
     }
     return $backupdir;
 }

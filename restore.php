@@ -24,31 +24,114 @@
 
 require_once(__DIR__ . '/../../config.php');
 require_once(__DIR__ . '/lib.php');
+require_once(__DIR__ . '/classes/courseupload_form.php');
+require_once(__DIR__ . '/classes/versionconfirm_form.php');
+require_once(__DIR__ . '/classes/pluginconfirm_form.php');
 require_once(__DIR__ . '/../../backup/util/includes/restore_includes.php');
-require_once($CFG->libdir.'/moodlelib.php');
-require_once($CFG->libdir.'/filestorage/zip_packer.php');
+if (block_hubcourseupload_infoblockenabled()) {
+    require_once(__DIR__ . '/../../blocks/hubcourseinfo/lib.php');
+}
 
 $systemcontext = context_system::instance();
 $usercontext = context_user::instance($USER->id);
 
+require_capability('block/hubcourseupload:upload', $usercontext);
+
 $step = optional_param('step', BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE, PARAM_INT);
 $versionid = optional_param('version', 0, PARAM_INT);
 
-if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE) 
-{
-    /*$courseuploadform = new courseupload_form();
+$versionconfirmform = new versionconfirm_form();
+$pluginconfirmform = new pluginconfirm_form();
+if ($versionconfirmform->is_cancelled() || $pluginconfirmform->is_cancelled()) {
+    $dataraw = $versionconfirmform->is_submitted() ? $versionconfirmform->get_submitted_data() : $pluginconfirmform->get_submitted_data();
+    $data = json_decode($dataraw->jsondata);
 
-     if ($courseuploadform->is_submitted()) {
+    if (isset($data->archivename)) {
+        fulldelete(block_hubcourseupload_getbackuppath($data->archivename));
+    }
+    if (isset($data->extractedname)) {
+        fulldelete(block_hubcourseupload_getbackuppath($data->extractedname));
+    }
+
+    if (($data->version && block_hubcourseupload_infoblockenabled())) {
+        $version = $DB->get_record('block_hubcourse_versions', ['id' => $data->version]);
+        redirect(new moodle_url('/blocks/hubcourseinfo/manage.php', ['id' => $version->hubcourseid]));
+    } else {
+        redirect(new moodle_url('/'));
+    }
+
+    exit;
+}
+
+$versionconfirmformdata = null;
+if ($versionconfirmform->is_submitted()) {
+    $versionconfirmformdata = $versionconfirmform->get_jsondata();
+    $step = $versionconfirmformdata->step;
+    $mbzfilename = $versionconfirmformdata->mbzfilename;
+    $versionid = $versionconfirmformdata->version;
+}
+
+$pluginconfirmformdata = null;
+if ($pluginconfirmform->is_submitted()) {
+    $pluginconfirmformdata = $pluginconfirmform->get_jsondata();
+    $step = $pluginconfirmformdata->step;
+    $mbzfilename = $pluginconfirmformdata->mbzfilename;
+    $versionid = $pluginconfirmformdata->version;
+}
+
+if ($versionid && block_hubcourseupload_infoblockenabled()) {
+    $version = $DB->get_record('block_hubcourse_versions', ['id' => $versionid]);
+    if (!$version) {
+        throw new Exception();
+    }
+
+    $hubcoursecontext = block_hubcourseinfo_getcontextfromversion($version);
+
+    require_capability('block/hubcourseinfo:managecourse', $hubcoursecontext);
+}
+
+if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE) {
+    $courseuploadform = new courseupload_form();
+    if ($courseuploadform->is_submitted()) {
         // Upload new course
+
         $courseuploaddata = $courseuploadform->get_data();
+        echo $courseuploaddata.'=> COURSE UPLOAD DATA';
         $mbzfilename = $courseuploadform->get_new_filename('coursefile');
+        echo $mbzfilename.'=> MBZ FILENAME';
         $archivename = restore_controller::get_tempdir_name(0, $USER->id);
+        echo $archivename.'=> ARCHIVE NAME';
         $archivepath = block_hubcourseupload_getbackuppath($archivename);
+        echo $archivepath.'=> ARCHIVE PATH';
         if (!$courseuploadform->save_file('coursefile', $archivepath)) {
             throw new Exception(get_string('error_cannotsaveuploadfile', 'block_hubcourseupload'));
         }
+
+    } else if ($versionid && block_hubcourseupload_infoblockenabled()) {
+        // Apply version
+        if (!isset($fs) || !$fs) {
+            $fs = get_file_storage();
+        }
+
+        $archivefile = null;
+        $files = $fs->get_area_files($hubcoursecontext->id, 'block_hubcourse', 'course', $version->id);
+        foreach ($files as $file) {
+            if ($file->get_mimetype() == 'application/vnd.moodle.backup') {
+                $archivefile = $file;
+                break;
+            }
+        }
+        if (!$archivefile) {
+            throw new Exception('error');
+        }
+
+        $archivename = restore_controller::get_tempdir_name(0, $USER->id);
+        $archivepath = block_hubcourseupload_getbackuppath($archivename);
+        $archivefile->copy_content_to($archivepath);
+
+    } else {
+        throw new Exception(get_string('error_filenotuploaded', 'block_hubcourseupload'));
     }
- */
 
     $info = backup_general_helper::get_backup_information_from_mbz($archivepath);
     if ($info->type != 'course') {
@@ -80,6 +163,11 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE)
 }
 
 if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_VERSIONCONFIRMED) {
+    if ($versionconfirmform->is_submitted()) {
+        $archivename = $versionconfirmformdata->archivename;
+        $archivepath = block_hubcourseupload_getbackuppath($archivename);
+        $info = $versionconfirmformdata->info;
+    }
 
     $extractedname = restore_controller::get_tempdir_name($systemcontext->id, $USER->id);
     $extractedpath = block_hubcourseupload_getbackuppath($extractedname);
@@ -88,16 +176,44 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_VERSIONCONFIRMED) {
         throw new Exception(get_string('error_cannotextractfile', 'block_hubcourseupload'));
     }
 
+    $plugins = block_hubcourseupload_getplugins($extractedpath);
+    if (!block_hubcourseupload_valid($plugins)) {
+        $PAGE->set_context($systemcontext);
+        $PAGE->set_pagelayout('standard');
+        $PAGE->set_title(get_string('pluginname', 'block_hubcourseupload'));
+        $PAGE->set_heading(get_string('pluginname', 'block_hubcourseupload'));
+        echo $OUTPUT->header();
+        $pluginconfirmform = new pluginconfirm_form($plugins, [
+            'archivename' => $archivename,
+            'info' => block_hubcourseupload_reduceinfo($info),
+            'step' => BLOCK_HUBCOURSEUPLOAD_STEP_PLUGINCONFIRMED,
+            'mbzfilename' => $mbzfilename,
+            'extractedname' => $extractedname,
+            'version' => $versionid
+        ]);
+        $pluginconfirmform->display();
+        echo $OUTPUT->footer();
+        exit;
+    }
+
     $step = BLOCK_HUBCOURSEUPLOAD_STEP_PLUGINCONFIRMED;
 }
 
 if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PLUGINCONFIRMED) {
+    if ($pluginconfirmform->is_submitted()) {
+        $archivename = $pluginconfirmformdata->archivename;
+        $archivepath = block_hubcourseupload_getbackuppath($archivename);
+        $info = $pluginconfirmformdata->info;
+        $extractedname = $pluginconfirmformdata->extractedname;
+        $extractedpath = block_hubcourseupload_getbackuppath($extractedname);
+        $plugins = block_hubcourseupload_getplugins($extractedpath);
+    }
 
-    /* if ($version && block_hubcourseupload_infoblockenabled()) {
+    if ($version && block_hubcourseupload_infoblockenabled()) {
         // Apply Version
         $coursecontext = $hubcoursecontext->get_course_context();
         $courseid = $coursecontext->instanceid;
-    } else { */
+    } else {
         // New Course
         $category = get_config('block_hubcourseupload', 'defaultcategory');
 
@@ -107,7 +223,7 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PLUGINCONFIRMED) {
 
         list($fullname, $shortname) = restore_dbops::calculate_course_names(0, get_string('restoringcourse', 'backup'), get_string('restoringcourseshortname', 'backup'));
         $courseid = restore_dbops::create_new_course($fullname, $shortname, $category);
-    //}
+    }
 
     $course = $DB->get_record('course', ['id' => $courseid]);
 
