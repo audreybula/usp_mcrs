@@ -45,7 +45,6 @@ class requestcourse_form extends moodleform
         }                                                                                                                        
         $options = array(                                                                                                           
             'multiple' => false,             
-            //'noselectionstring' => 'No Course Selected', 
             'tags' => false,                                                               
         );    
         $mform->addElement('autocomplete', 'coursecode', get_string('coursecode', 'block_usp_mcrs'), $coursecodearray, $options);
@@ -60,7 +59,6 @@ class requestcourse_form extends moodleform
         }                                                                                                                        
         $options = array(                                                                                                           
             'multiple' => false,                         
-            //'noselectionstring' => get_string('allareas', 'search'),  
             'tags' => false,                                                               
         );    
         $mform->addElement('autocomplete', 'coursename', get_string('coursename', 'block_usp_mcrs'), $coursenamearray, $options);  
@@ -74,7 +72,6 @@ class requestcourse_form extends moodleform
         // Course Semester
         $coursesemarray = array('Semester', '01'=>'Semester I', '03'=>'Semester II', '02'=>'Flexi-School Winter', '04'=>'Flexi-School Summer', '30-Week', '31'=>'Trimester 1', '32'=>'Trimester 2', '33'=>'Trimester 3', '21'=>'PDLP-Term 1', '22'=>'PDLP-Term 2');
         $mform->addElement('select', 'coursesemester', 'Semester Course Is To Be Offered', $coursesemarray);
-        //$mform->addRule('coursesemester', get_string('required'), 'nonzero', null, 'client');
 
         // Course Faculty field
         $allcoursefaculty = $DB->get_records_select('block_usp_mcrs_courses', 'id > 0', array(), 'faculty_name', 'id, faculty_name');                                                           
@@ -138,7 +135,6 @@ class requestcourse_form extends moodleform
         $mform->hideIf('courseidgeneral','singlemultiple','eq', '1');
         $mform->hideIf('courseidgeneral','newbackedup','eq', '1');        
         $mform->hideIf('courseidgeneral','radioar2','eq', '1');
-        //$mform->addRule('courseidgeneral', get_string('required'), 'nonzero', null, 'client');
         
         // Course Mode F2F checkbox
         $mform->addElement('checkbox', 'f2f', 'F2F Mode', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
@@ -163,7 +159,6 @@ class requestcourse_form extends moodleform
         $mform->hideIf('courseidf2f','f2f','notchecked');   
         $mform->hideIf('courseidf2f','newbackedup1','eq', '1');  
         $mform->hideIf('courseidf2f','singlemultiple','eq', '0');  
-        //$mform->addRule('courseidf2f', get_string('required'), 'nonzero', null, 'client');
 
         // Course Mode Online checkbox
         $mform->addElement('checkbox', 'online', '', get_string('online', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'online\', this.checked)"');
@@ -188,11 +183,9 @@ class requestcourse_form extends moodleform
         $mform->hideIf('courseidonline','online','notchecked');
         $mform->hideIf('courseidonline','newbackedup2','eq', '1');  
         $mform->hideIf('courseidonline','singlemultiple','eq', '0');
-        //$mform->addRule('courseidonline', get_string('required'), 'nonzero', null, 'client');
 
         // Course Mode Print checkbox
         $mform->addElement('checkbox', 'print', '', get_string('print', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'print\', this.checked)"');
-        $mform->hideIf('print','newbackedup','eq', '1');
         $mform->hideIf('print','singlemultiple','eq', '0');
 
         // New or Backed up Print shell
@@ -214,11 +207,9 @@ class requestcourse_form extends moodleform
         $mform->hideIf('courseidprint','print','notchecked');
         $mform->hideIf('courseidprint','newbackedup3','eq', '1'); 
         $mform->hideIf('courseidprint','singlemultiple','eq', '0');
-        //$mform->addRule('courseidprint', get_string('required'), 'nonzero', null, 'client');
 
         // Course Mode Blended checkbox
         $mform->addElement('checkbox', 'blended', '', get_string('blended', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'blended\', this.checked)"'); 
-        $mform->hideIf('blended','newbackedup','eq', '1');
         $mform->hideIf('blended','singlemultiple','eq', '0');  
 
         // New or Backed up Blended shell
@@ -240,7 +231,6 @@ class requestcourse_form extends moodleform
         $mform->hideIf('courseidblended','blended','notchecked');
         $mform->hideIf('courseidblended','newbackedup4','eq', '1'); 
         $mform->hideIf('courseidblended','singlemultiple','eq', '0'); 
-        //$mform->addRule('courseidblended', get_string('required'), 'nonzero', null, 'client');
         
         // Additional Information
         $mform->addElement('textarea', 'additionalinfo', get_string('additionalinfo', 'block_usp_mcrs'));
