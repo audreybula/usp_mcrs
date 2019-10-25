@@ -37,14 +37,8 @@ if ($ADMIN->fulltree) {
     $settings->add(new usp_mcrs_path_setting('block_usp_mcrs/path',
         get_string('config_path', 'block_usp_mcrs'),
         get_string('config_path_desc', 'block_usp_mcrs', $CFG->dataroot), ''));
-    $settings->add(new admin_setting_configselect('block_usp_mcrs/suffix',
-        get_string('config_pattern', 'block_usp_mcrs'),
-        get_string('config_pattern_desc', 'block_usp_mcrs'), 0, $suffixchoices));
     $settings->add(new admin_setting_configtext('block_usp_mcrs/size_limit',
         get_string('config_size_limit', 'block_usp_mcrs'),
         get_string('config_size_limit_desc', 'block_usp_mcrs'), ''));
-    $settings->add(new admin_setting_pickroles('block_usp_mcrs/roles',
-        get_string('config_roles', 'block_usp_mcrs'),
-        get_string('config_roles_desc', 'block_usp_mcrs'), array()));
     $settings->add(new admin_setting_heading('block_usp_mcrs/sched_options', '', $schedulelink));
 }
