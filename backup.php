@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Definition of block_usp_mcrs tasks.
+ * Definition of Backup tasks.
  *
  * @package    block_usp_mcrs
  * @category   task
@@ -23,32 +23,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../config.php');
-require_once('lib.php');
-
+require_once('../../config.php'); // Change depending on depth
+require_once("backuplib.php");
 require_login();
 
-// Ensure only site admins can use the Backup and Delete system.
-if (!is_siteadmin($USER->id)) {
-    print_error('need_permission', 'block_usp_mcrs');
-}
+global $CFG, $USER, $DB;
 
-// Page Setup.
-$blockname = get_string('pluginname', 'block_usp_mcrs');
-$header = get_string('job_sent', 'block_usp_mcrs');
-$context = context_system::instance();
-$PAGE->set_context($context);
-$PAGE->navbar->add($header);
-$PAGE->set_title($blockname);
-$PAGE->set_heading($SITE->shortname . ': ' . $blockname);
+/** Navigation Bar **/
+$PAGE->navbar->ignore_active();
+$PAGE->navbar->add(get_string('backup', 'block_usp_mcrs'), new moodle_url('/blocks/usp_mcrs/backup.php'));
 $PAGE->set_url('/blocks/usp_mcrs/backup.php');
+$PAGE->set_context(context_system::instance());
+$PAGE->set_heading(get_string('backup', 'block_usp_mcrs')); 
+$PAGE->set_title(get_string('backup', 'block_usp_mcrs'));
 
-// Begin outputting the page.
 echo $OUTPUT->header();
-echo $OUTPUT->heading($header);
 
 // Set up the courses to back up.
-//$backupids = required_param_array('backup', PARAM_INT);
 $backupids = $_SESSION['courseid'];
 
 // Check for duplicates.
@@ -63,7 +54,7 @@ $newbackupids = array_diff($backupids, $dupes);
 foreach ($newbackupids as $id) {
     $status = new StdClass;
     $status->coursesid = $id;
-    $status->status = 'BACKUP';
+    $status->status = 'BACKUP'; 
     $DB->insert_record('block_usp_mcrs_statuses', $status);
 }
 
