@@ -42,13 +42,13 @@ $PAGE->set_title(get_string('requestcourse', 'block_usp_mcrs'));
 
 echo $OUTPUT->header();
 
-//Instantiate the Form
+// Instantiate the Form
 $mform = new requestcourse_form(); 
 
-//Form processing and displaying is done here
+// Form processing and displaying is done here
 if ($mform->is_cancelled()) 
 {
-    //Handle form cancel operation, if cancel button is present on form
+    // Handle form cancel operation, if cancel button is present on form
     echo '<script>window.location="/moodle37/my/index.php";</script>';
     die;
 } 
@@ -60,186 +60,129 @@ else if ($fromform = $mform->get_data())
     // Intantiate a request
     $request = new stdClass();
 
-    //In this case you process validated data. $mform->get_data() returns data posted in form. 
-     if($fromform->additionalinfo)
-    { 
-        if($fromform->singlemultiple == 0)
-        {            
-            $request = getFormData($fromform, $DB, $USER, $request);
-            if($fromform->newbackedup == 0)
-            {
-                $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidgeneral, array(), $strictness=IGNORE_MISSING);
-                $courseid[0] = $fromform->courseidgeneral;
-            }
-            else
-            {
-                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-            }
-            $DB->insert_record('block_usp_mcrs_requests', $request);
-        }
-        else
+    // In this case you process validated data. $mform->get_data() returns data posted in form. 
+    if($fromform->singlemultiple == 0)
+    {            
+        $request = getFormData($fromform, $DB, $USER, $request);
+        if($fromform->newbackedup == 0)
         {
-            if(isset($fromform->f2f))
+            $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidgeneral, array(), $strictness=IGNORE_MISSING);
+            if(!$fromform->additionalinfo)
             {
-                $request = getFormData($fromform, $DB, $USER, $request);
-                if($fromform->newbackedup1 == 0)
-                {
-                    $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidf2f, array(), $strictness=IGNORE_MISSING);
-                    $courseid[1] = $fromform->courseidf2f;
-                }
-                else
-                {
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                }
-                $DB->insert_record('block_usp_mcrs_requests', $request);
-            }
-            if(isset($fromform->online))
-            {
-                $request = getFormData($fromform, $DB, $USER, $request);
-                if($fromform->newbackedup2 == 0)
-                {
-                    $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidonline, array(), $strictness=IGNORE_MISSING);
-                    $courseid[2] = $fromform->courseidonline;
-                }
-                else
-                {
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                }
-                $DB->insert_record('block_usp_mcrs_requests', $request);
-            }
-            if(isset($fromform->print))
-            {
-                $request = getFormData($fromform, $DB, $USER, $request);
-                if($fromform->newbackedup3 == 0)
-                {
-                    $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidprint, array(), $strictness=IGNORE_MISSING);
-                    $courseid[3] = $fromform->courseidprint;
-                }
-                else
-                {
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                }
-                $DB->insert_record('block_usp_mcrs_requests', $request);
-            }
-            if(isset($fromform->blended))
-            {
-                $request = getFormData($fromform, $DB, $USER, $request);
-                if($fromform->newbackedup4 == 0)
-                {
-                    $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidblended, array(), $strictness=IGNORE_MISSING);
-                    $courseid[4] = $fromform->courseidblended;
-                }
-                else
-                {
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                }
-                $DB->insert_record('block_usp_mcrs_requests', $request);
-            }        
-        } 
-    }
-    else
-    { 
-        if($fromform->singlemultiple == 0)
-        {
-            $request = getFormData($fromform, $DB, $USER, $request);
-            if($fromform->newbackedup == 0)
-            {
-                $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidgeneral, array(), $strictness=IGNORE_MISSING);
-                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
                 createCourse($request, $fromform, 0);
                 $courseid[0] = $fromform->courseidgeneral;
             }
-            else
-            {
-                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                createCourse($request, $fromform, 0);                                
-            }
-            $DB->insert_record('block_usp_mcrs_requests', $request);
         }
         else
         {
-            if(isset($fromform->f2f))
+            $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
+            if(!$fromform->additionalinfo)
             {
-                $request = getFormData($fromform, $DB, $USER, $request);
-                if($fromform->newbackedup1 == 0)
+                createCourse($request, $fromform, 0);       
+            }  
+        }
+        $DB->insert_record('block_usp_mcrs_requests', $request);
+    }
+    else
+    {
+        if(isset($fromform->f2f))
+        {
+            $request = getFormData($fromform, $DB, $USER, $request);
+            if($fromform->newbackedup1 == 0)
+            {
+                $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidf2f, array(), $strictness=IGNORE_MISSING);
+                if(!$fromform->additionalinfo)
                 {
-                    $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidf2f, array(), $strictness=IGNORE_MISSING);
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                    createCourse($request, $fromform, 1);
-                    $courseid[1] = $fromform->courseidf2f;
+                    createCourse($request, $fromform, 0);
+                    $courseid[1] = $fromform->courseidgeneral;
                 }
-                else
-                {
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                    createCourse($request, $fromform, 1);
-                }
-                $DB->insert_record('block_usp_mcrs_requests', $request);
             }
-            if(isset($fromform->online))
+            else
             {
-                $request = getFormData($fromform, $DB, $USER, $request);
-                if($fromform->newbackedup2 == 0)
+                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
+                if(!$fromform->additionalinfo)
                 {
-                    $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidonline, array(), $strictness=IGNORE_MISSING);
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                    createCourse($request, $fromform, 2);
-                    $courseid[2] = $fromform->courseidonline;
-                }
-                else
-                {
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                    createCourse($request, $fromform, 2);
-                }
-                $DB->insert_record('block_usp_mcrs_requests', $request);
+                    createCourse($request, $fromform, 0);       
+                }  
             }
-            if(isset($fromform->print))
+            $DB->insert_record('block_usp_mcrs_requests', $request);
+        }
+        if(isset($fromform->online))
+        {
+            $request = getFormData($fromform, $DB, $USER, $request);
+            if($fromform->newbackedup2 == 0)
             {
-                $request = getFormData($fromform, $DB, $USER, $request);
-                if($fromform->newbackedup3 == 0)
+                $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidonline, array(), $strictness=IGNORE_MISSING);
+                if(!$fromform->additionalinfo)
                 {
-                    $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidprint, array(), $strictness=IGNORE_MISSING);
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                    createCourse($request, $fromform, 3);
-                    $courseid[3] = $fromform->courseidprint;
+                    createCourse($request, $fromform, 0);
+                    $courseid[2] = $fromform->courseidgeneral;
                 }
-                else
-                {
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                    createCourse($request, $fromform, 3);
-                }
-                $DB->insert_record('block_usp_mcrs_requests', $request);
             }
-            if(isset($fromform->blended))
+            else
             {
-                $request = getFormData($fromform, $DB, $USER, $request);
-                if($fromform->newbackedup4 == 0)
+                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
+                if(!$fromform->additionalinfo)
                 {
-                    $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidblended, array(), $strictness=IGNORE_MISSING);
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                    createCourse($request, $fromform, 4);
-                    $courseid[4] = $fromform->courseidblended;
-                }
-                else
+                    createCourse($request, $fromform, 0);       
+                }  
+            }
+            $DB->insert_record('block_usp_mcrs_requests', $request);
+        }
+        if(isset($fromform->print))
+        {
+            $request = getFormData($fromform, $DB, $USER, $request);
+            if($fromform->newbackedup3 == 0)
+            {
+                $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidprint, array(), $strictness=IGNORE_MISSING);
+                if(!$fromform->additionalinfo)
                 {
-                    $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                    createCourse($request, $fromform, 4);
+                    createCourse($request, $fromform, 0);
+                    $courseid[3] = $fromform->courseidgeneral;
                 }
-                $DB->insert_record('block_usp_mcrs_requests', $request);
-            }        
-        }  
-    }   
+            }
+            else
+            {
+                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
+                if(!$fromform->additionalinfo)
+                {
+                    createCourse($request, $fromform, 0);       
+                }  
+            }
+            $DB->insert_record('block_usp_mcrs_requests', $request);
+        }
+        if(isset($fromform->blended))
+        {
+            $request = getFormData($fromform, $DB, $USER, $request);
+            if($fromform->newbackedup4 == 0)
+            {
+                $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidblended, array(), $strictness=IGNORE_MISSING);
+                if(!$fromform->additionalinfo)
+                {
+                    createCourse($request, $fromform, 0);
+                    $courseid[4] = $fromform->courseidgeneral;
+                }
+            }
+            else
+            {
+                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
+                if(!$fromform->additionalinfo)
+                {
+                    createCourse($request, $fromform, 0);       
+                }  
+            }
+            $DB->insert_record('block_usp_mcrs_requests', $request);
+        }        
+    } 
     
     $_SESSION['courseid'] = $courseid;
     redirect('backup.php', 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
 } 
 else 
 {
-    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
-    // or on the first display of the form.
-
-    //Set default data (if any)
+    // Set default data (if any)
     $mform->set_data($fromform);
-    //displays the form
+    // Displays the form
     $mform->display();
 }
 
