@@ -59,6 +59,7 @@ function begin_backup_task() {
     mtrace('***********************************');
     mtrace('*****BEGIN BACKUP FOR USP_MCRS*****');
     mtrace('***********************************');
+    
     // Grab the running status.
     $running = get_config('block_usp_mcrs', 'running');
 
@@ -96,17 +97,15 @@ function begin_backup_task() {
 
         // Convert the status to the acceptable FAIL / SUCCESS keyword.
         $b->status = $error ? 'FAIL' : 'SUCCESS';
-        // Update the DB with the appropriate status.
+
+        // Update the DB with the appropriate status
         $DB->update_record('block_usp_mcrs_statuses', $b);
-        mtrace('***********************************');
-        mtrace('*****BEGIN  RESTORE FOR USP_MCRS*****');
-        mtrace('***********************************');
     }
 
-    // Clear the running flag.
+    // Clear the running flag
     set_config('running', '', 'block_usp_mcrs');
 
-    // Email the admins about the backup status.
+    // Email the admins about the backup status
     usp_mcrs_email_admins($errorlog);
 
     return true;

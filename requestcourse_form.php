@@ -137,7 +137,7 @@ class requestcourse_form extends moodleform
         $mform->hideIf('courseidgeneral','radioar2','eq', '1');
         
         // Course Mode F2F checkbox
-        $mform->addElement('checkbox', 'f2f', 'F2F Mode', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
+        $mform->addElement('checkbox', 'f2f', '', get_string('f2f', 'block_usp_mcrs'), 'onclick="coordinates_form_display(\'f2f\', this.checked)"');
         $mform->hideIf('f2f','singlemultiple','eq', '0');
 
         // New or Backed up F2F shell
