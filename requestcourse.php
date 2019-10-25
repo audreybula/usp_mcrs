@@ -93,8 +93,8 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidf2f, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 0);
-                    $courseid[1] = $fromform->courseidgeneral;
+                    createCourse($request, $fromform, 1);
+                    $courseid[1] = $fromform->courseidf2f;
                 }
             }
             else
@@ -102,7 +102,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 0);       
+                    createCourse($request, $fromform, 1);       
                 }  
             }
             $DB->insert_record('block_usp_mcrs_requests', $request);
@@ -115,8 +115,8 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidonline, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 0);
-                    $courseid[2] = $fromform->courseidgeneral;
+                    createCourse($request, $fromform, 2);
+                    $courseid[2] = $fromform->courseidonline;
                 }
             }
             else
@@ -124,7 +124,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 0);       
+                    createCourse($request, $fromform, 2);       
                 }  
             }
             $DB->insert_record('block_usp_mcrs_requests', $request);
@@ -137,8 +137,8 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidprint, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 0);
-                    $courseid[3] = $fromform->courseidgeneral;
+                    createCourse($request, $fromform, 3);
+                    $courseid[3] = $fromform->courseidprint;
                 }
             }
             else
@@ -146,7 +146,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 0);       
+                    createCourse($request, $fromform, 3);       
                 }  
             }
             $DB->insert_record('block_usp_mcrs_requests', $request);
@@ -159,8 +159,8 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidblended, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 0);
-                    $courseid[4] = $fromform->courseidgeneral;
+                    createCourse($request, $fromform, 4);
+                    $courseid[4] = $fromform->courseidblended;
                 }
             }
             else
@@ -168,7 +168,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 0);       
+                    createCourse($request, $fromform, 4);       
                 }  
             }
             $DB->insert_record('block_usp_mcrs_requests', $request);
