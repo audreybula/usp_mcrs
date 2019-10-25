@@ -80,10 +80,7 @@ $string['backup'] = 'Backup';
 // Settings
 $string['config_path'] = 'Storage Path';
 $string['config_path_desc'] = 'Relative to {$a}, include the surrounding slashes. Ensure that this directory is created and writable.';
-$string['config_pattern'] = 'Archive suffix';
-$string['config_pattern_desc'] = 'Data that will be appended onto backup names';
 $string['config_roles'] = 'Roles';
-$string['config_roles_desc'] = 'Roles to include when naming backup files';
 $string['config_size_limit'] = 'Size limit before warning';
 $string['config_size_limit_desc'] = 'In megabytes';
 $string['path_error'] = 'Error: Please ensure that the path you provided is a ' . 'writable directory';
