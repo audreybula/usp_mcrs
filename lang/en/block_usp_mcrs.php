@@ -100,8 +100,6 @@ $string['email_body']  = "The Backup And Delete tool has completed the jobs in i
 $string['usp_mcrs:addinstance'] = 'Add '.$string['pluginname'].' block.';
 
 // Restore 
-$string['pluginname'] = 'Hub Course Upload';
-
 $string['hubcourseupload:addinstance'] = 'Create a new instance';
 $string['hubcourseupload:myaddinstance'] = 'Create a new instance in my page';
 $string['hubcourseupload:upload'] = 'Upload a course to web';
