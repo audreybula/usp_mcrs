@@ -17,8 +17,8 @@
 /**
  * Form to confirm of moodle version difference from moodle version indicated in mbz file
  *
- * @package block_hubcourseupload
- * @copyright 2018 Moodle Association of Japan
+ * @package block_usp_mcrs
+ * @copyright   2019 IS314 Group 4 <you@example.com>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../lib/formslib.php';
 
 /**
  * Class versionconfirm_form
- * @package block_hubcourseupload
+ * @package block_usp_mcrs
  */
 class versionconfirm_form extends moodleform {
 
@@ -75,9 +75,9 @@ class versionconfirm_form extends moodleform {
      */
     public function definition() {
         $form = &$this->_form;
-        $form->addElement('html', get_string('warning_moodleversion', 'block_hubcourseupload', ['original' => $this->courseversion, 'current' => $this->siteversion]));
+        $form->addElement('html', get_string('warning_moodleversion', 'block_usp_mcrs', ['original' => $this->courseversion, 'current' => $this->siteversion]));
         $form->addElement('hidden', 'jsondata', $this->jsondata);
         $form->setDefault('jsondata', $this->jsondata);
-        $this->add_action_buttons(true, get_string('proceedanyway', 'block_hubcourseupload'));
+        $this->add_action_buttons(true, get_string('proceedanyway', 'block_usp_mcrs'));
     }
 }

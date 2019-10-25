@@ -24,10 +24,13 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
+
 // Get the requisite dependencies.
 require_once($CFG->dirroot . '/blocks/usp_mcrs/backuplib.php');
 require_once($CFG->dirroot . '/blocks/usp_mcrs/restorelib.php');
 require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
+require_once __DIR__ . '/classes/courseupload_form.php';
+
 /**
  * Main class for setting up the block.
  * @uses block_list
@@ -105,10 +108,19 @@ class block_usp_mcrs extends block_list {
         $items[] = $this->build_link('mcrs_cfl_admin');
         $items[] = $this->build_link('configemail');
 
+        $this->page->requires->jquery();
+        $this->page->requires->js(new moodle_url('/blocks/usp_mcrs/script.js'));
+        $this->page->requires->strings_for_js(['coursefilechoose', 'draganddrop', 'pleasewait'], 'block_usp_mcrs');
+
+        $uploader = new courseupload_form(new moodle_url('/blocks/usp_mcrs/restore.php'));
+
+        $html = $uploader->render();
+
         // Bring it all together.
         $this->content = new stdClass;
         $this->content->icons = $icons;
         $this->content->items = $items;
+        $this->content->text = $html;
         $this->content->footer = '';
 
         // Return the block.

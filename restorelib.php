@@ -17,33 +17,33 @@
 /**
  * Functions libraries
  *
- * @package block_hubcourseupload
- * @copyright 2018 Moodle Association of Japan
+ * @package block_usp_mcrs
+ * @copyright   2019 IS314 Group 4 <you@example.com>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 // Step of extracting file information
-const BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE = 0;
+const BLOCK_USP_MCRS_STEP_PREPARE = 0;
 
 // Step of when there is no site version difference, or the difference has been accepted
-const BLOCK_HUBCOURSEUPLOAD_STEP_VERSIONCONFIRMED = 1;
+const BLOCK_USP_MCRS_STEP_VERSIONCONFIRMED = 1;
 
 // Step of when there is no plugin version difference, or the difference has been accepted
-const BLOCK_HUBCOURSEUPLOAD_STEP_PLUGINCONFIRMED = 2;
+const BLOCK_USP_MCRS_STEP_PLUGINCONFIRMED = 2;
 
 /**
  * Check if block_hubcourseinfo is enabled in this site
  * @return bool
  */
-function block_hubcourseupload_infoblockenabled() {
-    global $BLOCK_HUBCOURSEUPLOAD_INFOENABLED;
+function block_usp_mcrs_infoblockenabled() {
+    global $BLOCK_USP_MCRS_INFOENABLED;
 
-    if (!isset($BLOCK_HUBCOURSEUPLOAD_INFOENABLED)) {
+    if (!isset($BLOCK_USP_MCRS_INFOENABLED)) {
         $blocks = core_plugin_manager::instance()->get_enabled_plugins('block');
-        $BLOCK_HUBCOURSEUPLOAD_INFOENABLED = in_array('hubcourseinfo', $blocks);
+        $BLOCK_USP_MCRS_INFOENABLED = in_array('hubcourseinfo', $blocks);
     }
 
-    return $BLOCK_HUBCOURSEUPLOAD_INFOENABLED;
+    return $BLOCK_USP_MCRS_INFOENABLED;
 }
 
 /**
@@ -51,11 +51,11 @@ function block_hubcourseupload_infoblockenabled() {
  * @return float|int
  * @throws dml_exception
  */
-function block_hubcourseupload_getmaxfilesize() {
+function block_usp_mcrs_getmaxfilesize() {
     $generalmaximum = get_max_upload_file_size();
 
-    if (block_hubcourseupload_infoblockenabled()) {
-        $infosettings = get_config('block_hubcourseupload', 'maxfilesize') * 1024 * 1024;
+    if (block_usp_mcrs_infoblockenabled()) {
+        $infosettings = get_config('block_usp_mcrs', 'maxfilesize') * 1024 * 1024;
 
         if ($infosettings > 0) {
             return $generalmaximum < $infosettings ? $generalmaximum : $infosettings;
@@ -71,16 +71,16 @@ function block_hubcourseupload_getmaxfilesize() {
  * @throws coding_exception
  * @throws dml_exception
  */
-function block_hubcourseupload_getroleid() {
+function block_usp_mcrs_getroleid() {
     global $DB;
 
-    if (!get_config('block_hubcourseupload', 'allowcapabilitychange')) {
+    if (!get_config('block_usp_mcrs', 'allowcapabilitychange')) {
         return null;
     }
 
-    $role = $DB->get_record('role', ['shortname' => 'hubcourseupload_user']);
+    $role = $DB->get_record('role', ['shortname' => 'usp_mcrs_user']);
     if (!$role) {
-        return create_role('Course Uploader', 'hubcourseupload_user', 'User for hub course upload');
+        return create_role('Course Uploader', 'usp_mcrs_user', 'User for hub course upload');
     }
 
     return $role->id;
@@ -91,7 +91,7 @@ function block_hubcourseupload_getroleid() {
  * @param string $path
  * @return string[]
  */
-function block_hubcourseupload_getsubdirectories($path) {
+function block_usp_mcrs_getsubdirectories($path) {
     if (!is_dir($path)) {
         return [];
     }
@@ -120,13 +120,13 @@ function block_hubcourseupload_getsubdirectories($path) {
  * @param string $extractedpath
  * @return array
  */
-function block_hubcourseupload_getplugins($extractedpath) {
+function block_usp_mcrs_getplugins($extractedpath) {
     $result = [
         'mod' => [],
         'blocks' => []
     ];
 
-    $moddirs = block_hubcourseupload_getsubdirectories($extractedpath . '/activities');
+    $moddirs = block_usp_mcrs_getsubdirectories($extractedpath . '/activities');
     foreach ($moddirs as $moddir) {
         $modpath = $moddir . '/module.xml';
         $xml = simplexml_load_file($modpath);
@@ -141,7 +141,7 @@ function block_hubcourseupload_getplugins($extractedpath) {
         }
     }
 
-    $blockdirs = block_hubcourseupload_getsubdirectories($extractedpath . '/course/blocks');
+    $blockdirs = block_usp_mcrs_getsubdirectories($extractedpath . '/course/blocks');
     foreach ($blockdirs as $blockdir) {
         $blockpath = $blockdir . '/block.xml';
         $xml = simplexml_load_file($blockpath);
@@ -164,7 +164,7 @@ function block_hubcourseupload_getplugins($extractedpath) {
  * @param array $plugins
  * @return bool
  */
-function block_hubcourseupload_valid($plugins) {
+function block_usp_mcrs_valid($plugins) {
     $installedmods = core_plugin_manager::instance()->get_plugins_of_type('mod');
     foreach ($plugins['mod'] as $modname => $version) {
         if (!isset($installedmods[$modname]) || $installedmods[$modname]->versiondb != $version) {
@@ -187,7 +187,7 @@ function block_hubcourseupload_valid($plugins) {
  * @param array $plugins
  * @return array
  */
-function block_hubcourseupload_plugininfotable($plugins) {
+function block_usp_mcrs_plugininfotable($plugins) {
     //table[pluginname] = [courseversion=>?, siteversion=?]
     $table = [];
 
@@ -217,29 +217,29 @@ function block_hubcourseupload_plugininfotable($plugins) {
  * @return html_table
  * @throws coding_exception
  */
-function block_hubcourseupload_plugininfotable_html($table) {
+function block_usp_mcrs_plugininfotable_html($table) {
     $htmltable = new html_table();
     $htmltable->head = [
-        get_string('requiredplugin_name', 'block_hubcourseupload'),
-        get_string('requiredplugin_courseversion', 'block_hubcourseupload'),
-        get_string('requiredplugin_siteversion', 'block_hubcourseupload'),
-        get_string('requiredplugin_status', 'block_hubcourseupload')
+        get_string('requiredplugin_name', 'block_usp_mcrs'),
+        get_string('requiredplugin_courseversion', 'block_usp_mcrs'),
+        get_string('requiredplugin_siteversion', 'block_usp_mcrs'),
+        get_string('requiredplugin_status', 'block_usp_mcrs')
     ];
     $htmltable->data = [];
     foreach ($table as $pluginname => $versiondata) {
         $text = '';
         $style = 'default';
         if (!$versiondata['siteversion']) {
-            $text = get_string('requiredplugin_notinstalled', 'block_hubcourseupload');
+            $text = get_string('requiredplugin_notinstalled', 'block_usp_mcrs');
             $style = 'danger';
         } else if ($versiondata['siteversion'] == $versiondata['courseversion']) {
-            $text = get_string('requiredplugin_identical', 'block_hubcourseupload');
+            $text = get_string('requiredplugin_identical', 'block_usp_mcrs');
             $style = 'success';
         } else if ($versiondata['siteversion'] < $versiondata['courseversion']) {
-            $text = get_string('requiredplugin_siteolder', 'block_hubcourseupload');
+            $text = get_string('requiredplugin_siteolder', 'block_usp_mcrs');
             $style = 'warning';
         } else if ($versiondata['siteversion'] > $versiondata['courseversion']) {
-            $text = get_string('requiredplugin_sitenewer', 'block_hubcourseupload');
+            $text = get_string('requiredplugin_sitenewer', 'block_usp_mcrs');
             $style = 'success';
         }
 
@@ -259,7 +259,7 @@ function block_hubcourseupload_plugininfotable_html($table) {
  * @param stdClass $info
  * @return stdClass
  */
-function block_hubcourseupload_reduceinfo($info) {
+function block_usp_mcrs_reduceinfo($info) {
     $newinfo = new stdClass();
     $newinfo->type = $info->type;
     $newinfo->moodle_version = $info->moodle_version;
@@ -270,7 +270,7 @@ function block_hubcourseupload_reduceinfo($info) {
     return $newinfo;
 }
 
-function block_hubcourseupload_getbackupdir() {
+function block_usp_mcrs_getbackupdir() {
     global $CFG;
     $backupdir = $CFG->tempdir . '/backup';
 
@@ -285,8 +285,8 @@ function block_hubcourseupload_getbackupdir() {
  * @param string $filename
  * @return string
  */
-function block_hubcourseupload_getbackuppath($filename) {
+function block_usp_mcrs_getbackuppath($filename) {
     global $CFG;
-    $backupdir = block_hubcourseupload_getbackupdir();
+    $backupdir = block_usp_mcrs_getbackupdir();
     return $backupdir ? "{$backupdir}/{$filename}" : "{$CFG->tempdir}/backup_{$filename}";
 }

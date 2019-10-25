@@ -16,8 +16,8 @@
 /**
  * Script file for adjusting style of block
  *
- * @package block_hubcourseupload
- * @copyright 2018 Moodle Association of Japan
+ * @package block_usp_mcrs
+ * @copyright   2019 IS314 Group 4 <you@example.com>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -25,7 +25,7 @@ require(['jquery'], function ($) {
     $(document).ready(function () {
         var boost = (M.cfg.theme === 'boost');
 
-        var $aside = boost ? $('[data-block="hubcourseupload"]') : $('div.block.block_hubcourseupload');
+        var $aside = boost ? $('[data-block="usp_mcrs"]') : $('div.block.block_usp_mcrs');
 
         var $form = $aside.find('form');
         var $filepickercol = $aside.find('*[data-fieldtype="filepicker"]');
@@ -59,9 +59,9 @@ require(['jquery'], function ($) {
         var $submitbtn = $aside.find('input[name="submitbutton"]');
         $submitbtn.hide();
 
-        $filepickercol.find('input[name="coursefilechoose"]').val(M.str.block_hubcourseupload.coursefilechoose);
+        $filepickercol.find('input[name="coursefilechoose"]').val(M.str.block_usp_mcrs.coursefilechoose);
         $filepickercol.find('.dndupload-message').html(
-            M.str.block_hubcourseupload.draganddrop + '<br><div class="dndupload-arrow"></div>'
+            M.str.block_usp_mcrs.draganddrop + '<br><div class="dndupload-arrow"></div>'
         );
 
         var $container = $aside.find('.filepicker-container');
@@ -110,7 +110,7 @@ require(['jquery'], function ($) {
         });
 
         $form.submit(function () {
-            $submitbtn.val(M.str.block_hubcourseupload.pleasewait);
+            $submitbtn.val(M.str.block_usp_mcrs.pleasewait);
             $submitbtn.attr('disabled', true);
         });
     });

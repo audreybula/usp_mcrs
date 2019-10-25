@@ -17,8 +17,8 @@
 /**
  * Restoration process
  *
- * @package block_hubcourseupload
- * @copyright 2018 Moodle Association of Japan
+ * @package block_usp_mcrs
+ * @copyright   2019 IS314 Group 4 <you@example.com>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -35,7 +35,7 @@ if (block_hubcourseupload_infoblockenabled()) {
 $systemcontext = context_system::instance();
 $usercontext = context_user::instance($USER->id);
 
-require_capability('block/hubcourseupload:upload', $usercontext);
+require_capability('block/usp_mcrs:upload', $usercontext);
 
 $step = optional_param('step', BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE, PARAM_INT);
 $versionid = optional_param('version', 0, PARAM_INT);
@@ -104,7 +104,7 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE) {
         $archivepath = block_hubcourseupload_getbackuppath($archivename);
         echo $archivepath.'=> ARCHIVE PATH';
         if (!$courseuploadform->save_file('coursefile', $archivepath)) {
-            throw new Exception(get_string('error_cannotsaveuploadfile', 'block_hubcourseupload'));
+            throw new Exception(get_string('error_cannotsaveuploadfile', 'block_usp_mcrs'));
         }
 
     } else if ($versionid && block_hubcourseupload_infoblockenabled()) {
@@ -130,20 +130,20 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE) {
         $archivefile->copy_content_to($archivepath);
 
     } else {
-        throw new Exception(get_string('error_filenotuploaded', 'block_hubcourseupload'));
+        throw new Exception(get_string('error_filenotuploaded', 'block_usp_mcrs'));
     }
 
     $info = backup_general_helper::get_backup_information_from_mbz($archivepath);
     if ($info->type != 'course') {
         fulldelete($archivepath);
-        throw new Exception(get_string('error_backupisnotcourse', 'block_hubcourseupload'));
+        throw new Exception(get_string('error_backupisnotcourse', 'block_usp_mcrs'));
     }
 
     if ($CFG->version < $info->moodle_version) {
         $PAGE->set_context($systemcontext);
         $PAGE->set_pagelayout('standard');
-        $PAGE->set_title(get_string('pluginname', 'block_hubcourseupload'));
-        $PAGE->set_heading(get_string('pluginname', 'block_hubcourseupload'));
+        $PAGE->set_title(get_string('pluginname', 'block_usp_mcrs'));
+        $PAGE->set_heading(get_string('pluginname', 'block_usp_mcrs'));
         echo $OUTPUT->header();
         $versionconfirm = new versionconfirm_form(
             "{$info->moodle_version} - {$info->moodle_release}",
@@ -173,15 +173,15 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_VERSIONCONFIRMED) {
     $extractedpath = block_hubcourseupload_getbackuppath($extractedname);
     $fb = get_file_packer('application/vnd.moodle.backup');
     if (!$fb->extract_to_pathname($archivepath, $extractedpath, null)) {
-        throw new Exception(get_string('error_cannotextractfile', 'block_hubcourseupload'));
+        throw new Exception(get_string('error_cannotextractfile', 'block_usp_mcrs'));
     }
 
     $plugins = block_hubcourseupload_getplugins($extractedpath);
     if (!block_hubcourseupload_valid($plugins)) {
         $PAGE->set_context($systemcontext);
         $PAGE->set_pagelayout('standard');
-        $PAGE->set_title(get_string('pluginname', 'block_hubcourseupload'));
-        $PAGE->set_heading(get_string('pluginname', 'block_hubcourseupload'));
+        $PAGE->set_title(get_string('pluginname', 'block_usp_mcrs'));
+        $PAGE->set_heading(get_string('pluginname', 'block_usp_mcrs'));
         echo $OUTPUT->header();
         $pluginconfirmform = new pluginconfirm_form($plugins, [
             'archivename' => $archivename,
@@ -215,10 +215,10 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PLUGINCONFIRMED) {
         $courseid = $coursecontext->instanceid;
     } else {
         // New Course
-        $category = get_config('block_hubcourseupload', 'defaultcategory');
+        $category = get_config('block_usp_mcrs', 'defaultcategory');
 
         if (!$DB->get_record('course_categories', ['id' => $category])) {
-            throw new Exception(get_string('error_categorynotfound', 'block_hubcourseupload'));
+            throw new Exception(get_string('error_categorynotfound', 'block_usp_mcrs'));
         }
 
         list($fullname, $shortname) = restore_dbops::calculate_course_names(0, get_string('restoringcourse', 'backup'), get_string('restoringcourseshortname', 'backup'));
@@ -235,7 +235,7 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PLUGINCONFIRMED) {
         if (!has_capability('moodle/restore:restorecourse', $coursecontext)) {
             $roleid = block_hubcourseupload_getroleid();
             if (!$roleid) {
-                throw new Exception(get_string('error_cannotgetroleinfo', 'block_hubcourseupload'));
+                throw new Exception(get_string('error_cannotgetroleinfo', 'block_usp_mcrs'));
             }
 
             role_assign($roleid, $USER->id, $coursecontext->id);
@@ -290,13 +290,13 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PLUGINCONFIRMED) {
 //        }
 //        fulldelete($extractedpath);
 //        fulldelete($archivepath);
-//        throw new Exception(get_string('error_cannotrestore', 'block_hubcourseupload') . $ex->getMessage());
+//        throw new Exception(get_string('error_cannotrestore', 'block_usp_mcrs') . $ex->getMessage());
     } catch (Error $ex) {
         if (!$versionid) {
             delete_course($courseid);
         }
         fulldelete($extractedpath);
         fulldelete($archivepath);
-        throw new Exception(get_string('error_cannotrestore', 'block_hubcourseupload') . $ex->getMessage());
+        throw new Exception(get_string('error_cannotrestore', 'block_usp_mcrs') . $ex->getMessage());
     }
 }

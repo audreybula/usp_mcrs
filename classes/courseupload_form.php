@@ -17,8 +17,8 @@
 /**
  * Class of form for uploading an mbz file
  *
- * @package block_hubcourseupload
- * @copyright 2018 Moodle Association of Japan
+ * @package block_usp_mcrs
+ * @copyright   2019 IS314 Group 4 <you@example.com>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../../lib/formslib.php';
 
 /**
  * Class courseupload_form
- * @package block_hubcourseupload
+ * @package block_usp_mcrs
  */
 class courseupload_form extends moodleform {
 
@@ -35,15 +35,15 @@ class courseupload_form extends moodleform {
      * @throws coding_exception
      */
     public function definition() {
-        $maxsize = block_hubcourseupload_getmaxfilesize();
+        $maxsize = block_usp_mcrs_getmaxfilesize();
 
         $form = &$this->_form;
 
         $form->addElement('filepicker', 'coursefile', '', null,
             array('maxbytes' => $maxsize, 'accepted_types' => '.mbz'));
 
-        $form->addElement('html', get_string('maxfilesize', 'block_hubcourseupload', $maxsize / 1024 / 1024));
+        $form->addElement('html', get_string('maxfilesize', 'block_usp_mcrs', $maxsize / 1024 / 1024));
 
-        $this->add_action_buttons(false, get_string('continueupload', 'block_hubcourseupload'));
+        $this->add_action_buttons(false, get_string('continueupload', 'block_usp_mcrs'));
     }
 }
