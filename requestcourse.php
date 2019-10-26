@@ -23,7 +23,7 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once('../../config.php'); // Change depending on depth
+require_once('../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once("requestlib.php");
 require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
@@ -69,7 +69,7 @@ else if ($fromform = $mform->get_data())
             $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidgeneral, array(), $strictness=IGNORE_MISSING);
             if(!$fromform->additionalinfo)
             {
-                createCourse($request, $fromform, 0);
+                //createCourse($request, $fromform, 0);
                 $courseid[0] = $fromform->courseidgeneral;
             }
         }
@@ -93,7 +93,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidf2f, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 1);
+                    //createCourse($request, $fromform, 1);
                     $courseid[1] = $fromform->courseidf2f;
                 }
             }
@@ -115,7 +115,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidonline, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 2);
+                    //createCourse($request, $fromform, 2);
                     $courseid[2] = $fromform->courseidonline;
                 }
             }
@@ -137,7 +137,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidprint, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 3);
+                    //createCourse($request, $fromform, 3);
                     $courseid[3] = $fromform->courseidprint;
                 }
             }
@@ -159,7 +159,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidblended, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 4);
+                    //createCourse($request, $fromform, 4);
                     $courseid[4] = $fromform->courseidblended;
                 }
             }
