@@ -42,7 +42,7 @@ $capabilities = array(
                 'riskbitmask' => RISK_DATALOSS,
 
         'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
+        'contextlevel' => CONTEXT_BLOCK,
         'archetypes' => array(
             'editingteacher' => CAP_PREVENT,
             'teacher' => CAP_PREVENT,
@@ -51,4 +51,14 @@ $capabilities = array(
 
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
         ),
+
+        'block/usp_mcrs:view' => [
+            'captype' => 'view',
+            'contextlevel' => CONTEXT_BLOCK,
+            'archetypes' => [
+                'teacher' => CAP_ALLOW,
+                'editingteacher' => CAP_ALLOW,
+            ],
+            'clonepermissionsfrom' => 'moodle/course:view',
+        ],
     );
