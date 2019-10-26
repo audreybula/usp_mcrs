@@ -122,37 +122,3 @@ $string['error_cannotextractfile'] = 'Cannot extract file.';
 $string['error_cannotgetroleinfo'] = 'Cannot get role <i>block_hubcourseupload</i>, please manually create this role with given short name having permission <i>moodle:restore/restorecourse</i>.';
 $string['error_cannotrestore'] = 'Cannot perform restore execution.';
 $string['error_categorynotfound'] = 'Category not found';
-
-$string['uploadcoursetohub'] = 'Upload Your Course to Hub';
-
-$string['coursefilechoose'] = 'Open file browser…';
-$string['draganddrop'] = 'Or you can also drag and drop your <i>.mbz</i> file here…';
-$string['nocapability'] = 'You are not allowed to upload file to hub.';
-$string['nosignin'] = 'Please sign in to upload your course to hub.';
-$string['uploaddescription'] = 'Supported file format: .mbz';
-$string['maxfilesize'] = 'Maximum file size: {$a}MB';
-$string['pleasewait'] = 'Please wait…';
-
-$string['continueupload'] = 'Continue Upload';
-
-$string['proceedanyway'] = 'Proceed Anyway';
-
-$string['warning_moodleversion'] = '<p><strong>Warning!</strong> Course from your file is originally from newer Moodle version, the demo course on this site might not function correctly.
-<br>Do you want to continue?</p>
-<p><strong>Your Course Moodle Version:</strong> <span class="text-success">{$a->original}</span><br>
-<strong>Moodle Version on this Site:</strong> <span class="text-danger">{$a->current}</span></p>';
-
-$string['warning_pluginversion'] = '<strong>Warning!</strong> Some plugins in your course do not match with the ones in this site. This might causes your course to function improperly in current site.
-<br>Please check list below.';
-$string['requiredplugin_name'] = 'Plugin Name';
-$string['requiredplugin_courseversion'] = 'Version from your course';
-$string['requiredplugin_siteversion'] = 'Version in this site';
-$string['requiredplugin_status'] = 'Status';
-$string['requiredplugin_notinstalled'] = 'Not installed in this site';
-$string['requiredplugin_identical'] = 'Identical';
-$string['requiredplugin_siteolder'] = 'This site has an older version';
-$string['requiredplugin_sitenewer'] = 'This site has a newer version';
-
-$string['block_restore'] = 'Restore A Course';
-
-$string['initialversion'] = 'Initial version';
