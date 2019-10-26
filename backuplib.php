@@ -128,14 +128,21 @@ function usp_mcrs_backup_course($course) {
     $bc->destroy();
     unset($bc);
 
+    mtrace('***********************************');
+    mtrace('*****BEGIN RESTORE FOR USP_MCRS*****');
+    mtrace('***********************************');
+
+    // Get name of backup file
     $mbzfilename = $usp_mcrsfile;
 
+    // Copy to temporary directory
     $archivename = restore_controller::get_tempdir_name(0, $USER->id);
     $archivepath = block_usp_mcrs_getbackuppath($archivename);
     if (!$file->copy_content_to($archivepath)) {
         throw new Exception(get_string('error_cannotsaveuploadfile', 'block_usp_mcrs'));
     }
 
+    // Extract file
     $extractedname = restore_controller::get_tempdir_name($systemcontext->id, $USER->id);
     $extractedpath = block_usp_mcrs_getbackuppath($extractedname);
     $fb = get_file_packer('application/vnd.moodle.backup');
@@ -143,12 +150,15 @@ function usp_mcrs_backup_course($course) {
         throw new Exception(get_string('error_cannotextractfile', 'block_usp_mcrs'));
     }
 
+    // Miscellaneous
     $category = 1;
 
+    // Verify category
     if (!$DB->get_record('course_categories', ['id' => $category])) {
         throw new Exception(get_string('error_categorynotfound', 'block_usp_mcrs'));
     }
 
+    // Create a new course
     list($fullname, $shortname) = restore_dbops::calculate_course_names(0, get_string('restoringcourse', 'backup'), get_string('restoringcourseshortname', 'backup'));
     $courseid = restore_dbops::create_new_course($fullname, $shortname, $category);
 
@@ -157,12 +167,14 @@ function usp_mcrs_backup_course($course) {
     raise_memory_limit(MEMORY_EXTRA);
     $coursecontext = context_course::instance($courseid);
 
+    // Setup restore controller
     $rc = new restore_controller($extractedname, $courseid, backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id, backup::TARGET_NEW_COURSE);
     $rc->set_status(backup::STATUS_AWAITING);
     $rc->get_plan()->execute();
 
     $blocks = backup_general_helper::get_blocks_from_path($extractedpath . '/course');
 
+    // Kill restore controller
     $rc->destroy();
 
     fulldelete($extractedpath);
