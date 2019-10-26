@@ -24,7 +24,7 @@
 
 require_once('../../config.php');
 require_once('restorelib.php');
-require_once(__DIR__ . '/../../backup/util/includes/restore_includes.php');
+require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
 
 $systemcontext = context_system::instance();
 $usercontext = context_user::instance($USER->id);
@@ -34,7 +34,7 @@ require_capability('block/usp_mcrs:upload', $usercontext);
 $step = optional_param('step', BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE, PARAM_INT);
 
 if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE) {
-    $courseuploadform = new courseupload_form();
+    /* $courseuploadform = new courseupload_form();
     if ($courseuploadform->is_submitted()) {
         // Upload new course
 
@@ -47,7 +47,13 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PREPARE) {
             throw new Exception(get_string('error_cannotsaveuploadfile', 'block_usp_mcrs'));
         }
 
-    } 
+    }  */
+    $archivename = restore_controller::get_tempdir_name(0, $USER->id);
+    $archivepath = block_usp_mcrs_getbackuppath($archivename);
+    $mbzfilename = 'usp_mcrs-CS219_CS318_201903.mbz';
+    if (!$courseuploadform->save_file($mbzfilename, $archivepath)) {
+        throw new Exception(get_string('error_cannotsaveuploadfile', 'block_usp_mcrs'));
+    }
 
     $step = BLOCK_HUBCOURSEUPLOAD_STEP_VERSIONCONFIRMED;
 }
@@ -103,8 +109,6 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PLUGINCONFIRMED) {
 
         fulldelete($extractedpath);
         fulldelete($archivepath);
-
-        redirect(new moodle_url('/course/view.php', ['id' => $courseid]));
 
         exit;
     } catch (Error $ex) {
