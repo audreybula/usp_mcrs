@@ -65,6 +65,27 @@ function generate_suffix($courseid) {
     return $suffix;
 }
 
+function block_usp_mcrs_getbackupdir() {
+    global $CFG;
+    $backupdir = $CFG->tempdir . '/backup';
+
+    if (!check_dir_exists($backupdir) && !mkdir($backupdir)) {
+        return null;
+    }
+    return $backupdir;
+}
+
+/**
+ * Get backup path
+ * @param string $filename
+ * @return string
+ */
+function block_usp_mcrs_getbackuppath($filename) {
+    global $CFG;
+    $backupdir = block_usp_mcrs_getbackupdir();
+    return $backupdir ? "{$backupdir}/{$filename}" : "{$CFG->tempdir}/backup_{$filename}";
+}
+
 /**
  * Instantiate the moodle backup subsystem
  * and backup the course.
@@ -72,7 +93,7 @@ function generate_suffix($courseid) {
  * @return true
  */
 function usp_mcrs_backup_course($course) {
-    global $CFG;
+    global $CFG, $DB, $USER;
 
     // Required files for the backups.
     require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
@@ -122,7 +143,7 @@ function usp_mcrs_backup_course($course) {
         throw new Exception(get_string('error_cannotextractfile', 'block_usp_mcrs'));
     }
 
-    $category = get_config('block_usp_mcrs', 'defaultcategory');
+    $category = 1;
 
     if (!$DB->get_record('course_categories', ['id' => $category])) {
         throw new Exception(get_string('error_categorynotfound', 'block_usp_mcrs'));
