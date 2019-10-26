@@ -25,6 +25,19 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
+    'block/usp_mcrs:myaddinstance' => array(
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'coursecreator' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+            
+        ),
+ 
+        'clonepermissionsfrom' => 'moodle/my:manageblocks'
+    ),
+
     'block/usp_mcrs:addinstance' => array(
                 'riskbitmask' => RISK_DATALOSS,
 
