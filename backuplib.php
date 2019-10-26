@@ -77,6 +77,10 @@ function usp_mcrs_backup_course($course) {
     // Required files for the backups.
     require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
     require_once($CFG->dirroot . '/backup/controller/backup_controller.class.php');
+    require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
+
+    $systemcontext = context_system::instance();
+    $usercontext = context_user::instance($USER->id);
 
     // Setup the backup controller.
     $bc = new backup_controller(backup::TYPE_1COURSE, $course->id,
@@ -102,6 +106,46 @@ function usp_mcrs_backup_course($course) {
     // Kill the backup controller.
     $bc->destroy();
     unset($bc);
+
+    $mbzfilename = $usp_mcrsfile;
+
+    $archivename = restore_controller::get_tempdir_name(0, $USER->id);
+    $archivepath = block_usp_mcrs_getbackuppath($archivename);
+    if (!$file->copy_content_to($archivepath)) {
+        throw new Exception(get_string('error_cannotsaveuploadfile', 'block_usp_mcrs'));
+    }
+
+    $extractedname = restore_controller::get_tempdir_name($systemcontext->id, $USER->id);
+    $extractedpath = block_usp_mcrs_getbackuppath($extractedname);
+    $fb = get_file_packer('application/vnd.moodle.backup');
+    if (!$fb->extract_to_pathname($archivepath, $extractedpath, null)) {
+        throw new Exception(get_string('error_cannotextractfile', 'block_usp_mcrs'));
+    }
+
+    $category = get_config('block_usp_mcrs', 'defaultcategory');
+
+    if (!$DB->get_record('course_categories', ['id' => $category])) {
+        throw new Exception(get_string('error_categorynotfound', 'block_usp_mcrs'));
+    }
+
+    list($fullname, $shortname) = restore_dbops::calculate_course_names(0, get_string('restoringcourse', 'backup'), get_string('restoringcourseshortname', 'backup'));
+    $courseid = restore_dbops::create_new_course($fullname, $shortname, $category);
+
+    $course = $DB->get_record('course', ['id' => $courseid]);
+
+    raise_memory_limit(MEMORY_EXTRA);
+    $coursecontext = context_course::instance($courseid);
+
+    $rc = new restore_controller($extractedname, $courseid, backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id, backup::TARGET_NEW_COURSE);
+    $rc->set_status(backup::STATUS_AWAITING);
+    $rc->get_plan()->execute();
+
+    $blocks = backup_general_helper::get_blocks_from_path($extractedpath . '/course');
+
+    $rc->destroy();
+
+    fulldelete($extractedpath);
+    fulldelete($archivepath);
 
     return true;
 }
