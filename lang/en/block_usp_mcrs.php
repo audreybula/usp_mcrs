@@ -97,28 +97,19 @@ $string['email_from'] = 'noreply@lsu.edu';
 $string['email_body']  = "The Backup And Delete tool has completed the jobs in it's queue.";
 
 // Capabilities.
-$string['usp_mcrs:addinstance'] = 'Add '.$string['pluginname'].' block.';
+$string['usp_mcrs:addinstance'] = 'Add usp_mcrs block.';
+$string['usp_mcrs:myaddinstance'] = 'Create a new instance in my page';
+$string['usp_mcrs:view'] = 'View usp_mcrs block';
 
-// Restore 
-$string['hubcourseupload:addinstance'] = 'Create a new instance';
-$string['hubcourseupload:myaddinstance'] = 'Create a new instance in my page';
-$string['hubcourseupload:upload'] = 'Upload a course to web';
-
-$string['settings:allowcapabilitychange'] = 'Allow overwriting default capability';
-$string['settings:allowcapabilitychange_description'] = 'If checked, capability <i>moodle/restore:restorecourse</i> will be granted to general authorized users.';
-$string['settings:autoenableguestenrol'] = 'Auto enable guest enrolment';
-$string['settings:autoenableguestenrol_description'] = 'Enable guest enrolment method automatically after course is uploaded';
+// Restore
 $string['settings:maxfilesize'] = 'Maximum course file size (MB)';
 $string['settings:maxfilesize_description'] = 'Maximum course backup size per file in megabytes (MB)<br><small>*Actual maximum upload size might be limited by server settings in <i>php.ini</i> file.</small>';
 $string['settings:defaultcategory'] = 'Default category';
 $string['settings:defaultcategory_description'] = 'Default category of newly uploaded course';
-$string['settings:autocreateinfoblock'] = 'Create course info block after uploaded';
-$string['settings:autocreateinfoblock_decription'] = 'Automatically create a hub course info block instance to uploaded course.';
 
 $string['error_filenotuploaded'] = 'There is no file uploaded.';
 $string['error_cannotsaveuploadfile'] = 'Cannot read upload file.';
 $string['error_backupisnotcourse'] = 'Backup file is not a course backup.';
 $string['error_cannotextractfile'] = 'Cannot extract file.';
-$string['error_cannotgetroleinfo'] = 'Cannot get role <i>block_hubcourseupload</i>, please manually create this role with given short name having permission <i>moodle:restore/restorecourse</i>.';
 $string['error_cannotrestore'] = 'Cannot perform restore execution.';
 $string['error_categorynotfound'] = 'Category not found';
