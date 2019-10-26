@@ -25,7 +25,7 @@
 
 require_once('../../config.php');
 require_once("$CFG->libdir/formslib.php");
-require_once("requestlib.php");
+require_once('requestlib.php');
 require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
 require_login();
 $PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/js/module.js'));

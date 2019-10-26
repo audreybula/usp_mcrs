@@ -32,21 +32,6 @@ const BLOCK_USP_MCRS_STEP_VERSIONCONFIRMED = 1;
 const BLOCK_USP_MCRS_STEP_PLUGINCONFIRMED = 2;
 
 /**
- * Check if block_hubcourseinfo is enabled in this site
- * @return bool
- */
-function block_usp_mcrs_infoblockenabled() {
-    global $BLOCK_USP_MCRS_INFOENABLED;
-
-    if (!isset($BLOCK_USP_MCRS_INFOENABLED)) {
-        $blocks = core_plugin_manager::instance()->get_enabled_plugins('block');
-        $BLOCK_USP_MCRS_INFOENABLED = in_array('hubcourseinfo', $blocks);
-    }
-
-    return $BLOCK_USP_MCRS_INFOENABLED;
-}
-
-/**
  * Get maximum file size
  * @return float|int
  * @throws dml_exception
@@ -84,35 +69,6 @@ function block_usp_mcrs_getroleid() {
     }
 
     return $role->id;
-}
-
-/**
- * Get sub-directories of given path
- * @param string $path
- * @return string[]
- */
-function block_usp_mcrs_getsubdirectories($path) {
-    if (!is_dir($path)) {
-        return [];
-    }
-
-    if (!$dir = opendir($path)) {
-        return [];
-    }
-
-    $dirs = [];
-
-    while ($file = readdir($dir)) {
-        if ($file == '.' || $file == '..') {
-            continue;
-        }
-
-        if (is_dir($path . '/' . $file)) {
-            $dirs[] = $path . '/' . $file;
-        }
-    }
-
-    return $dirs;
 }
 
 /**
@@ -180,78 +136,6 @@ function block_usp_mcrs_valid($plugins) {
     }
 
     return true;
-}
-
-/**
- * Create table array informing plugin difference data
- * @param array $plugins
- * @return array
- */
-function block_usp_mcrs_plugininfotable($plugins) {
-    //table[pluginname] = [courseversion=>?, siteversion=?]
-    $table = [];
-
-    $installedmods = core_plugin_manager::instance()->get_plugins_of_type('mod');
-    $installedblocks = core_plugin_manager::instance()->get_plugins_of_type('block');
-
-    foreach ($plugins['mod'] as $modname => $version) {
-        $table['mod_' . $modname] = [
-            'courseversion' => $version,
-            'siteversion' => isset($installedmods[$modname]) ? $installedmods[$modname]->versiondb : 0
-        ];
-    }
-
-    foreach ($plugins['blocks'] as $blockname => $version) {
-        $table['block_' . $blockname] = [
-            'courseversion' => $version,
-            'siteversion' => isset($installedblocks[$blockname]) ? $installedblocks[$blockname]->versiondb : 0
-        ];
-    }
-
-    return $table;
-}
-
-/**
- * Get HTML table from table array for page rendering
- * @param array $table
- * @return html_table
- * @throws coding_exception
- */
-function block_usp_mcrs_plugininfotable_html($table) {
-    $htmltable = new html_table();
-    $htmltable->head = [
-        get_string('requiredplugin_name', 'block_usp_mcrs'),
-        get_string('requiredplugin_courseversion', 'block_usp_mcrs'),
-        get_string('requiredplugin_siteversion', 'block_usp_mcrs'),
-        get_string('requiredplugin_status', 'block_usp_mcrs')
-    ];
-    $htmltable->data = [];
-    foreach ($table as $pluginname => $versiondata) {
-        $text = '';
-        $style = 'default';
-        if (!$versiondata['siteversion']) {
-            $text = get_string('requiredplugin_notinstalled', 'block_usp_mcrs');
-            $style = 'danger';
-        } else if ($versiondata['siteversion'] == $versiondata['courseversion']) {
-            $text = get_string('requiredplugin_identical', 'block_usp_mcrs');
-            $style = 'success';
-        } else if ($versiondata['siteversion'] < $versiondata['courseversion']) {
-            $text = get_string('requiredplugin_siteolder', 'block_usp_mcrs');
-            $style = 'warning';
-        } else if ($versiondata['siteversion'] > $versiondata['courseversion']) {
-            $text = get_string('requiredplugin_sitenewer', 'block_usp_mcrs');
-            $style = 'success';
-        }
-
-        $htmltable->data[] = [
-            $pluginname,
-            $versiondata['courseversion'],
-            $versiondata['siteversion'] ? $versiondata['siteversion'] : '',
-            html_writer::span($text, 'text-' . $style)
-        ];
-    }
-
-    return $htmltable;
 }
 
 /**

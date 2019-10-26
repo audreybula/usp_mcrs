@@ -22,8 +22,8 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(__DIR__ . '/../../config.php');
-require_once(__DIR__ . '/restorelib.php');
+require_once('../../config.php');
+require_once('restorelib.php');
 require_once(__DIR__ . '/../../backup/util/includes/restore_includes.php');
 
 $systemcontext = context_system::instance();
@@ -105,7 +105,7 @@ if ($step == BLOCK_HUBCOURSEUPLOAD_STEP_PLUGINCONFIRMED) {
         fulldelete($archivepath);
 
         redirect(new moodle_url('/course/view.php', ['id' => $courseid]));
-        
+
         exit;
     } catch (Error $ex) {
         if (!$versionid) {
