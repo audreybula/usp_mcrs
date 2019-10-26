@@ -41,17 +41,19 @@ echo $OUTPUT->header();
 
 // Set up the courses to back up.
 $backupids = $_SESSION['courseid'];
+// Set up the courses to copyfrom
+$backupids = $_SESSION['copyfromid'];
 
 // Check for duplicates.
-$currentids = $DB->get_fieldset_select('block_usp_mcrs_statuses', 'coursesid', '');
+/* $currentids = $DB->get_fieldset_select('block_usp_mcrs_statuses', 'coursesid', '');
 $dupes = array_intersect($currentids, $backupids);
-$dupes = !$dupes ? array() : $dupes;
+$dupes = !$dupes ? array() : $dupes; */
 
 // Remove the duplicates.
-$newbackupids = array_diff($backupids, $dupes);
+/* $newbackupids = array_diff($backupids, $dupes); */
 
 // Insert the records into the DB for courses to back up.
-foreach ($newbackupids as $id) {
+foreach ($backupids as $id) {
     $status = new StdClass;
     $status->coursesid = $id;
     $status->status = 'BACKUP'; 
@@ -59,7 +61,7 @@ foreach ($newbackupids as $id) {
 }
 
 // If the user is trying to backup duplicate courses....
-if ($dupes) {
+/* if ($dupes) {
     echo '<div style = "text-align:center" class = "error">';
     $select = 'coursesid IN(' . implode(', ', $dupes) . ')';
     $statuses = $DB->get_records_select('block_usp_mcrs_statuses', $select);
@@ -75,6 +77,8 @@ if ($dupes) {
         echo $shortname . ' ' . $statusmap[$s->status] . '<br />';
     }
     echo '</div>';
-}
+} */
+
+echo html_writer::link('/moodle37/my/index.php', get_string('continue', 'block_usp_mcrs'));
 
 echo $OUTPUT->footer();
