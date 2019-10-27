@@ -49,8 +49,7 @@ $mform = new requestcourse_form();
 if ($mform->is_cancelled()) 
 {
     // Handle form cancel operation, if cancel button is present on form
-    echo '<script>window.location="/moodle37/my/index.php";</script>';
-    die;
+    redirect($CFG->wwwroot);
 } 
 else if ($fromform = $mform->get_data()) 
 {
@@ -77,7 +76,7 @@ else if ($fromform = $mform->get_data())
             $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
             if(!$fromform->additionalinfo)
             {
-                createCourse($request, $fromform, 0);       
+                createCourse($request, $fromform, 0);      
             }  
         }
         $DB->insert_record('block_usp_mcrs_requests', $request);
