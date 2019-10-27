@@ -77,6 +77,7 @@ $string['requeststatus'] = 'Status';
 // Backup
 $string['backup'] = 'Backup';
 $string['backing_up'] = 'Backing Up';
+$string['continue'] = 'Continue';
 
 // Settings
 $string['config_path'] = 'Storage Path';
