@@ -24,7 +24,7 @@
  */
 
 require_once('../../config.php'); // Change depending on depth
-require_once("backuplib.php");
+require_once('backuplib.php');
 require_login();
 
 global $CFG, $USER, $DB;
@@ -41,8 +41,6 @@ echo $OUTPUT->header();
 
 // Set up the courses to back up.
 $backupids = $_SESSION['courseid'];
-// Set up the courses to copyfrom
-$backupids = $_SESSION['copyfromid'];
 
 // Check for duplicates.
 /* $currentids = $DB->get_fieldset_select('block_usp_mcrs_statuses', 'coursesid', '');
