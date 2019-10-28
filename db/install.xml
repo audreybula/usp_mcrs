@@ -27,7 +27,8 @@
         <FIELD NAME="course_lecturer" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="course_faculty" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="course_copyfrom" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="course_new" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="course_copytoshortname" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="course_copytofullname" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="additional_info" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
@@ -57,7 +58,6 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="coursesid"/>
         <FIELD NAME="coursesid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="mdl_course id" PREVIOUS="id" NEXT="status"/>
         <FIELD NAME="status" TYPE="char" LENGTH="8" NOTNULL="true" DEFAULT="BACKUP" SEQUENCE="false" ENUM="true" ENUMVALUES="'BACKUP', 'SUCCESS', 'FAIL'" COMMENT="status of operation" PREVIOUS="coursesid"/>
-        <FIELD NAME="copyfromid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="mdl_course id" PREVIOUS="coursesid"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
