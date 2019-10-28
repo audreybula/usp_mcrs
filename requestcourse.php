@@ -63,6 +63,8 @@ else if ($fromform = $mform->get_data())
     if($fromform->singlemultiple == 0)
     {            
         $request = getFormData($fromform, $DB, $USER, $request);
+        $request->course_copytoshortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
+        $request->course_copytofullname = $request->course_code.': '.$request->course_name;
         if($fromform->newbackedup == 0)
         {
             $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidgeneral, array(), $strictness=IGNORE_MISSING);
@@ -73,12 +75,10 @@ else if ($fromform = $mform->get_data())
         }
         else
         {
-            $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
             if(!$fromform->additionalinfo)
             {
-                createCourse($request, $fromform, 0); 
-                $shortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-                check_enrol($shortname, $USER->id, 3);     
+                createCourse($request, $fromform); 
+                check_enrol($request->course_copytoshortname, $USER->id, 3);     
             }  
         }
         $DB->insert_record('block_usp_mcrs_requests', $request);
@@ -88,6 +88,8 @@ else if ($fromform = $mform->get_data())
         if(isset($fromform->f2f))
         {
             $request = getFormData($fromform, $DB, $USER, $request);
+            $request->course_copytoshortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_F';
+            $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Face To Face)';
             if($fromform->newbackedup1 == 0)
             {
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidf2f, array(), $strictness=IGNORE_MISSING);
@@ -97,13 +99,11 @@ else if ($fromform = $mform->get_data())
                 }
             }
             else
-            {
-                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
+            {                
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 1);  
-                    $shortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_F';
-                    check_enrol($shortname, $USER->id, 3);     
+                    createCourse($request, $fromform);  
+                    check_enrol($request->course_copytoshortname, $USER->id, 3);     
                 }  
             }
             $DB->insert_record('block_usp_mcrs_requests', $request);
@@ -111,6 +111,8 @@ else if ($fromform = $mform->get_data())
         if(isset($fromform->online))
         {
             $request = getFormData($fromform, $DB, $USER, $request);
+            $request->course_copytoshortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_O';
+            $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Online)';
             if($fromform->newbackedup2 == 0)
             {
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidonline, array(), $strictness=IGNORE_MISSING);
@@ -120,13 +122,11 @@ else if ($fromform = $mform->get_data())
                 }
             }
             else
-            {
-                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
+            {                
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 2);  
-                    $shortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_O';
-                    check_enrol($shortname, $USER->id, 3);     
+                    createCourse($request, $fromform);  
+                    check_enrol($request->course_copytoshortname, $USER->id, 3);     
                 }  
             }
             $DB->insert_record('block_usp_mcrs_requests', $request);
@@ -134,6 +134,8 @@ else if ($fromform = $mform->get_data())
         if(isset($fromform->print))
         {
             $request = getFormData($fromform, $DB, $USER, $request);
+            $request->course_copytoshortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_P';
+            $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Print)';
             if($fromform->newbackedup3 == 0)
             {
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidprint, array(), $strictness=IGNORE_MISSING);
@@ -144,12 +146,10 @@ else if ($fromform = $mform->get_data())
             }
             else
             {
-                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 3); 
-                    $shortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_P';
-                    check_enrol($shortname, $USER->id, 3);      
+                    createCourse($request, $fromform); 
+                    check_enrol($request->course_copytoshortname, $USER->id, 3);      
                 }  
             }
             $DB->insert_record('block_usp_mcrs_requests', $request);
@@ -157,6 +157,8 @@ else if ($fromform = $mform->get_data())
         if(isset($fromform->blended))
         {
             $request = getFormData($fromform, $DB, $USER, $request);
+            $request->course_copytoshortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_B';
+            $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Blended)';
             if($fromform->newbackedup4 == 0)
             {
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidblended, array(), $strictness=IGNORE_MISSING);
@@ -167,12 +169,10 @@ else if ($fromform = $mform->get_data())
             }
             else
             {
-                $request->course_new = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
                 if(!$fromform->additionalinfo)
                 {
-                    createCourse($request, $fromform, 4);   
-                    $shortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_B';
-                    check_enrol($shortname, $USER->id, 3);    
+                    createCourse($request, $fromform);   
+                    check_enrol($request->course_copytoshortname, $USER->id, 3);    
                 }  
             }
             $DB->insert_record('block_usp_mcrs_requests', $request);
