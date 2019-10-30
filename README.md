@@ -1,34 +1,44 @@
-# Moodle Course Request #
+# Moodle Course Request Plugin #
 
-USP Moodle Course Request plugin that will be part of the University’s moodle platform. This plugin will be open source and is licensed under the GNU general public license. The Moodle Course Request plugin is intended for the CFL Staff and USP Academic staff. Its purpose is to reduce the workload of course creation for the CFL staff and provide an interface through which the CFL Admin can monitor staff assignments.
+Moodle Course Request Plugin is a Moodle block plugin that automates the processes of course shell creation and backing up and restoring course shells. This plugin is intended for the Center of Flexible Learning (CFL) team at the University of the South Pacific.
 
-Although Moodle is accessible to many users in the University, the plugin will only be made available to users that have the roles Admin, Teacher, and Course Creator. The Academics (Teacher) will be able to request for course shells and the CFL staff (Admin) will handle the requests which cannot be processed by the system. The CFL staff will also be able to see all staff assignments.
+## Overview ##
 
-The plugin will be a block plugin which means that it will appear as a block on the moodle dashboard when it is made visible. It will be built according to standards followed by moodle so that it will work well within moodle.
+The Moodle Course Request Plugin is being developed to reduce the workload for the CFL staff and also reduce the time taken to process a request. The current system consists of manual processes which can easily be automated, and automation is what the plugin will achieve. Academic staff will use the plugin to request for a course shell. The request is validated by the system and upon successful validation, the course shell will be automatically created and the Lecturer and Course Designer are automatically enrolled. The plugin will have auto generated emails which will be sent at each step of the process for status tracking purposes. The final activity in the course request process is an auto generated email to the Lecturer and Course Designer that the course shell has been created and is now ready for use. The Course Designer provides moodle support to staff and students. The CFL Admin will use the plugin to see the status of requests, assign/re-assign support staff to courses, and monitor the number of courses a support staff is supporting. In the event that the system cannot automatically create a course shell, the CFL Admin will request the Academic to correct any errors or uncertainties associated with a request. Once corrected, the system can carry on with the automation. This plugin greatly improves the current system by reducing the time taken to process a request. It automates the processes of request validation, course creation, and support staff assignment. It also reduces the need for human input because the Course Request form is a “smart” form. Once the academic fills a field in the form, the other fields get filled automatically. The MCRS plugin will also improve the University’s operations in that lecturers can get their courses ready for the new semester well before time, students will not panic because courses are not showing on moodle, the University’s helpdesk will get less emails regarding moodle courses not showing, and, the CFL team will be more efficient and productive in handling course requests.
 
 ## Installation ##
 
-Install the plugin using the `usp_mcrs.zip` template, then navigate to the moodle site administration -> plugins -> install plugin then drag and drop the zip file onto the provided area and select install. 
+Moodle Course Request Plugin should be installed like any other block. See the [Moodle Docs page on plugin installation](https://docs.moodle.org/37/en/Installing_plugins#Installing_a_plugin) for more info.
+  
+## Features ##
 
-After successfully installing the plugin:
-  - delete `usp_mcrs` folder located in `moodle/blocks/`
-  - clone repository into `moodle/blocks/` directory 
-  - open `usp_mcrs` folder into your desired IDE/TextEditor and you are good to go.
+* Automatic Course Shell Creation
+* Automatic Backup And Restore Of Course Shells
+* Automatic Notifications Via Email
+* Automatic Enrollment Of Course Lecturer And Course Designer
+* Automatic Balancing Of Support Staff Assignments
 
+### Academic ###
+* Make A Request
+* Edit A Request
+* View Own Requests
 
+### CFL Admin ###
+* Approve Requests
+* Re-Assign Support Staff
+* Modify Email Templates
+* Request For More Information
+* View All Requests
+* View Support Staff Assignments
+
+### Moodle Admin ###
+* Modify Copyfrom and Copyto Fields
+* Modify Email Templates
+
+## Contributions ##
+
+Contributions of any form are welcome. GitHub pull requests are preferred. Report any bugs or requests through our GitHub [issue tracker](https://github.com/audreybula/usp_mcrs/issues).
 
 ## License ##
 
-2019 IS314 Group 4 <you@example.com>
-
-This program is free software: you can redistribute it and/or modify it under
-the terms of the GNU General Public License as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later
-version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with
-this program.  If not, see <http://www.gnu.org/licenses/>.
+Moodle Course Request Plugin adopts the same license that Moodle does.
