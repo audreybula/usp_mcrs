@@ -55,10 +55,6 @@ class backup_task extends \core\task\scheduled_task {
  */
 function begin_backup_task() {
     global $DB, $CFG;
-
-    mtrace('***********************************');
-    mtrace('*****BEGIN BACKUP FOR USP_MCRS*****');
-    mtrace('***********************************');
     
     // Grab the running status.
     $running = get_config('block_usp_mcrs', 'running');
@@ -71,10 +67,10 @@ function begin_backup_task() {
     }
 
     // Set up the params.
-    $params = array('status' => 'BACKUP');
+    $params = array('request_status' => 'PENDINGBACKUP');
 
     // Return true for courses where status = BACKUP.
-    if (!$backups = $DB->get_records('block_usp_mcrs_statuses', $params)) {
+    if (!$backups = $DB->get_records('block_usp_mcrs_requests', $params)) {
         return true;
     }
 
@@ -86,20 +82,24 @@ function begin_backup_task() {
 
     // Loop through the courses to get backed up.
     foreach ($backups as $b) {
-        $course = $DB->get_record('course', array('id' => $b->coursesid));
+        mtrace('***********************************');
+        mtrace('*****BEGIN BACKUP FOR USP_MCRS*****');
+        mtrace('***********************************');
+
+        $course = $DB->get_record('course', array('id' => $b->course_copyfromid));
         echo "\n" . get_string('backing_up', 'block_usp_mcrs') . ' ' . $course->shortname . "\n";
 
         // Log any failures.
-        if (!usp_mcrs_backup_course($course)) {
+        if (!usp_mcrs_backup_course($course, $b)) {
             $error = true;
             $errorlog .= get_string('cron_backup_error', 'block_usp_mcrs', $course->shortname) . "\n";
         }
 
         // Convert the status to the acceptable FAIL / SUCCESS keyword.
-        $b->status = $error ? 'FAIL' : 'SUCCESS';
+        $b->request_status = $error ? 'FAIL' : 'SUCCESS';
 
         // Update the DB with the appropriate status
-        $DB->update_record('block_usp_mcrs_statuses', $b);
+        $DB->update_record('block_usp_mcrs_requests', $b);
     }
 
     // Clear the running flag

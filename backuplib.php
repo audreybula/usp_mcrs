@@ -92,7 +92,7 @@ function block_usp_mcrs_getbackuppath($filename) {
  *
  * @return true
  */
-function usp_mcrs_backup_course($course) {
+function usp_mcrs_backup_course($course, $b) {
     global $CFG, $DB, $USER;
 
     // Required files for the backups.
@@ -184,7 +184,11 @@ function usp_mcrs_backup_course($course) {
     fulldelete($extractedpath);
     fulldelete($archivepath);
 
-    // TODO: Rename restored course to Copyto from form
+    $course = $DB->get_record('course', ['id' => $courseid]);
+    $course->shortname = $b->course_copytoshortname;
+    $course->idnumber = $b->course_copytoshortname;
+    $course->fullname = $b->course_copytofullname;
+    $DB->update_record('course', $course);
 
     return true;
 }
