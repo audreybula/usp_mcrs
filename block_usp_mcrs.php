@@ -75,20 +75,6 @@ class block_usp_mcrs extends block_list {
             return $this->content;
         }
 
-        // Set up the table.
-        $table = 'block_usp_mcrs_statuses';
-
-        // Set the $running varuable to the backup status.
-        $running = get_config('block_usp_mcrs', 'running');
-
-        // Give the admin the running / not status.
-        if (!$running) {
-            $statustext = get_string('status_not_running', 'block_usp_mcrs');
-        } else {
-            $minutesrun = round((time() - $running) / 60);
-            $statustext = get_string('status_running', 'block_usp_mcrs', $minutesrun);
-        }
-
         // Build the block itself.
         $icons = array();
         $items = array();

@@ -99,6 +99,7 @@ function usp_mcrs_backup_course($course) {
     require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
     require_once($CFG->dirroot . '/backup/controller/backup_controller.class.php');
     require_once($CFG->dirroot . '/backup/util/includes/restore_includes.php');
+    require_once('requestlib.php');
 
     $systemcontext = context_system::instance();
     $usercontext = context_user::instance($USER->id);
@@ -177,8 +178,13 @@ function usp_mcrs_backup_course($course) {
     // Kill restore controller
     $rc->destroy();
 
+    $shortname = $DB->get_field_select('course', 'shortname', 'id = '.$courseid, array(), $strictness=IGNORE_MISSING);
+    check_enrol($shortname, $USER->id, 3);   
+
     fulldelete($extractedpath);
     fulldelete($archivepath);
+
+    // TODO: Rename restored course to Copyto from form
 
     return true;
 }

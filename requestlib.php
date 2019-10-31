@@ -36,44 +36,54 @@ function getFormData($fromform, $DB, $USER, $request)
     return $request;
 }
 
-function createCourse($request, $fromform, $mode)
+function createCourse($request, $fromform)
 {
     $data = new stdClass();
+    $data->idnumber = $request->course_copytoshortname;
+    $data->shortname = $request->course_copytoshortname;
+    $data->fullname = $request->course_copytofullname;
     $data->category = 1;
-    if($mode == 0)
-    {
-        $data->idnumber = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-        $data->shortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
-        $data->fullname = $request->course_code.': '.$request->course_name;
-    }
-    elseif($mode == 1)
-    {
-        $data->idnumber = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_F';
-        $data->shortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_F';
-        $data->fullname = $request->course_code.': '.$request->course_name.' (Face to Face)';
-    }
-    elseif($mode == 2)
-    {
-        $data->idnumber = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_O';
-        $data->shortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_O';
-        $data->fullname = $request->course_code.': '.$request->course_name.' (Online)';
-    }
-    elseif($mode == 3)
-    {
-        $data->idnumber = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_P';
-        $data->shortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_P';
-        $data->fullname = $request->course_code.': '.$request->course_name.' (Print)';
-    }
-    else
-    {
-        $data->idnumber = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_B';
-        $data->shortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_B';
-        $data->fullname = $request->course_code.': '.$request->course_name.' (Blended)';
-    }
     $data->summary = '';
     $data->summaryformat = 0;
     $data->format = 'topics';
     $data->showgrades = 1;
     $data->visible = 1;
     $h = create_course($data); 
+}
+
+function check_enrol($shortname, $userid, $roleid, $enrolmethod = 'manual') {
+    global $DB;
+    $user = $DB->get_record('user', array('id' => $userid, 'deleted' => 0), '*', MUST_EXIST);
+    $course = $DB->get_record('course', array('shortname' => $shortname), '*', MUST_EXIST);
+    $context = context_course::instance($course->id);
+    if (!is_enrolled($context, $user)) {
+        $enrol = enrol_get_plugin($enrolmethod);
+        if ($enrol === null) {
+            return false;
+        }
+        $instances = enrol_get_instances($course->id, true);
+        $manualinstance = null;
+        foreach ($instances as $instance) {
+            if ($instance->name == $enrolmethod) {
+                $manualinstance = $instance;
+                break;
+            }
+        }
+        if ($manualinstance !== null) {
+            $instanceid = $enrol->add_default_instance($course);
+            if ($instanceid === null) {
+                $instanceid = $enrol->add_instance($course);
+            }
+            $instance = $DB->get_record('enrol', array('id' => $instanceid));
+        }
+        $enrol->enrol_user($instance, $userid, $roleid);
+    }
+    return true;
+}
+
+function storeBackup($id, $DB) {
+    $status = new StdClass;
+    $status->coursesid = $id;
+    $status->status = 'BACKUP'; 
+    $DB->insert_record('block_usp_mcrs_statuses', $status);
 }
