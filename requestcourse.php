@@ -26,6 +26,7 @@
 require_once('../../config.php');
 require_once("$CFG->libdir/formslib.php");
 require_once('requestlib.php');
+require_once('backuplib.php');
 require_once($CFG->dirroot.'/blocks/usp_mcrs/requestcourse_form.php');
 require_login();
 $PAGE->requires->js(new moodle_url('/blocks/usp_mcrs/js/module.js'));
@@ -70,7 +71,7 @@ else if ($fromform = $mform->get_data())
             $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidgeneral, array(), $strictness=IGNORE_MISSING);
             if(!$fromform->additionalinfo)
             {
-                $courseid[0] = $fromform->courseidgeneral;
+                storeBackup($fromform->courseidgeneral, $DB);
             }
         }
         else
@@ -95,7 +96,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidf2f, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    $courseid[1] = $fromform->courseidf2f;
+                    storeBackup($fromform->courseidf2f, $DB);
                 }
             }
             else
@@ -118,7 +119,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidonline, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    $courseid[2] = $fromform->courseidonline;
+                    storeBackup($fromform->courseidonline, $DB);
                 }
             }
             else
@@ -141,7 +142,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidprint, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    $courseid[3] = $fromform->courseidprint;
+                    storeBackup($fromform->courseidprint, $DB);
                 }
             }
             else
@@ -164,7 +165,7 @@ else if ($fromform = $mform->get_data())
                 $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidblended, array(), $strictness=IGNORE_MISSING);
                 if(!$fromform->additionalinfo)
                 {
-                    $courseid[4] = $fromform->courseidblended;
+                    storeBackup($fromform->courseidblended, $DB);
                 }
             }
             else
@@ -180,7 +181,7 @@ else if ($fromform = $mform->get_data())
     } 
     
     $_SESSION['courseid'] = $courseid;
-    redirect('backup.php', 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect($CFG->wwwroot, 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
 } 
 else 
 {

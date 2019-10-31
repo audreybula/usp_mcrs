@@ -170,7 +170,6 @@ function usp_mcrs_backup_course($course) {
 
     // Setup restore controller
     $rc = new restore_controller($extractedname, $courseid, backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id, backup::TARGET_NEW_COURSE);
-    //check_enrol($shortname, $USER->id, 3); 
     $rc->set_status(backup::STATUS_AWAITING);
     $rc->get_plan()->execute();
 
