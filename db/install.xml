@@ -26,9 +26,11 @@
         <FIELD NAME="course_requester" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="course_lecturer" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="course_faculty" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="course_copyfrom" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="course_copyfromid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="course_copyfromshortname" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="course_copytoshortname" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="course_copytofullname" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="request_status" TYPE="char" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="additional_info" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
@@ -48,16 +50,6 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="faculty_name" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="block_usp_mcrs_statuses" COMMENT="Stores the status of pending operations">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="coursesid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="status" TYPE="char" LENGTH="8" NOTNULL="true" DEFAULT="BACKUP" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
