@@ -68,14 +68,17 @@ else if ($fromform = $mform->get_data())
         $request->course_copytofullname = $request->course_code.': '.$request->course_name;
         if($fromform->newbackedup == 0)
         {
-            $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidgeneral, array(), $strictness=IGNORE_MISSING);
+            $request->course_copyfromid = $fromform->courseidgeneral;
+            $request->course_copyfromshortname = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidgeneral, array(), $strictness=IGNORE_MISSING);
+            $request->request_status = 'PENDINGBACKUP';
             if(!$fromform->additionalinfo)
             {
-                storeBackup($fromform->courseidgeneral, $DB);
+                //storeBackup($fromform->courseidgeneral, $DB);
             }
         }
         else
         {
+            $request->request_status = 'PENDINGNEW';
             if(!$fromform->additionalinfo)
             {
                 createCourse($request, $fromform); 
@@ -93,14 +96,17 @@ else if ($fromform = $mform->get_data())
             $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Face To Face)';
             if($fromform->newbackedup1 == 0)
             {
-                $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidf2f, array(), $strictness=IGNORE_MISSING);
+                $request->course_copyfromid = $fromform->courseidf2f;
+                $request->course_copyfromshortname = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidf2f, array(), $strictness=IGNORE_MISSING);
+                $request->request_status = 'PENDINGBACKUP';
                 if(!$fromform->additionalinfo)
                 {
-                    storeBackup($fromform->courseidf2f, $DB);
+                    //storeBackup($fromform->courseidf2f, $DB);
                 }
             }
             else
-            {                
+            {  
+                $request->request_status = 'PENDINGNEW';              
                 if(!$fromform->additionalinfo)
                 {
                     createCourse($request, $fromform);  
@@ -116,14 +122,17 @@ else if ($fromform = $mform->get_data())
             $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Online)';
             if($fromform->newbackedup2 == 0)
             {
-                $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidonline, array(), $strictness=IGNORE_MISSING);
+                $request->course_copyfromid = $fromform->courseidonline;
+                $request->course_copyfromshortname = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidonline, array(), $strictness=IGNORE_MISSING);
+                $request->request_status = 'PENDINGBACKUP';
                 if(!$fromform->additionalinfo)
                 {
-                    storeBackup($fromform->courseidonline, $DB);
+                    //storeBackup($fromform->courseidonline, $DB);
                 }
             }
             else
-            {                
+            { 
+                $request->request_status = 'PENDINGNEW';               
                 if(!$fromform->additionalinfo)
                 {
                     createCourse($request, $fromform);  
@@ -139,14 +148,17 @@ else if ($fromform = $mform->get_data())
             $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Print)';
             if($fromform->newbackedup3 == 0)
             {
-                $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidprint, array(), $strictness=IGNORE_MISSING);
+                $request->course_copyfromid = $fromform->courseidprint;
+                $request->course_copyfromshortname = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidprint, array(), $strictness=IGNORE_MISSING);
+                $request->request_status = 'PENDINGBACKUP';
                 if(!$fromform->additionalinfo)
                 {
-                    storeBackup($fromform->courseidprint, $DB);
+                    //storeBackup($fromform->courseidprint, $DB);
                 }
             }
             else
             {
+                $request->request_status = 'PENDINGNEW';
                 if(!$fromform->additionalinfo)
                 {
                     createCourse($request, $fromform); 
@@ -162,14 +174,17 @@ else if ($fromform = $mform->get_data())
             $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Blended)';
             if($fromform->newbackedup4 == 0)
             {
-                $request->course_copyfrom = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidblended, array(), $strictness=IGNORE_MISSING);
+                $request->course_copyfromid = $fromform->courseidblended;
+                $request->course_copyfromshortname = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidblended, array(), $strictness=IGNORE_MISSING);
+                $request->request_status = 'PENDINGBACKUP';
                 if(!$fromform->additionalinfo)
                 {
-                    storeBackup($fromform->courseidblended, $DB);
+                    //storeBackup($fromform->courseidblended, $DB);
                 }
             }
             else
             {
+                $request->request_status = 'PENDINGNEW';
                 if(!$fromform->additionalinfo)
                 {
                     createCourse($request, $fromform);   
