@@ -35,11 +35,11 @@ global $CFG, $USER, $DB;
 /** Navigation Bar **/
 $PAGE->navbar->ignore_active();
 // todo: wrap around cap check
-$PAGE->navbar->add(get_string('block_mcrs_cfl_admin', 'block_usp_mcrs'));
+$PAGE->navbar->add(get_string('mcrs_cfl_admin', 'block_usp_mcrs'));
 $PAGE->set_url('/blocks/usp_mcrs/mcrs_cfl_admin.php');
 $PAGE->set_context(context_system::instance());
-$PAGE->set_heading(get_string('block_mcrs_cfl_admin', 'block_usp_mcrs'));
-$PAGE->set_title(get_string('block_mcrs_cfl_admin', 'block_usp_mcrs'));
+$PAGE->set_heading(get_string('mcrs_cfl_admin', 'block_usp_mcrs'));
+$PAGE->set_title(get_string('mcrs_cfl_admin', 'block_usp_mcrs'));
 
 
 $defineurl = $CFG->wwwroot . '/' . $CFG->admin . '/roles/define.php';

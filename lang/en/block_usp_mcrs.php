@@ -22,10 +22,10 @@ defined('MOODLE_INTERNAL') || die();
 
 // Strings for block
 $string['pluginname'] = 'Moodle Course Request';
-$string['block_requestcourse'] = 'Make A Course Request';
-$string['block_mcrs_admin'] = 'Moodle Admin Home';
-$string['block_mcrs_cfl_admin'] = 'CFL Admin Home';
-$string['block_configemail'] = 'Modify Email Template';
+$string['requestcourse'] = 'Make A Course Request';
+$string['mcrs_admin'] = 'Moodle Admin Home';
+$string['mcrs_cfl_admin'] = 'CFL Admin Home';
+$string['configemail'] = 'Modify Email Template';
 $string['usp_mcrs_settings'] = 'USP MCRS Settings';
 $string['cron_backup_error'] = 'Error backing up {$a}';
 $string['status_not_running'] = 'Not Running';
