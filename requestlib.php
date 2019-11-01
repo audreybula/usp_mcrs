@@ -80,10 +80,3 @@ function check_enrol($shortname, $userid, $roleid, $enrolmethod = 'manual') {
     }
     return true;
 }
-
-function storeBackup($id, $DB) {
-    $status = new StdClass;
-    $status->coursesid = $id;
-    $status->status = 'BACKUP'; 
-    $DB->insert_record('block_usp_mcrs_statuses', $status);
-}

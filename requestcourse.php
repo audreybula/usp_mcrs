@@ -53,10 +53,7 @@ if ($mform->is_cancelled())
     redirect($CFG->wwwroot);
 } 
 else if ($fromform = $mform->get_data()) 
-{
-    // Array to store the shells to be backed up
-    $courseid = array();
-    
+{    
     // Intantiate a request
     $request = new stdClass();
 
@@ -67,13 +64,11 @@ else if ($fromform = $mform->get_data())
         $request->course_copytoshortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester;
         $request->course_copytofullname = $request->course_code.': '.$request->course_name;
         if($fromform->newbackedup == 0)
-        {
-            $request->course_copyfromid = $fromform->courseidgeneral;
-            $request->course_copyfromshortname = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidgeneral, array(), $strictness=IGNORE_MISSING);
-            $request->request_status = 'PENDINGBACKUP';
+        {            
             if(!$fromform->additionalinfo)
             {
-                //storeBackup($fromform->courseidgeneral, $DB);
+                $request->course_copyfromid = $fromform->courseidgeneral;
+                $request->request_status = 'PENDINGBACKUP';
             }
         }
         else
@@ -96,12 +91,10 @@ else if ($fromform = $mform->get_data())
             $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Face To Face)';
             if($fromform->newbackedup1 == 0)
             {
-                $request->course_copyfromid = $fromform->courseidf2f;
-                $request->course_copyfromshortname = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidf2f, array(), $strictness=IGNORE_MISSING);
-                $request->request_status = 'PENDINGBACKUP';
                 if(!$fromform->additionalinfo)
                 {
-                    //storeBackup($fromform->courseidf2f, $DB);
+                    $request->course_copyfromid = $fromform->courseidf2f;
+                    $request->request_status = 'PENDINGBACKUP';
                 }
             }
             else
@@ -121,13 +114,11 @@ else if ($fromform = $mform->get_data())
             $request->course_copytoshortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_O';
             $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Online)';
             if($fromform->newbackedup2 == 0)
-            {
-                $request->course_copyfromid = $fromform->courseidonline;
-                $request->course_copyfromshortname = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidonline, array(), $strictness=IGNORE_MISSING);
-                $request->request_status = 'PENDINGBACKUP';
+            {               
                 if(!$fromform->additionalinfo)
                 {
-                    //storeBackup($fromform->courseidonline, $DB);
+                    $request->course_copyfromid = $fromform->courseidonline;
+                    $request->request_status = 'PENDINGBACKUP';
                 }
             }
             else
@@ -147,13 +138,11 @@ else if ($fromform = $mform->get_data())
             $request->course_copytoshortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_P';
             $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Print)';
             if($fromform->newbackedup3 == 0)
-            {
-                $request->course_copyfromid = $fromform->courseidprint;
-                $request->course_copyfromshortname = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidprint, array(), $strictness=IGNORE_MISSING);
-                $request->request_status = 'PENDINGBACKUP';
+            {                
                 if(!$fromform->additionalinfo)
                 {
-                    //storeBackup($fromform->courseidprint, $DB);
+                    $request->course_copyfromid = $fromform->courseidprint;
+                    $request->request_status = 'PENDINGBACKUP';
                 }
             }
             else
@@ -173,13 +162,11 @@ else if ($fromform = $mform->get_data())
             $request->course_copytoshortname = $request->course_code.'_'.$fromform->courseyear.''.$fromform->coursesemester.'_B';
             $request->course_copytofullname = $request->course_code.': '.$request->course_name.' (Blended)';
             if($fromform->newbackedup4 == 0)
-            {
-                $request->course_copyfromid = $fromform->courseidblended;
-                $request->course_copyfromshortname = $DB->get_field_select('course', 'shortname', 'id = '.$fromform->courseidblended, array(), $strictness=IGNORE_MISSING);
-                $request->request_status = 'PENDINGBACKUP';
+            {               
                 if(!$fromform->additionalinfo)
                 {
-                    //storeBackup($fromform->courseidblended, $DB);
+                    $request->course_copyfromid = $fromform->courseidblended;
+                    $request->request_status = 'PENDINGBACKUP';
                 }
             }
             else
@@ -194,8 +181,6 @@ else if ($fromform = $mform->get_data())
             $DB->insert_record('block_usp_mcrs_requests', $request);
         }        
     } 
-    
-    $_SESSION['courseid'] = $courseid;
     redirect($CFG->wwwroot, 'Request Submitted Successfully!', null, \core\output\notification::NOTIFY_SUCCESS);
 } 
 else 
