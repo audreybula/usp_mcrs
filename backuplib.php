@@ -178,6 +178,7 @@ function usp_mcrs_backup_course($course, $b) {
     // Kill restore controller
     $rc->destroy();
 
+    // TODO: Change user to requester/lecturer. Right now Admin gets enrolled always.
     $shortname = $DB->get_field_select('course', 'shortname', 'id = '.$courseid, array(), $strictness=IGNORE_MISSING);
     check_enrol($shortname, $USER->id, 3);   
 

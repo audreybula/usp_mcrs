@@ -24,6 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once($CFG->dirroot . '/blocks/usp_mcrs/backuplib.php');
+require_once($CFG->dirroot . '/blocks/moodleblock.class.php');
+
 class block_usp_mcrs extends block_list
 {
     /**
